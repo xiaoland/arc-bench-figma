@@ -1,0 +1,516 @@
+{
+  "name": "Figma Layout SVG subset",
+  "version": "2026-11-02",
+  "source": "Rendered Layout controls captured on 2026-10-28 and 2026-11-02. Local identifiers are aliases, not npm exports.",
+  "normalization": "Only page-specific metadata is removed and monochrome paints become currentColor; geometry and fill rules are preserved.",
+  "icons": [
+    {
+      "id": "FlowFreeform",
+      "label": "Freeform",
+      "file": "FlowFreeform.svg",
+      "width": 24,
+      "height": 24,
+      "figma_identifier": "Icon24AlLayoutGridNoneSmall",
+      "sha256": "a1554d83259f3fe398ba40e9df3943adb977958501b041c1497a343cd5ae5341",
+      "capture": {
+        "file": "freeform.json",
+        "index": 0,
+        "svg_index": 0
+      },
+      "raw_sha256": "721ce5ab7790305e4f6c84f339eebde986bcb470015e4881869a299cba3ef3bb"
+    },
+    {
+      "id": "FlowVertical",
+      "label": "Vertical",
+      "file": "FlowVertical.svg",
+      "width": 24,
+      "height": 24,
+      "figma_identifier": "Icon24AlLayoutGridVerticalSmall",
+      "sha256": "675e4d875e1fa318597fc0d8f83fa106a5b7a2c314c803c9cd713c20dc2e05bc",
+      "capture": {
+        "file": "freeform.json",
+        "index": 1,
+        "svg_index": 0
+      },
+      "raw_sha256": "6be98b788bcb87ac05cc71686d30b401c27612ff33e0633d7e640e84e821be29"
+    },
+    {
+      "id": "FlowHorizontal",
+      "label": "Horizontal",
+      "file": "FlowHorizontal.svg",
+      "width": 24,
+      "height": 24,
+      "figma_identifier": "Icon24AlLayoutGridHorizontalSmall",
+      "sha256": "1e06e1e1116dd55407a91a1fe1a9d887321365ca2236f62570aceae879e27845",
+      "capture": {
+        "file": "freeform.json",
+        "index": 2,
+        "svg_index": 0
+      },
+      "raw_sha256": "55a08738f08a3b586a71eb3161472380533bdd0c1ebc4e7d86617ecb4937475f"
+    },
+    {
+      "id": "FlowGrid",
+      "label": "Grid",
+      "file": "FlowGrid.svg",
+      "width": 24,
+      "height": 24,
+      "figma_identifier": "Icon24GridView",
+      "sha256": "f2204adad0fbc93f3c3a404076769bd5b92c5b05d0e895b793b2ba3a84cc80c9",
+      "capture": {
+        "file": "freeform.json",
+        "index": 3,
+        "svg_index": 0
+      },
+      "raw_sha256": "79ffcaac817e87df83829af8deda5fc55ceaf1832f4a46a600fa5f9b9b819396"
+    },
+    {
+      "id": "AutoLayoutAdd",
+      "label": "Add Auto Layout",
+      "file": "AutoLayoutAdd.svg",
+      "width": 24,
+      "height": 24,
+      "figma_identifier": null,
+      "sha256": "9278baaaaf8602209e7670f140b4d7c3a3a1deb6da5188803950dce0bcf71c1b",
+      "capture": {
+        "file": "freeform.json",
+        "index": 4,
+        "svg_index": 0
+      },
+      "raw_sha256": "b01b869f30f252acb22b609eb2b084f90e639912a078f90fcc108b56960a0cb1"
+    },
+    {
+      "id": "AspectRatioUnlocked",
+      "label": "Lock aspect ratio",
+      "file": "AspectRatioUnlocked.svg",
+      "width": 24,
+      "height": 24,
+      "figma_identifier": null,
+      "sha256": "369b4b2ed64c1e09efe380e233863fe6a8bef4c6edefae3563d3986e040b4a45",
+      "capture": {
+        "file": "freeform.json",
+        "index": 5,
+        "svg_index": 0
+      },
+      "raw_sha256": "6f609af5348cd88e541a2e403ebf70d6103ef07027bd7d3c7366ccccfc74b59e"
+    },
+    {
+      "id": "Check",
+      "label": "Checked checkbox",
+      "file": "Check.svg",
+      "width": 16,
+      "height": 16,
+      "figma_identifier": null,
+      "sha256": "879ee4adfc570a5a4f1f19ebf85cbdf2f6c77e7fc1d5ed4476fc16126192fff5",
+      "capture": {
+        "file": "freeform.json",
+        "index": 6,
+        "svg_index": 2
+      },
+      "raw_sha256": "adc9f165fa547cf0af2040faa81412f0de55200e64c23c13311bbd5e0d044051"
+    },
+    {
+      "id": "ResizeToFit",
+      "label": "Resize to fit",
+      "file": "ResizeToFit.svg",
+      "width": 24,
+      "height": 24,
+      "figma_identifier": null,
+      "sha256": "6e7b0c33fd725e2dc7a9ef7d7f2687b3b2dc767c40d9ab1cb6611abf792a59ea",
+      "capture": {
+        "file": "freeform.json",
+        "index": 7,
+        "svg_index": 0
+      },
+      "raw_sha256": "1a292519e242919ad79232dacd43a878f8ea513b50698da0541dcf51b9a365ec"
+    },
+    {
+      "id": "AutoLayoutActive",
+      "label": "Remove Auto Layout",
+      "file": "AutoLayoutActive.svg",
+      "width": 24,
+      "height": 24,
+      "figma_identifier": null,
+      "sha256": "2853549599e63b2d2918570b3006cb67f37c69b8d90bdf967b13535f7114fd59",
+      "capture": {
+        "file": "horizontal.json",
+        "index": 0,
+        "svg_index": null
+      },
+      "raw_sha256": "97712dcba64e85fe64c40de065eb215f190993add25942b96d0bc2f8aded51fb"
+    },
+    {
+      "id": "Wrap",
+      "label": "Wrap",
+      "file": "Wrap.svg",
+      "width": 16,
+      "height": 16,
+      "figma_identifier": null,
+      "sha256": "ea36df3b3ad410b10d590702a2f642d3bdb218263b8536368d42442ff2add53c",
+      "capture": {
+        "file": "horizontal.json",
+        "index": 5,
+        "svg_index": null
+      },
+      "raw_sha256": "728b8874a6af963b423940f6abf01d191dc9b21e498057b4f382396fdc9a5e30"
+    },
+    {
+      "id": "GapHorizontal",
+      "label": "Horizontal gap",
+      "file": "GapHorizontal.svg",
+      "width": 24,
+      "height": 24,
+      "figma_identifier": null,
+      "sha256": "26dc8c3da4c6a0a66241993965c487d6a8578ce4ec8d4d4649b60d36f9bcb5d4",
+      "capture": {
+        "file": "horizontal.json",
+        "index": 10,
+        "svg_index": null
+      },
+      "raw_sha256": "758737f670c3eedd48377eea54a8947e7d6652e43f4d19be36d10cabeef975f4"
+    },
+    {
+      "id": "ChevronDown",
+      "label": "Dropdown chevron",
+      "file": "ChevronDown.svg",
+      "width": 24,
+      "height": 24,
+      "figma_identifier": null,
+      "sha256": "e9cf3da30f04a4b153c0548617ca4d1c1d3a625eedecfb05c938b1dca41e8d7c",
+      "capture": {
+        "file": "horizontal.json",
+        "index": 11,
+        "svg_index": null
+      },
+      "raw_sha256": "6d36a83c335fc9c2768018b42a2679d0b8b4cba3a21e3075a2091ee908315c65"
+    },
+    {
+      "id": "AutoLayoutSettings",
+      "label": "Auto layout settings",
+      "file": "AutoLayoutSettings.svg",
+      "width": 24,
+      "height": 24,
+      "figma_identifier": null,
+      "sha256": "9368f95e4ee3f5547a0dfcdfc0d2924d02a904459f47524461982f2cefdec9fb",
+      "capture": {
+        "file": "horizontal.json",
+        "index": 12,
+        "svg_index": null
+      },
+      "raw_sha256": "110f9cf963714199b8572f6cf5de9ebdbf00905324166f8b6e03a829007ef215"
+    },
+    {
+      "id": "PaddingHorizontal",
+      "label": "Horizontal padding",
+      "file": "PaddingHorizontal.svg",
+      "width": 24,
+      "height": 24,
+      "figma_identifier": null,
+      "sha256": "c99ef708be93e47f505e237092d40c3e9d04d3588a0beff56514bdd394dbc007",
+      "capture": {
+        "file": "horizontal.json",
+        "index": 13,
+        "svg_index": null
+      },
+      "raw_sha256": "cea3410c297e79d1c463d19ff407e2c7999f9bd7838cc467737688902fa87568"
+    },
+    {
+      "id": "PaddingVertical",
+      "label": "Vertical padding",
+      "file": "PaddingVertical.svg",
+      "width": 24,
+      "height": 24,
+      "figma_identifier": null,
+      "sha256": "8370a73f058847ca8745353eac702cb149b1b990ceaf001d2ee745407480abcc",
+      "capture": {
+        "file": "horizontal.json",
+        "index": 14,
+        "svg_index": null
+      },
+      "raw_sha256": "6063e65906be3ac3dd6d2012e01e936376ce7cdfac59cc8b759b1d1b35eec43c"
+    },
+    {
+      "id": "PaddingIndividual",
+      "label": "Individual padding",
+      "file": "PaddingIndividual.svg",
+      "width": 24,
+      "height": 24,
+      "figma_identifier": null,
+      "sha256": "c1ca05a0bd5bc9bd1d8f137b0e35ac5ddad8f69584a852577f2308eb15e97c97",
+      "capture": {
+        "file": "horizontal.json",
+        "index": 15,
+        "svg_index": null
+      },
+      "raw_sha256": "c6177a6fffc5a6bb9af764ab96fae6af408f970d9a2a9d86bbbdd94e5687be56"
+    },
+    {
+      "id": "GapVertical",
+      "label": "Vertical gap",
+      "file": "GapVertical.svg",
+      "width": 24,
+      "height": 24,
+      "figma_identifier": null,
+      "sha256": "439438a16004edd07caab6e870a1a3d83b8d7777e1a0a15f96f9ab9e31e0fefb",
+      "capture": {
+        "file": "horizontal-wrap.json",
+        "index": 12,
+        "svg_index": null
+      },
+      "raw_sha256": "fa7dafa8f3e30f9c67cb8e459ff16ae079c47cc6cc9a0092f66da93216bea525"
+    },
+    {
+      "id": "AspectRatioLocked",
+      "label": "Unlock aspect ratio",
+      "file": "AspectRatioLocked.svg",
+      "width": 24,
+      "height": 24,
+      "figma_identifier": null,
+      "sha256": "e12e785ed8706b0a9cb3b24f4c78e5823b0751f59025904e75652203b59e0c28",
+      "capture": {
+        "file": "ratio-locked.json",
+        "index": 0,
+        "svg_index": null
+      },
+      "raw_sha256": "be5d35ff746dbc9b862caa696c2e00d7bed29cb705de8e5532ab0866cada17a8"
+    },
+    {
+      "id": "PaddingLeft",
+      "label": "Left padding",
+      "file": "PaddingLeft.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "f68f393c3392bf80f35ad7a3aba7efd70b259820f8d735f0891d8dedd9f077f7",
+      "raw_sha256": "1baa4d72c6498daab2853f57377f6838a2d23953b0a69223bc2ab412d01ccbe3",
+      "capture": {
+        "file": "evidence/figma-layout-symbols-20261102/padding-raw.json",
+        "key": "PaddingLeft",
+        "svg_index": 0
+      }
+    },
+    {
+      "id": "PaddingRight",
+      "label": "Right padding",
+      "file": "PaddingRight.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "eb9d6ae101d0cb1e674a140fa5cb00634289ea316aff00651b4bcafe7fb14ab6",
+      "raw_sha256": "fd2bc8a51db97a6c7bcc5fce1ec8d06a9901ef156d0965d5925b93a3425c1803",
+      "capture": {
+        "file": "evidence/figma-layout-symbols-20261102/padding-raw.json",
+        "key": "PaddingRight",
+        "svg_index": 0
+      }
+    },
+    {
+      "id": "PaddingTop",
+      "label": "Top padding",
+      "file": "PaddingTop.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "a3b3650c109d8912d60d36fe6c217b0714b8381df5ca8a4f5c2e130fc0b7123d",
+      "raw_sha256": "9077485e30ce5063a4d92e0f0632f61203acf0d6df16184c54288cf6cac50007",
+      "capture": {
+        "file": "evidence/figma-layout-symbols-20261102/padding-raw.json",
+        "key": "PaddingTop",
+        "svg_index": 0
+      }
+    },
+    {
+      "id": "PaddingBottom",
+      "label": "Bottom padding",
+      "file": "PaddingBottom.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "aeb4a7f9d041fa7091e7a59ea3d782a71d875e259e4504c95ebe23c4dc4effe7",
+      "raw_sha256": "cc3975c2ffa167f62385e99bd7e6ce5b0c430a7e4ca858ffeff9f1c2c60225d2",
+      "capture": {
+        "file": "evidence/figma-layout-symbols-20261102/padding-raw.json",
+        "key": "PaddingBottom",
+        "svg_index": 0
+      }
+    },
+    {
+      "id": "GridAutoPositioning",
+      "label": "Toggle automatic positioning",
+      "file": "GridAutoPositioning.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "9261cc25ca4fa1719b0688023a710e4acfcd3e47ea906ff7104a8c5223604210",
+      "raw_sha256": "127c80b69ef7da519fce40fa2dcc5d90711d59df6897197250b84a4b075c1719",
+      "capture": {
+        "file": "evidence/figma-layout-symbols-20261102/controls/grid-auto-on-raw.json",
+        "key": "parent",
+        "svg_index": 0
+      }
+    },
+    {
+      "id": "GridColumns",
+      "label": "Number of columns",
+      "file": "GridColumns.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "a972e3816fc195c6de78f33942f9fadd422a199c226715995e8d4f60dfffb65d",
+      "raw_sha256": "e89a1a7fdbf496b0dc3eb2aa4da1245058eb6e360ac0d6e92a5aae402f726b05",
+      "capture": {
+        "file": "evidence/figma-layout-symbols-20261102/controls/grid-count-raw.json",
+        "key": "containers[2]",
+        "svg_index": 0
+      }
+    },
+    {
+      "id": "GridRows",
+      "label": "Number of rows",
+      "file": "GridRows.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "b7f2bd2dd900baff6deb290b5f573cbb7beda0e2b50132e19e4219baffc1a967",
+      "raw_sha256": "8c877ce5f8c4fe42cfb5251a6174f724f91fe54c09789b98c80105f082fd8876",
+      "capture": {
+        "file": "evidence/figma-layout-symbols-20261102/controls/grid-count-raw.json",
+        "key": "containers[2]",
+        "svg_index": 1
+      }
+    },
+    {
+      "id": "GridColumnSpan",
+      "label": "Column span",
+      "file": "GridColumnSpan.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "fe0b8071695e7c5d505491baefc7538f0790a5da1a456922458f45ff7bcd3079",
+      "raw_sha256": "d1bd08745859137b2c5945d4bfb225b4a4d21841e329610f69fee5702b6419e4",
+      "capture": {
+        "file": "evidence/figma-layout-symbols-20261102/controls/grid-span-raw.json",
+        "key": "[0].ancestors[0]",
+        "svg_index": 0
+      }
+    },
+    {
+      "id": "GridRowSpan",
+      "label": "Row span",
+      "file": "GridRowSpan.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "99e8383db43e249478fd90c8635a642b11cdc9e4b7e5b2dc8730249fb8515e39",
+      "raw_sha256": "ab2a32b9aba7f533b8d31f43cbeb83a095d35d518bee823f744c2b396d747a47",
+      "capture": {
+        "file": "evidence/figma-layout-symbols-20261102/controls/grid-span-raw.json",
+        "key": "[1].ancestors[0]",
+        "svg_index": 0
+      }
+    },
+    {
+      "id": "WidthLimits",
+      "label": "Width + min/max width",
+      "file": "WidthLimits.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "42c786af24cf498554119d0f57d764340ada0f6d35965ce1b955a3749ccd9719",
+      "raw_sha256": "0b69ac9eb937c39be91cf0921d64f6f6dee45748209c053b758e2148cab3f410",
+      "capture": {
+        "file": "evidence/figma-layout-symbols-20261102/controls/limit-fields-raw.json",
+        "key": "[0].ancestors[1]",
+        "svg_index": 0
+      }
+    },
+    {
+      "id": "HeightLimits",
+      "label": "Height + min height",
+      "file": "HeightLimits.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "4a8c368d7dd7ab533efb52345940e8948a8400337eeaa545a52e37ff30164423",
+      "raw_sha256": "9c5167af834aa5c26e2e140e513b4dd2fb0561c187f439872311ca86ead2d6d9",
+      "capture": {
+        "file": "evidence/figma-layout-symbols-20261102/controls/limit-fields-raw.json",
+        "key": "[1].ancestors[1]",
+        "svg_index": 0
+      }
+    },
+    {
+      "id": "AddMinWidth",
+      "label": "Add min width…",
+      "file": "AddMinWidth.svg",
+      "width": 16,
+      "height": 16,
+      "sha256": "98759ea9fc2d940009c9be9f68b30efc1ea0e3f8ec07986e555b73126f765217",
+      "raw_sha256": "d8f914d216c2d74346faf9b6faae1f8838962738146fd9df90fe7013016ea2c1",
+      "capture": {
+        "file": "evidence/figma-layout-symbols-20261102/controls/sizing-menu-raw.json",
+        "key": "[2].html",
+        "svg_index": 0
+      }
+    },
+    {
+      "id": "AddMaxWidth",
+      "label": "Add max width…",
+      "file": "AddMaxWidth.svg",
+      "width": 16,
+      "height": 16,
+      "sha256": "d5af935f51fa07e5bcebefb22ff646a226ebf731c542d7fff85c1db2e808bec4",
+      "raw_sha256": "f916e8fca21edc6b9ebcbd44fd9198038e6c96e5135aa89ee27a6ba8347d64ac",
+      "capture": {
+        "file": "evidence/figma-layout-symbols-20261102/controls/sizing-menu-raw.json",
+        "key": "[3].html",
+        "svg_index": 0
+      }
+    },
+    {
+      "id": "AddMinHeight",
+      "label": "Add min height…",
+      "file": "AddMinHeight.svg",
+      "width": 16,
+      "height": 16,
+      "sha256": "aa35668132a13ffbeb72d4920a43f7d166fdddd173fd4f7d4f9588d86effc51e",
+      "raw_sha256": "e67d95a66f9ef13187cbd13e51725ccee3d0a14466e803c59cec6aa4acad1ab9",
+      "capture": {
+        "file": "evidence/figma-layout-symbols-20261102/controls/height-menu-raw.json",
+        "key": "[2].html",
+        "svg_index": 0
+      }
+    },
+    {
+      "id": "AddMaxHeight",
+      "label": "Add max height…",
+      "file": "AddMaxHeight.svg",
+      "width": 16,
+      "height": 16,
+      "sha256": "9a7e595bd9e6276a89df622383ede1d4eff21523388cbd31cf780fa8cacb014c",
+      "raw_sha256": "136885ff3de088886a78b722c8180cf27f2b0f10b9463e185446542a6b3f6229",
+      "capture": {
+        "file": "evidence/figma-layout-symbols-20261102/controls/height-menu-raw.json",
+        "key": "[3].html",
+        "svg_index": 0
+      }
+    },
+    {
+      "id": "SmartSpacingHorizontal",
+      "label": "Horizontal spacing",
+      "file": "SmartSpacingHorizontal.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "95668f8cce1b6b427e3e3b1f38634a0b1cd9bfb929f2a517f240247a87832b2d",
+      "raw_sha256": "cd36f14fdd14731b231a964ebf5ccda618b6a75ca2aa4ecd551a8c6bd611d38c",
+      "capture": {
+        "file": "evidence/figma-layout-symbols-20261102/controls/smart-spacing-raw.json",
+        "key": "[0].ancestors[0]",
+        "svg_index": 0
+      }
+    },
+    {
+      "id": "SmartSpacingVertical",
+      "label": "Vertical spacing",
+      "file": "SmartSpacingVertical.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "ba42825c6d208870311ff1bb1e77d77c37d52bcc43aea1dd4e9380203a59bc6d",
+      "raw_sha256": "e7ae51f9aa6e5c6586c69aaaea3b9b3c8eb7e543c22e6abd4e3107de31ebeae7",
+      "capture": {
+        "file": "evidence/figma-layout-symbols-20261102/controls/smart-spacing-raw.json",
+        "key": "[1].ancestors[0]",
+        "svg_index": 0
+      }
+    }
+  ]
+}

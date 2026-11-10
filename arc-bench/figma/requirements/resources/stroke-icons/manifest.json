@@ -1,0 +1,307 @@
+{
+  "version": "2026-11-01",
+  "source": "Rendered Figma Design Stroke controls. Names are local aliases.",
+  "normalization": "Page metadata removed; primary color uses currentColor; tertiary color uses --icon-tertiary (#b3b3b3). Geometry and drawing attributes are unchanged.",
+  "icons": [
+    {
+      "id": "StrokeSettings",
+      "label": "Settings",
+      "file": "StrokeSettings.svg",
+      "width": 24,
+      "height": 24,
+      "source": "stroke-icons-raw.json",
+      "raw_sha256": "110f9cf963714199b8572f6cf5de9ebdbf00905324166f8b6e03a829007ef215",
+      "sha256": "b09037397d3d1007eac612d6828e25471e63411a90a2a0262b69b8add25ffe44"
+    },
+    {
+      "id": "StrokeSides",
+      "label": "Sides",
+      "file": "StrokeSides.svg",
+      "width": 24,
+      "height": 24,
+      "source": "stroke-icons-raw.json",
+      "raw_sha256": "bbc01c13eec57e9a2a65c8d1070e1bf87242180b6162948128b8afcdc9f5b239",
+      "sha256": "de920f2279832239910cb57987e95bcda3c67a006c7756697cfe34d045d4cb63"
+    },
+    {
+      "id": "StrokeWeight",
+      "label": "Weight",
+      "file": "StrokeWeight.svg",
+      "width": 24,
+      "height": 24,
+      "source": "stroke-icons-raw.json",
+      "raw_sha256": "2f903b965ce9de6df0cb7f2ed3e7052ba7cb5fe371b41b309c5a4036983e9549",
+      "sha256": "eafdc25304c4b0134d2447a2adee4be5e89860c5e58e732df1029398090852ff"
+    },
+    {
+      "id": "StrokeSwap",
+      "label": "Swap start and end points",
+      "file": "StrokeSwap.svg",
+      "width": 24,
+      "height": 24,
+      "source": "swap-icon-raw.json",
+      "raw_sha256": "f9164fbf952a4d52e0ba96b9c332e64bdfdf409322f6f71dbe53c90f30ddc2fc",
+      "sha256": "559773e55f0471d1502ab1fe54900fa2221fd54d6e9a5867aaa10fa67b4adb6f"
+    },
+    {
+      "id": "StrokeSideLeft",
+      "label": "Left side width",
+      "file": "StrokeSideLeft.svg",
+      "width": 24,
+      "height": 24,
+      "source": "side-field-assets.json",
+      "raw_sha256": "20161bca83faffe49cf6c9dd858c6b21447dbfc8d96763a007f33ebaa390e479",
+      "sha256": "8507930f9d17f54a4aedccaec31d5a6406e399f02df9ad0dc4d6f603cb4ea936"
+    },
+    {
+      "id": "StrokeSideTop",
+      "label": "Top side width",
+      "file": "StrokeSideTop.svg",
+      "width": 24,
+      "height": 24,
+      "source": "side-field-assets.json",
+      "raw_sha256": "d002f596ca54e9552026922e45075f4cb2adb8b13858da61f84c309168075c58",
+      "sha256": "fc09d652409802eed21a465b30aa3b6f8dcdbf2912b7a207c63d28ad6a480a7d"
+    },
+    {
+      "id": "StrokeSideRight",
+      "label": "Right side width",
+      "file": "StrokeSideRight.svg",
+      "width": 24,
+      "height": 24,
+      "source": "side-field-assets.json",
+      "raw_sha256": "718e4013b78c1247fcb3f1c4cdab592a0ea6e69727c1cf75d8bb4347938ee9ce",
+      "sha256": "93268d486e914629a20cb3f0b988707a0c97be3b2fb0ba1064415b369181f13f"
+    },
+    {
+      "id": "StrokeSideBottom",
+      "label": "Bottom side width",
+      "file": "StrokeSideBottom.svg",
+      "width": 24,
+      "height": 24,
+      "source": "side-field-assets.json",
+      "raw_sha256": "eb1ec1a0f9ba04bcc5fd3ef6d7caaaa6b994d09062a5b74fc76ec3b23b1fe373",
+      "sha256": "2c997a9eaafc4b0d4828de8c844c5eb4d3686a65b3f931e9f0d9d013bf983f5b"
+    },
+    {
+      "id": "EndpointNone",
+      "label": "None",
+      "file": "EndpointNone.svg",
+      "width": 24,
+      "height": 24,
+      "source": "endpoint-menu-assets.json",
+      "raw_sha256": "a34c2e58ede49c07760317ec82ae633c52d11419636f60d5c1cc4e8dcfec17b6",
+      "sha256": "ecdc9d532e041aef7216462fb10837895cf55a0f31aaae630bccaa9417ab8296"
+    },
+    {
+      "id": "EndpointPreviewNone",
+      "label": "None field diagram",
+      "file": "EndpointPreviewNone.svg",
+      "width": 200,
+      "height": 24,
+      "source": "stroke-icons-raw.json",
+      "raw_sha256": "f1cc5e9ce1ed8d59c014be4eecc218b73ade6d7e771ba3790015c3280a77c0d7",
+      "sha256": "3e502d26808cfa82d6a44684c504f00c945ad1705787b2d81ef7bd4013709a1d"
+    },
+    {
+      "id": "EndpointRound",
+      "label": "Round",
+      "file": "EndpointRound.svg",
+      "width": 24,
+      "height": 24,
+      "source": "endpoint-menu-assets.json",
+      "raw_sha256": "677eb6181459b8ea31bc5e84790e8b68c7b00a42be3fe533b04de9f463e49fe2",
+      "sha256": "2ccb3deed9864efa9ff3d38e7607a3e9d5fee5019308f7ce1415e3bd6549a29f"
+    },
+    {
+      "id": "EndpointPreviewRound",
+      "label": "Round field diagram",
+      "file": "EndpointPreviewRound.svg",
+      "width": 200,
+      "height": 24,
+      "source": "stroke-icons-raw.json",
+      "raw_sha256": "1cf48e8a50e98eb798f9b19728536ceee0cf62a47b596dbed7e625afded03b75",
+      "sha256": "217fa1ecaf704c62a46d5a9876a8ba38d319ad9893970808b10b9df8cedfb57f"
+    },
+    {
+      "id": "EndpointSquare",
+      "label": "Square",
+      "file": "EndpointSquare.svg",
+      "width": 24,
+      "height": 24,
+      "source": "endpoint-menu-assets.json",
+      "raw_sha256": "4c45ea34bf7f29e9e057d5447861104f160a060d93b31ce72a1f35914bc7d352",
+      "sha256": "80c862d9c713e17f0217972328b795a94cf588f558943ab9a3341cc3e4b500e2"
+    },
+    {
+      "id": "EndpointPreviewSquare",
+      "label": "Square field diagram",
+      "file": "EndpointPreviewSquare.svg",
+      "width": 200,
+      "height": 24,
+      "source": "stroke-icons-raw.json",
+      "raw_sha256": "3e7deedc71c7ad5a76da9795107de657eece8a7a80b64d5a7129d4cd54cedd99",
+      "sha256": "7109a99157911402227f5206aa46d891182981f6287fc81750f9202c454ca455"
+    },
+    {
+      "id": "EndpointLineArrow",
+      "label": "Line arrow",
+      "file": "EndpointLineArrow.svg",
+      "width": 24,
+      "height": 24,
+      "source": "endpoint-menu-assets.json",
+      "raw_sha256": "6707a9f64a4e407de83edd432060f06b41f5e4e4c9c4f14b9b66968e210d28a6",
+      "sha256": "f81d656c2e7d9268c2fadabc5ae2d35d4f113013b7e16c54505d357736068a63"
+    },
+    {
+      "id": "EndpointPreviewLineArrow",
+      "label": "Line arrow field diagram",
+      "file": "EndpointPreviewLineArrow.svg",
+      "width": 200,
+      "height": 24,
+      "source": "stroke-icons-raw.json",
+      "raw_sha256": "294f5fd33f5cb78b17f225f9593f3abf5095e67f2dc1f7aab4f9bb348f4101be",
+      "sha256": "3f0dee0870d576166e7f1353b84e38a1dca6e8819885f718d93dc2fe3c1862b4"
+    },
+    {
+      "id": "EndpointTriangleArrow",
+      "label": "Triangle arrow",
+      "file": "EndpointTriangleArrow.svg",
+      "width": 24,
+      "height": 24,
+      "source": "endpoint-menu-assets.json",
+      "raw_sha256": "2ee641901cb9bd2800bf3fb99ce846f163da449aefcc9ffac35c2999867d1710",
+      "sha256": "fd7c830cacfe2beb04527791ce89b33441fa7f62f270dbcf75433f61e06b2363"
+    },
+    {
+      "id": "EndpointPreviewTriangleArrow",
+      "label": "Triangle arrow field diagram",
+      "file": "EndpointPreviewTriangleArrow.svg",
+      "width": 200,
+      "height": 24,
+      "source": "stroke-icons-raw.json",
+      "raw_sha256": "2be1a927642789084a6655bb4745ff95808881bb1a80e35797c5361da9ac8273",
+      "sha256": "e8753cfe989e432db683da1b063960acb6340429f091503cb1b22e966bc110fa"
+    },
+    {
+      "id": "EndpointReversedTriangle",
+      "label": "Reversed triangle",
+      "file": "EndpointReversedTriangle.svg",
+      "width": 24,
+      "height": 24,
+      "source": "endpoint-menu-assets.json",
+      "raw_sha256": "0effadb6b62cc37e60942ae8a9ce4596ff2111e7241590085e92653e4e13bacd",
+      "sha256": "089697a6db4097febe9756295cefdb6254ab155471c63f0b394b41ceecf6e8fd"
+    },
+    {
+      "id": "EndpointPreviewReversedTriangle",
+      "label": "Reversed triangle field diagram",
+      "file": "EndpointPreviewReversedTriangle.svg",
+      "width": 200,
+      "height": 24,
+      "source": "stroke-icons-raw.json",
+      "raw_sha256": "401c035d247ae1633c4e31dc2f4fed1b17c091e5c1b122d7701135e93274d8d1",
+      "sha256": "a88600f82895914a0131cfedb171b5ab2a9802d627337280ff71186c6798316f"
+    },
+    {
+      "id": "EndpointCircleArrow",
+      "label": "Circle arrow",
+      "file": "EndpointCircleArrow.svg",
+      "width": 24,
+      "height": 24,
+      "source": "endpoint-menu-assets.json",
+      "raw_sha256": "10ac89aa0df94602129e523e58c1043132c16ad2bc6148c2ea28e6d8aa511c07",
+      "sha256": "8ed24c594972037965647003b9d8084b1b77e740eb7e880aea6c48193b453ef1"
+    },
+    {
+      "id": "EndpointPreviewCircleArrow",
+      "label": "Circle arrow field diagram",
+      "file": "EndpointPreviewCircleArrow.svg",
+      "width": 200,
+      "height": 24,
+      "source": "stroke-icons-raw.json",
+      "raw_sha256": "2be201c666641e99b089d221d89f640d28eec5c2d721cd973cf71bb040cd1fa9",
+      "sha256": "6d2d44e49339d22a138a035907e51b33ef0ce678fa4931107c0c10d0ea9a659f"
+    },
+    {
+      "id": "EndpointDiamondArrow",
+      "label": "Diamond arrow",
+      "file": "EndpointDiamondArrow.svg",
+      "width": 24,
+      "height": 24,
+      "source": "endpoint-menu-assets.json",
+      "raw_sha256": "3c70c3e8a7fdd9ea128389b23b16c7b3ae9a0398b1778f8055c5f3859e6ed329",
+      "sha256": "efb844c0eff2dcd11565c79bb35a035db802bf763ad463091e8dbf3fb67ef271"
+    },
+    {
+      "id": "EndpointPreviewDiamondArrow",
+      "label": "Diamond arrow field diagram",
+      "file": "EndpointPreviewDiamondArrow.svg",
+      "width": 200,
+      "height": 24,
+      "source": "stroke-icons-raw.json",
+      "raw_sha256": "56e1103612cf97c05005584393c46d1193e0d248d089018e4542f7141dc28bd5",
+      "sha256": "9c7fdf542260af0f0c59f0faebc9f8e45862da1403e768ed7512e635e88b1957"
+    },
+    {
+      "id": "JoinMiter",
+      "label": "Miter join",
+      "file": "JoinMiter.svg",
+      "width": 24,
+      "height": 24,
+      "source": "settings-icons-raw.json",
+      "raw_sha256": "3a364a05f85c3af7de09597cf40853f569fc7d643d57e67838217a60f85f17cd",
+      "sha256": "ed89c25404743cf08ab91b8edf2ce39f56fd72bbd024a3829e07d837839f4df8"
+    },
+    {
+      "id": "JoinBevel",
+      "label": "Bevel join",
+      "file": "JoinBevel.svg",
+      "width": 24,
+      "height": 24,
+      "source": "settings-icons-raw.json",
+      "raw_sha256": "fb8b896f9f8e40189c1defa6b07cc95ff9d02cb493494b7c76b366c8748155d2",
+      "sha256": "6ee3c29c7977bea3b39c49eab7781d54c28a461803f41ad351303e8532cb056f"
+    },
+    {
+      "id": "JoinRound",
+      "label": "Round join",
+      "file": "JoinRound.svg",
+      "width": 24,
+      "height": 24,
+      "source": "settings-icons-raw.json",
+      "raw_sha256": "cd0c468d3ff24f17c6c359148db767b9e8c3d2e695e0e67246369c237cd8109e",
+      "sha256": "45166b25047e1b70dd98359488eef57a3d21f56dcb7ff66c90a9393221f79b67"
+    },
+    {
+      "id": "StyleSolid",
+      "label": "Solid style illustration",
+      "file": "StyleSolid.svg",
+      "width": 24,
+      "height": 24,
+      "source": "../figma-stroke-ui-20261101/style-prefix-assets-raw.json",
+      "raw_sha256": "c423a209f1095c28d217e6e3dce251db7202bde97677837a92b423424ef372ee",
+      "sha256": "0291471f20fdeddab2c32ee7d7c304f7ed6c89e9314bac87be8e3d9d8e619660"
+    },
+    {
+      "id": "StyleDashed",
+      "label": "Dashed style illustration",
+      "file": "StyleDashed.svg",
+      "width": 24,
+      "height": 24,
+      "source": "../figma-stroke-ui-20261101/style-prefix-assets-raw.json",
+      "raw_sha256": "660582d176e0fbadd653e7e63854e08739a93955fb1cb10b6f7bcafef8620eb7",
+      "sha256": "7bc3d103b5db6de08f35fe3362311e7e9eb5a3b151fd2e4e1ef0e52082cd8018"
+    },
+    {
+      "id": "MiterAngle",
+      "label": "Miter angle prefix",
+      "file": "MiterAngle.svg",
+      "width": 24,
+      "height": 24,
+      "source": "../figma-stroke-ui-20261101/style-prefix-assets-raw.json",
+      "raw_sha256": "f1b46cbbfa3e99305083ea87c947d6eab3758924130a4f2dae263fdd5f3e3bd5",
+      "sha256": "760f1df6997865db02957eb4c8694d0f2d067c61b7a603b28eb1fe44248581b8"
+    }
+  ]
+}

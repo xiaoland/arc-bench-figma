@@ -1,0 +1,227 @@
+{
+  "source": "Figma Design Position observed 2026-10-31",
+  "normalization": "Remove data metadata and set primary paint to currentColor. Preserve geometry and native 24px boxes.",
+  "icons": [
+    {
+      "id": "AlignLeft",
+      "file": "AlignLeft.svg",
+      "control": "Align left",
+      "sha256": "c6f70d619c2ef026702d3dd0c658b325ce460e2079841b0cbc1b3e57b0ffa9e9",
+      "raw_sha256": "b4fc029fd9ae474b2de7b9fd91e5fd0391a928812ad8691562326d627c35dc90"
+    },
+    {
+      "id": "AlignHorizontalCenters",
+      "file": "AlignHorizontalCenters.svg",
+      "control": "Align horizontal centers",
+      "sha256": "52dbd233421e010be18b87e5dfb6e4935c14c2572e56abf1aa65626800f3cb0c",
+      "raw_sha256": "2d7d019d7e106fa67c167e0724ef1b09bbec0f5a5857ffd69b2fcf447f4bfaed"
+    },
+    {
+      "id": "AlignRight",
+      "file": "AlignRight.svg",
+      "control": "Align right",
+      "sha256": "747ec84cba2aa9e2fc8ca8dfb21695d5f340b984a3fe9e278c22bcc26f2e254f",
+      "raw_sha256": "6d3ec9113e7eb345ea15a8abca325d4e787b7145a43ad6b8fed5fc065f156e96"
+    },
+    {
+      "id": "AlignTop",
+      "file": "AlignTop.svg",
+      "control": "Align top",
+      "sha256": "70c415da9dde7d70e8f16f0144db1da8f725fd4ec454b69a8e63599f2aa71b65",
+      "raw_sha256": "31253ec81ccc20fe9fc15f5921f049d5743fe0d4a60c915bcbcfabb24495fb65"
+    },
+    {
+      "id": "AlignVerticalCenters",
+      "file": "AlignVerticalCenters.svg",
+      "control": "Align vertical centers",
+      "sha256": "c3a7f483826c34274bc81761a548f8cb3fbb3f2e3ebea6a3ae3f491395ece71b",
+      "raw_sha256": "45e8fb5c6c64a10e7173aae0a208ea06b72f6185de66f17eede1ff61e7337f5d"
+    },
+    {
+      "id": "AlignBottom",
+      "file": "AlignBottom.svg",
+      "control": "Align bottom",
+      "sha256": "39ecc2a34f47674c9e56babd577fc5a2a0ff3f18e8651a88e99b37952f0afca8",
+      "raw_sha256": "bff736ab84b757de39e6ed746fbbb58ff07baf8e1b2174d7a6639bfde21100cc"
+    },
+    {
+      "id": "RotateRight90",
+      "file": "RotateRight90.svg",
+      "control": "Rotate 90˚ right",
+      "sha256": "17be7d75b596fe31e0dca44e2343f3f41a95dc730bbc67cf6b8c8f638cd6b66c",
+      "raw_sha256": "f24e96169f5002ec4d64d2ca2be6afccc7340d52955143e9f89c1f41b0e8c51e"
+    },
+    {
+      "id": "FlipHorizontal",
+      "file": "FlipHorizontal.svg",
+      "control": "Flip horizontal",
+      "sha256": "c2139e3fd6a72cd4a26647df490713aeca35cfe157517813a1492dfa4d18fe77",
+      "raw_sha256": "c894421e2b861d8eee66655e84d60345ce13f83ccde922fd06f289fae7b77813"
+    },
+    {
+      "id": "FlipVertical",
+      "file": "FlipVertical.svg",
+      "control": "Flip vertical",
+      "sha256": "b8bb492cb25e41057c4a8ba4592a07cad827d31e3a8c11d0a8925b0af200a90b",
+      "raw_sha256": "856e13b2b2b3872d77c49e9b834b14676d51d296fe7632be3e5d911aa0a56f84"
+    },
+    {
+      "id": "PositionMore",
+      "file": "PositionMore.svg",
+      "control": "PositionMore",
+      "sha256": "a500a3811bfb2319f19e86200096d246052bca4ab6c3f874266efaf2fe111f22",
+      "raw_sha256": "1452d53ce6f75e641fc30029f01623ca487f9080ffebe0c05f48f8d31f286e9d"
+    },
+    {
+      "id": "Rotation",
+      "file": "Rotation.svg",
+      "control": "Rotation",
+      "sha256": "760f1df6997865db02957eb4c8694d0f2d067c61b7a603b28eb1fe44248581b8",
+      "raw_sha256": "f1b46cbbfa3e99305083ea87c947d6eab3758924130a4f2dae263fdd5f3e3bd5"
+    },
+    {
+      "id": "Constraints",
+      "file": "Constraints.svg",
+      "control": "Expand or collapse Constraints",
+      "sha256": "66839c3950ea8fe140caa9ef246cb5610a0dfda00f79f09e6839880e06e9415d",
+      "source": "evidence/figma-constraints-20261031/trigger-transforms.json",
+      "normalization": "Combine all seven observed paths, preserve computed CSS transforms and stroke widths, expose active/inactive stroke colors. Sample state Right/Center."
+    },
+    {
+      "id": "ConstraintHorizontal",
+      "file": "ConstraintHorizontal.svg",
+      "control": "Horizontal constraint prefix",
+      "sha256": "8003c0406813417ef91313de9f34f3c24f3f0dd4ac5ef8ecfd1ff45a00131ee7",
+      "source": "evidence/figma-constraints-20261031/panel-raw.json"
+    },
+    {
+      "id": "ConstraintVertical",
+      "file": "ConstraintVertical.svg",
+      "control": "Vertical constraint prefix",
+      "sha256": "415fb82308bcac4171db35bdcba0808417f4bb4ca91eb5a4b01cf3e19a7a8a21",
+      "source": "evidence/figma-constraints-20261031/panel-raw.json"
+    },
+    {
+      "id": "ConstraintHorizontalLeft",
+      "file": "ConstraintHorizontalLeft.svg",
+      "control": "Constraints trigger: horizontal left",
+      "sha256": "2e094fbdab481b72f285d07e49783bc84e3b5dbe50758dda4579fbd755b8c351",
+      "source": "evidence/figma-constraints-20261031/states/horizontal-left-paths.json",
+      "normalization": "Keep every path for this axis, computed ancestor transforms, line caps, joins and widths. Overlay one horizontal and one vertical state at native 24px."
+    },
+    {
+      "id": "ConstraintHorizontalRight",
+      "file": "ConstraintHorizontalRight.svg",
+      "control": "Constraints trigger: horizontal right",
+      "sha256": "6c0fd40373bd79c7e21dd27e46e43c3660db5ee850cec5b2a61c062417df83e9",
+      "source": "evidence/figma-constraints-20261031/states/horizontal-right-paths.json",
+      "normalization": "Keep every path for this axis, computed ancestor transforms, line caps, joins and widths. Overlay one horizontal and one vertical state at native 24px."
+    },
+    {
+      "id": "ConstraintHorizontalBoth",
+      "file": "ConstraintHorizontalBoth.svg",
+      "control": "Constraints trigger: horizontal both",
+      "sha256": "4ed8719392f4b96df473d69d4befdf84bd730e341aa04c05442f75a1fba38fd6",
+      "source": "evidence/figma-constraints-20261031/states/horizontal-both-paths.json",
+      "normalization": "Keep every path for this axis, computed ancestor transforms, line caps, joins and widths. Overlay one horizontal and one vertical state at native 24px."
+    },
+    {
+      "id": "ConstraintHorizontalCenter",
+      "file": "ConstraintHorizontalCenter.svg",
+      "control": "Constraints trigger: horizontal center",
+      "sha256": "b3046d5b52a709f42cfaa2baa0d358d48b63265014fd6325a4ceb02934cffca3",
+      "source": "evidence/figma-constraints-20261031/states/horizontal-center-paths.json",
+      "normalization": "Keep every path for this axis, computed ancestor transforms, line caps, joins and widths. Overlay one horizontal and one vertical state at native 24px."
+    },
+    {
+      "id": "ConstraintHorizontalScale",
+      "file": "ConstraintHorizontalScale.svg",
+      "control": "Constraints trigger: horizontal scale",
+      "sha256": "84414187a46d89db00c27655928fdeaafc21a5018033e5890131297610555aee",
+      "source": "evidence/figma-constraints-20261031/states/horizontal-scale-paths.json",
+      "normalization": "Keep every path for this axis, computed ancestor transforms, line caps, joins and widths. Overlay one horizontal and one vertical state at native 24px."
+    },
+    {
+      "id": "ConstraintVerticalTop",
+      "file": "ConstraintVerticalTop.svg",
+      "control": "Constraints trigger: vertical top",
+      "sha256": "2aa05e0b68fff84e2f7ddebdf40f15c691d97327508e8dc65f1eea094b8b84c7",
+      "source": "evidence/figma-constraints-20261031/states/vertical-top-paths.json",
+      "normalization": "Keep every path for this axis, computed ancestor transforms, line caps, joins and widths. Overlay one horizontal and one vertical state at native 24px."
+    },
+    {
+      "id": "ConstraintVerticalBottom",
+      "file": "ConstraintVerticalBottom.svg",
+      "control": "Constraints trigger: vertical bottom",
+      "sha256": "5408c7cbf98fddd25e6bfd094ef7d5869a393e087b4e906c58a7cca0651dd465",
+      "source": "evidence/figma-constraints-20261031/states/vertical-bottom-paths.json",
+      "normalization": "Keep every path for this axis, computed ancestor transforms, line caps, joins and widths. Overlay one horizontal and one vertical state at native 24px."
+    },
+    {
+      "id": "ConstraintVerticalBoth",
+      "file": "ConstraintVerticalBoth.svg",
+      "control": "Constraints trigger: vertical both",
+      "sha256": "00fa4db3ac51c9b933f780c20e3122fe662e9ace231b37309e34157169003803",
+      "source": "evidence/figma-constraints-20261031/states/vertical-both-paths.json",
+      "normalization": "Keep every path for this axis, computed ancestor transforms, line caps, joins and widths. Overlay one horizontal and one vertical state at native 24px."
+    },
+    {
+      "id": "ConstraintVerticalCenter",
+      "file": "ConstraintVerticalCenter.svg",
+      "control": "Constraints trigger: vertical center",
+      "sha256": "18f722943c84dfd65a66e597d79ae7f4fa72e6fea08e09d7b4bb6f5340d64cfd",
+      "source": "evidence/figma-constraints-20261031/states/vertical-center-paths.json",
+      "normalization": "Keep every path for this axis, computed ancestor transforms, line caps, joins and widths. Overlay one horizontal and one vertical state at native 24px."
+    },
+    {
+      "id": "ConstraintVerticalScale",
+      "file": "ConstraintVerticalScale.svg",
+      "control": "Constraints trigger: vertical scale",
+      "sha256": "7de7456e8c80379f6c1504a613796b1db5794fec5cf17c98161722e92a7cdd7b",
+      "source": "evidence/figma-constraints-20261031/states/vertical-scale-paths.json",
+      "normalization": "Keep every path for this axis, computed ancestor transforms, line caps, joins and widths. Overlay one horizontal and one vertical state at native 24px."
+    },
+    {
+      "id": "ScaleFactor",
+      "file": "ScaleFactor.svg",
+      "control": "ScaleFactor",
+      "sha256": "123054dfe4465493a9b20f4ceb374605d6e9553107407c85c8d47cb3d4e99d9c",
+      "raw_sha256": "e12a8f47647785a6ed625dbd198db37968965964f7364929a3f9449716167e2a",
+      "source": "evidence/figma-scale-20261031/assets-and-metrics.json"
+    },
+    {
+      "id": "ScaleClose",
+      "file": "ScaleClose.svg",
+      "control": "ScaleClose",
+      "sha256": "1b1bf3be0c6dac82ffa5f31e3d1d1029969d3992b42c3b1af8bbe26484e21439",
+      "raw_sha256": "fd25cfebe71f9e69b660be130652c76bc14eb221103d0534330b43000e242e9e",
+      "source": "evidence/figma-scale-20261031/assets-and-metrics.json"
+    },
+    {
+      "id": "ScaleTool",
+      "file": "ScaleTool.svg",
+      "control": "ScaleTool",
+      "sha256": "52a0d54c65373506a20506b8f273f1ab13cd9e9f7f814f6a6fbe45ee67aaa4a1",
+      "raw_sha256": "24c78a5a313696e5ceebd94a245d9946be0330244ac0aff3d9d44deed7db5f89",
+      "source": "evidence/figma-scale-20261031/toolbar-scale.svg"
+    },
+    {
+      "id": "ConstraintHorizontalMixed",
+      "file": "ConstraintHorizontalMixed.svg",
+      "control": "Constraints opening button, Mixed axis",
+      "sha256": "3cff096cc82e05601fc3a60a5d286cb8141b9b7298030a3ae2afe1585b5ef200",
+      "raw_sha256": "44cf90bf69b77fae827d0fccefe0d6bd8bd02d7bf963fa79a5ba93f5dd367976",
+      "source": "evidence/figma-group-membership-20261101/mixed-preview-computed.json",
+      "normalization": "Keep captured paths, computed transforms, caps, joins and widths. Split the original center cross into its two original axis subpaths. Replace computed paint with the shared constraint color variable; native24."
+    },
+    {
+      "id": "ConstraintVerticalMixed",
+      "file": "ConstraintVerticalMixed.svg",
+      "control": "Constraints opening button, Mixed axis",
+      "sha256": "9dc964d6019b2d7abae20b3140e3cdde214af94ce4063f18949f69d56a654953",
+      "raw_sha256": "44cf90bf69b77fae827d0fccefe0d6bd8bd02d7bf963fa79a5ba93f5dd367976",
+      "source": "evidence/figma-group-membership-20261101/mixed-preview-computed.json",
+      "normalization": "Keep captured paths, computed transforms, caps, joins and widths. Split the original center cross into its two original axis subpaths. Replace computed paint with the shared constraint color variable; native24."
+    }
+  ]
+}

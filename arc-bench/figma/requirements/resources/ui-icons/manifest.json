@@ -1,0 +1,84 @@
+{
+  "version": "2026-11-02",
+  "source": "Rendered, authorized Figma research file; shared control roles.",
+  "normalization": "Remove DOM metadata; map primary paint to currentColor; preserve native geometry and box.",
+  "icons": [
+    {
+      "id": "ChevronDown16",
+      "label": "File/Zoom dropdown and expanded section",
+      "file": "ChevronDown16.svg",
+      "width": 16,
+      "height": 16,
+      "source": "01-editor-raw.json",
+      "source_control": "Edit file menu",
+      "raw_sha256": "4f57ac3ce27ef80847e22dc7819a7420f6f10e38817d2e139c693ce5986ab651",
+      "sha256": "1fe0acb03387a582a3fd8d63ed3dbb7c284247166e088dbaf9bbc31b662f7225"
+    },
+    {
+      "id": "ChevronRight16",
+      "label": "Collapsed section or layer subtree",
+      "file": "ChevronRight16.svg",
+      "width": 16,
+      "height": 16,
+      "source": "03-layers-collapsed.json",
+      "source_control": "Layers",
+      "raw_sha256": "951a12f946fecee0b5b5bb4171e45941df43c4636fd225e0cb114518d5ebb37d",
+      "sha256": "8cf8bd7168eaa2a80577999f2c101718afc8565e11a91187c19e11ed81049292"
+    },
+    {
+      "id": "SubmenuArrow24",
+      "label": "Main menu submenu arrow",
+      "file": "SubmenuArrow24.svg",
+      "width": 24,
+      "height": 24,
+      "source": "10-main-menu.json",
+      "source_control": "File",
+      "raw_sha256": "58c03a15d7bbccb41efe193b55a06657d1b142640b1600ec88b1a9c1b17ae504",
+      "sha256": "516482ae780ff4c1ffb83e36b93ce2501715d25dce6a76c5810b604df75b3ee0"
+    },
+    {
+      "id": "Clear16",
+      "label": "Clear a search field",
+      "file": "Clear16.svg",
+      "width": 16,
+      "height": 16,
+      "source": "05-assets-loaded.json",
+      "source_control": "Clear search",
+      "raw_sha256": "5859356bae0713a047a509e46cfe4efe205531a40c04d319fb055e404ce65da5",
+      "sha256": "ef47606ee55cba54f70c9cfc3a5daa478530b30c1e4defbead6128aba8f29c88"
+    },
+    {
+      "id": "More24",
+      "label": "Selected-object actions menu",
+      "file": "More24.svg",
+      "width": 24,
+      "height": 24,
+      "source": "01-editor-raw.json",
+      "source_control": "More actions",
+      "raw_sha256": "b0e692a817fb0ac962f9407af60bd8c6614e67ae0529325c899610235f1045bd",
+      "sha256": "c2233344ec5d0164c6c10387a81a5b5e76847888f97f6481507fb3321c751c6c"
+    },
+    {
+      "id": "CollapseLayers24",
+      "label": "Collapse expanded layer subtrees",
+      "file": "CollapseLayers24.svg",
+      "width": 24,
+      "height": 24,
+      "source": "19-expanded-container.json",
+      "source_control": "Collapse layers",
+      "raw_sha256": "62815d488aa328c5140c1eeccd49623d03850ee5ac63090033da9030bdd1672e",
+      "sha256": "21b1e4ae3b94a2ae2e52dccc9ba7c127d197e3411105674183a3349b12b7cf4e"
+    },
+    {
+      "id": "Search24",
+      "label": "Assets search prefix",
+      "file": "Search24.svg",
+      "width": 24,
+      "height": 24,
+      "source": "11-search-area.json",
+      "source_control": "Search in this library / prefix",
+      "raw_sha256": "05be52848c743ccb0d5fad271a5b182f5e91ad29f285c6cff25b50d277869d65",
+      "sha256": "ddf6098f1662fe7574cc4ec67d8c4408357d29f4582d06e58ed972d9871a3097"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "arc-bench-figma-requirements",
+  "version": "0.3.1",
+  "private": true,
+  "type": "module",
+  "description": "用于 Figma Design 需求包的 UI 驱动验收测试套件",
+  "scripts": {
+    "test": "playwright test",
+    "test:e2e": "playwright test",
+    "test:e2e:list": "playwright test --list",
+    "test:e2e:report": "playwright show-report ../figma-evaluation/html"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@types/node": "26.0.0",
+    "typescript": "7.0.2",
+    "yaml": "2.9.1"
+  }
+}

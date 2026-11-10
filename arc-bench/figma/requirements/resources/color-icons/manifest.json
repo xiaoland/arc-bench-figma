@@ -1,0 +1,25 @@
+{
+  "icons": [
+    {
+      "id": "SampleColor",
+      "file": "SampleColor.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "464537e43ea955d33787fe9f7a18035fcc534999cb3ae4ed1bbb9351e30267d4",
+      "source": "evidence/figma-color-symbols-20261102/raw-symbols.json#SampleColor",
+      "raw_sha256": "c92dc0d3a10f2535a241a1217e52c5bced49d9d0418ca1ead36d0aaa717e2d33"
+    }
+  ],
+  "reused": [
+    {
+      "observed": "ColorClose",
+      "resource": "effects-icons/EffectClose.svg",
+      "same_native_box_and_geometry": true
+    },
+    {
+      "observed": "ColorFormatChevron",
+      "resource": "layout-icons/ChevronDown.svg",
+      "same_native_box_and_geometry": true
+    }
+  ]
+}

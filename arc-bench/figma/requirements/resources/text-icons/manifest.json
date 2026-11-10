@@ -1,0 +1,86 @@
+{
+  "source": "Figma Design Text controls observed 2026-11-01",
+  "normalization": "Preserve SVG paths and drawing attributes. Remove page metadata and use currentColor. Native display boxes are 24 CSS pixels.",
+  "icons": [
+    {
+      "id": "TextAutoWidth",
+      "file": "TextAutoWidth.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "203b9d0a480fa6447e24c9fa165d8c4eec8646f3edfbd7c2128c112d939c5eac",
+      "raw_sha256": "5e30527dbd92c1a4b4bae08b49c2aa8aaa3d76e1ff4a6686bd0ab26b5fbd24f5"
+    },
+    {
+      "id": "TextAutoHeight",
+      "file": "TextAutoHeight.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "d0f704075dea7689f0d17f7475135212e02caa7aaa38b7118d5e76b425c6d741",
+      "raw_sha256": "f4d3d08e5655504cfe2c145a2886618da37191bdff8f335f0318538f0aa867a1"
+    },
+    {
+      "id": "TextFixedSize",
+      "file": "TextFixedSize.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "af3fdb21c599465216f59c48ee196cc3a654424cde011e5a9be0eeb06daca470",
+      "raw_sha256": "a5bed85ff69b12c83d1cd849c0bead2a0493c440dbd1cf0711be430abcdf3e84"
+    },
+    {
+      "id": "TextAlignLeft",
+      "file": "TextAlignLeft.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "4d45afbdb95eeb958aa9faa056e8208b3d3cfffca964a7108b96caa9f73419fe",
+      "raw_sha256": "54a924d64ae104fe966af7c9005b51d39d08ec945d74ce856aebb7f36bec8d1c"
+    },
+    {
+      "id": "TextAlignCenter",
+      "file": "TextAlignCenter.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "29520452ee4b54125a86ea3811aa0262fb3ecc2dbf704ed39ac515c5092837d1",
+      "raw_sha256": "1f156503a659a31ecd7176edc4b5d0a4e0bf6650c1eafee156061e55f200b325"
+    },
+    {
+      "id": "TextAlignRight",
+      "file": "TextAlignRight.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "8ced2ff742c016d7bf76abf33542bab36eedd9e404524a36248d6def8cb2b5c6",
+      "raw_sha256": "ed73d23153e2c21b0ce58de849a71f0b68653d7a24d5e8b28547e79385a7e633"
+    },
+    {
+      "id": "TextAlignTop",
+      "file": "TextAlignTop.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "343653414fe83001f1892daed9ae666c27ba6c04b45acc9550e2ab9ef7a05f3b",
+      "raw_sha256": "dc6cbc84531ad42fbbe1338c7455f04ccb8e124f00a0458342698aa025da59b7"
+    },
+    {
+      "id": "TextAlignMiddle",
+      "file": "TextAlignMiddle.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "28dea009b60c636bb4c405b1def5869dd076069921c415d882667ad981f08d5d",
+      "raw_sha256": "2b45d96a624c0e5d2e25924b7230dd14f002f2b54bdd18f6f56720ec6426e47d"
+    },
+    {
+      "id": "TextAlignBottom",
+      "file": "TextAlignBottom.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "b76e1a91683abd85b880c26045f5768d32f2a92fb2f7684df84b00e01e7e28a5",
+      "raw_sha256": "38df0549abd2d31c2a9ce1cf9eda9b2a9323054cbc1feb7ff85cd516918ddf8d"
+    },
+    {
+      "id": "TextLineHeight",
+      "file": "TextLineHeight.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "7271dd90549a8de3d53d784c8a5823eb0eb42cdf9c63e74995d813b4b0d8ae97",
+      "raw_sha256": "94a877ee1618c4122f0762aa583a556a383a33e7870856f568bb946d40f773f7"
+    }
+  ]
+}

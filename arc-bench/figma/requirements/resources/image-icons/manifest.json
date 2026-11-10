@@ -1,0 +1,30 @@
+{
+  "source": "Figma Design rendered Image/Crop controls, 2026-11-01",
+  "normalization": "Only SVG namespace, page metadata, and color variables. Geometry and drawing attributes are retained.",
+  "icons": [
+    {
+      "id": "CropAspectRatio",
+      "file": "CropAspectRatio.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "0428457fb93f73465e16a53da4d31abd4193349102ac5ad430fcd9f09f3b0699",
+      "raw_sha256": "f3bbd046fc4544915a3f9c65c4c16c64d2f89a0c987d501063437614e57a77e7"
+    },
+    {
+      "id": "ImageCrop",
+      "file": "ImageCrop.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "b0c1d26c10b45ff3839df44d61a35a6bdf1dfa5289ef79b1ba9c2f86e471b63a",
+      "raw_sha256": "7ae88687613fa02798876579bc1dedf7583ef75ce2e179c03ade82e368539d52"
+    },
+    {
+      "id": "ImageRotate90",
+      "file": "ImageRotate90.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "db0a96b65ab751eab5f3dcaf19b4adf22841a7247c086e04312150a4c575c324",
+      "raw_sha256": "f24e96169f5002ec4d64d2ca2be6afccc7340d52955143e9f89c1f41b0e8c51e"
+    }
+  ]
+}

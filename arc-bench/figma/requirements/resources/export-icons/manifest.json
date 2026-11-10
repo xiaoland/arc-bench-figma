@@ -1,0 +1,13 @@
+{
+  "icons": [
+    {
+      "id": "ExportOptions",
+      "file": "ExportOptions.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "f361656358fffccd241c61fb3c53b017b7f7066d72e4b522b40cb7ec30533c01",
+      "source": "evidence/figma-export-lifecycle-20261101/icons/ExportOptions.svg",
+      "raw_sha256": "b0e692a817fb0ac962f9407af60bd8c6614e67ae0529325c899610235f1045bd"
+    }
+  ]
+}

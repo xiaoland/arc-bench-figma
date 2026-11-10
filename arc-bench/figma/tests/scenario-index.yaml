@@ -1,0 +1,802 @@
+id: ROOT
+name: Minimal Figma Design
+type: FOLDER
+x_benchmark:
+  specification_version: 0.3.1
+children:
+- id: FILE-01
+  name: Create a design file
+  type: ATOMIC
+  scenarios:
+  - name: Create a file and open its editor
+- id: SAVE-02
+  name: Save and reopen a design file
+  type: ATOMIC
+  scenarios:
+  - name: Reopen a file and continue source edits
+- id: SAVE-01
+  name: Undo and redo edits
+  type: ATOMIC
+  scenarios:
+  - name: Undo and redo a committed color
+  - name: Keep edit history during canvas navigation
+  - name: Undo a selection before a document edit
+  - name: Undo a page switch before a document edit
+- id: EDITOR-TOOLBAR
+  name: Choose a canvas tool
+  type: ATOMIC
+  scenarios:
+  - name: Choose a tool from a toolbar group
+- id: EDITOR-LAYOUT
+  name: Resize editor panels
+  type: ATOMIC
+  scenarios:
+  - name: Continue canvas edits after panel and window resizing
+- id: EDITOR-SECTION-COLLAPSE
+  name: Collapse sidebar sections
+  type: ATOMIC
+  scenarios:
+  - name: Collapse and restore a sidebar section
+- id: EDIT-09
+  name: Add, rename, and select pages
+  type: ATOMIC
+  scenarios:
+  - name: Add and select a named page
+- id: VIEW-PAGES
+  name: Browse pages and restore their views
+  type: ATOMIC
+  scenarios:
+  - name: Show the current page across the editor
+  - name: Restore each page view and selection
+- id: VIEW-LAYERS
+  name: Browse and select layers
+  type: ATOMIC
+  scenarios:
+  - name: Expand and collapse a container
+  - name: Select a range and individual rows
+- id: EDIT-02
+  name: Rename a layer
+  type: ATOMIC
+  scenarios:
+  - name: Rename a Frame and return from another page
+  - name: Commit and cancel an inline layer name
+  - name: Commit a layer name by selecting another layer
+- id: EDIT-05
+  name: Show and hide layers
+  type: ATOMIC
+  scenarios:
+  - name: Hide and show a container
+- id: LAYERS-LOCK
+  name: Lock and unlock layers
+  type: ATOMIC
+  scenarios:
+  - name: Lock a child and unlock its container
+- id: EDIT-06
+  name: Copy, duplicate, and delete layers
+  type: ATOMIC
+  scenarios:
+  - name: Cut and paste text across pages
+  - name: Move and copy an ordinary subtree
+  - name: Duplicate ordinary layers and repeat a displacement
+  - name: Duplicate a top-level Frame and keep its subtree
+- id: EDIT-07
+  name: Change layer order
+  type: ATOMIC
+  scenarios:
+  - name: Bring a layer forward and undo
+  - name: Reorder overlapping siblings
+- id: LAYERS-ORDER
+  name: Move a layer to another parent
+  type: ATOMIC
+  scenarios:
+  - name: Move a child to its outer Frame
+- id: EDITOR-LAYER-MENU
+  name: Use the layer context menu
+  type: ATOMIC
+  scenarios:
+  - name: Keep or replace the selection before a menu command
+  - name: Rename one layer from its context menu
+  - name: Apply state commands to the selected layers
+- id: VIEW-ASSETS
+  name: Find and insert components
+  type: ATOMIC
+  scenarios:
+  - name: Find a component and drag an instance
+- id: ASSETS-PREVIEW
+  name: Configure a component preview
+  type: ATOMIC
+  scenarios:
+  - name: Configure a preview and insert separate instances
+- id: VIEW-DESIGN
+  name: Inspect pages, layers, and selected text
+  type: ATOMIC
+  scenarios:
+  - name: Show properties for each selection context
+  - name: Show mixed values and mode-dependent fields
+  - name: Open Fill for the new selection
+- id: DESIGN-COMPONENT-DEFINITIONS
+  name: Define component property controls
+  type: ATOMIC
+  scenarios:
+  - name: Create and bind a Text property
+- id: DESIGN-INSTANCE-VALUES
+  name: Edit instance property controls
+  type: ATOMIC
+  scenarios:
+  - name: Change exposed values on an instance
+- id: DESIGN-INSTANCE-ACTIONS
+  name: Reset or detach through instance actions
+  type: ATOMIC
+  scenarios:
+  - name: Open actions for a selected instance
+- id: DESIGN-POSITION-VALUES
+  name: Position values
+  type: ATOMIC
+  scenarios:
+  - name: Edit a position through its field
+- id: DESIGN-ALIGNMENT
+  name: Align selected layers
+  type: ATOMIC
+  scenarios:
+  - name: Align selected layers
+- id: DESIGN-ROTATION
+  name: Rotate and flip selected layers
+  type: ATOMIC
+  scenarios:
+  - name: Rotate and flip selected layers
+- id: DESIGN-CONSTRAINTS
+  name: Constraints
+  type: ATOMIC
+  scenarios:
+  - name: Choose separate horizontal and vertical Constraints
+  - name: Respect dimension limits on an ignored child
+- id: DESIGN-LAYOUT-SIZE
+  name: Size controls
+  type: ATOMIC
+  scenarios:
+  - name: Show size controls for the selected layer
+  - name: Keep size limits across selection changes
+- id: DESIGN-LAYOUT-FLOW
+  name: Choose the Flow
+  type: ATOMIC
+  scenarios:
+  - name: Switch the complete Flow selector
+- id: DESIGN-LAYOUT-TEXT
+  name: Choose text resizing
+  type: ATOMIC
+  scenarios:
+  - name: Show all three text resizing states
+- id: DESIGN-LAYOUT-SPACING
+  name: Edit Freeform spacing
+  type: ATOMIC
+  scenarios:
+  - name: Edit spacing without enabling Auto Layout
+- id: DESIGN-LAYOUT-AUTO
+  name: Set linear alignment, gap, and Wrap
+  type: ATOMIC
+  scenarios:
+  - name: Show separate Wrap and spacing controls
+- id: DESIGN-LAYOUT-PADDING
+  name: Edit padding
+  type: ATOMIC
+  scenarios:
+  - name: Expand and collapse independent padding
+- id: DESIGN-LAYOUT-GRID
+  name: Edit Grid tracks and spans
+  type: ATOMIC
+  scenarios:
+  - name: Edit tracks and return to a Grid child
+- id: DESIGN-LAYOUT-SETTINGS
+  name: Edit Auto Layout settings
+  type: ATOMIC
+  scenarios:
+  - name: Change Auto spacing through settings
+- id: DESIGN-OPACITY
+  name: Edit layer opacity
+  type: ATOMIC
+  scenarios:
+  - name: Keep layer and paint opacity separate
+- id: DESIGN-CORNERS
+  name: Edit corner controls
+  type: ATOMIC
+  scenarios:
+  - name: Open individual corner controls
+- id: DESIGN-TYPOGRAPHY-VALUES
+  name: Edit font properties
+  type: ATOMIC
+  scenarios:
+  - name: Inspect formatting for a character range
+- id: DESIGN-TYPOGRAPHY-LINE-HEIGHT
+  name: Line height
+  type: ATOMIC
+  scenarios:
+  - name: Apply and change the line-height unit
+- id: DESIGN-TYPOGRAPHY-ALIGN
+  name: Choose text alignment
+  type: ATOMIC
+  scenarios:
+  - name: Show alignment for fixed text
+- id: FILL-ADD
+  name: Add a fill
+  type: ATOMIC
+  scenarios:
+  - name: Add another paint above the existing paint
+- id: FILL-EDIT
+  name: Edit a fill
+  type: ATOMIC
+  scenarios:
+  - name: Edit a solid color and its alpha
+  - name: Edit the current layer after selection changes
+- id: FILL-REORDER
+  name: Reorder fills
+  type: ATOMIC
+  scenarios:
+  - name: Move the upper paint below the lower paint
+- id: FILL-VISIBILITY
+  name: Show or hide a fill
+  type: ATOMIC
+  scenarios:
+  - name: Hide and restore the upper paint
+- id: FILL-REMOVE
+  name: Remove a fill
+  type: ATOMIC
+  scenarios:
+  - name: Remove every paint and add one again
+- id: DESIGN-STROKE-PAINT
+  name: Edit stroke paint
+  type: ATOMIC
+  scenarios:
+  - name: Edit stroke color independently of Fill
+  - name: Add a second stroke paint without replacing the first
+- id: DESIGN-STROKE-GEOMETRY
+  name: Edit stroke geometry
+  type: ATOMIC
+  scenarios:
+  - name: Inspect stroke alignment for a closed shape
+- id: DESIGN-STROKE-SIDES
+  name: Stroke sides
+  type: ATOMIC
+  scenarios:
+  - name: Edit individual stroke sides
+  - name: Set a common weight after individual side edits
+  - name: Keep the chosen side width when applying a preset
+- id: DESIGN-STROKE-STYLE
+  name: Stroke style
+  type: ATOMIC
+  scenarios:
+  - name: Edit and reopen a dashed stroke
+  - name: Use automatic or explicit dash spacing
+- id: DESIGN-EFFECTS-LIST
+  name: Manage shadows
+  type: ATOMIC
+  scenarios:
+  - name: Hide and restore a Drop shadow
+- id: DESIGN-EFFECTS-VALUES
+  name: Edit shadow settings
+  type: ATOMIC
+  scenarios:
+  - name: Reopen shadow settings
+- id: DESIGN-SELECTION-COLORS
+  name: Selection colors
+  type: ATOMIC
+  scenarios:
+  - name: Edit and select matching Fill and Stroke paints
+  - name: Edit a shared Linear paint
+  - name: Detach one shared Color Style entry
+- id: DESIGN-EXPORT-CONFIG
+  name: Configure an export
+  type: ATOMIC
+  scenarios:
+  - name: Change a selected Frame export setting
+- id: DESIGN-EXPORT-PREVIEW
+  name: Preview an export
+  type: ATOMIC
+  scenarios:
+  - name: Expand and collapse the export preview
+- id: PAGE-BACKGROUND
+  name: Set the page background
+  type: ATOMIC
+  scenarios:
+  - name: Set separate page backgrounds
+- id: DESIGN-STYLE-PICKER
+  name: Find and apply a local Style
+  type: ATOMIC
+  scenarios:
+  - name: Find and apply a color Style
+- id: DESIGN-STYLE-DEFINITION
+  name: Edit a Style definition
+  type: ATOMIC
+  scenarios:
+  - name: Edit a named color definition
+- id: DESIGN-SCALE
+  name: Scale controls
+  type: ATOMIC
+  scenarios:
+  - name: Select a Scale anchor
+  - name: Edit a factor against the starting size
+  - name: Complete a Scale shortcut and start a new baseline
+- id: EDITOR-GUIDES-POSITIONS
+  name: Add and edit guide positions
+  type: ATOMIC
+  scenarios:
+  - name: Add a guide and commit or cancel its position
+  - name: Keep the owner when editing outside its bounds
+- id: EDITOR-GUIDES-REMOVE
+  name: Remove guides
+  type: ATOMIC
+  scenarios:
+  - name: Remove one guide or all guides of its owner
+- id: EDITOR-PAINT-TYPE
+  name: Switch paint types
+  type: ATOMIC
+  scenarios:
+  - name: Switch paint types and reopen the editor
+- id: EDITOR-GRADIENT
+  name: Edit Linear gradient controls
+  type: ATOMIC
+  scenarios:
+  - name: Edit gradient stops from the paint editor
+- id: EDITOR-IMAGE
+  name: Edit image fill controls
+  type: ATOMIC
+  scenarios:
+  - name: Open Image controls for an existing fill
+  - name: Choose a crop ratio from the full image
+- id: COLOR-VALUE
+  name: Edit color values
+  type: ATOMIC
+  scenarios:
+  - name: Change color continuously and switch formats
+  - name: Commit and cancel a color field
+- id: COLOR-EYEDROPPER
+  name: Sample a color from the canvas
+  type: ATOMIC
+  scenarios:
+  - name: Sample the page background into a stroke
+- id: COLOR-SAMPLES
+  name: Reuse colors from the current page
+  type: ATOMIC
+  scenarios:
+  - name: Apply a page color and refresh the samples
+- id: EDITOR-CONTROL-INPUT
+  name: Value inputs
+  type: ATOMIC
+  scenarios:
+  - name: Keep focus while editing part of a stop color
+- id: EDITOR-FIELD-NUMBER
+  name: Numeric inputs
+  type: ATOMIC
+  scenarios:
+  - name: Type and nudge a Layout value
+  - name: Scrub a numeric property
+- id: EDITOR-FIELD-CHOICE
+  name: Choose an option in a property field
+  type: ATOMIC
+  scenarios:
+  - name: Choose and dismiss a field option
+- id: EDITOR-CONTROL-SELECT
+  name: Dropdown pickers
+  type: ATOMIC
+  scenarios:
+  - name: Choose and dismiss an image mode
+- id: EDITOR-CONTROL-ICON-BUTTON
+  name: Icon buttons
+  type: ATOMIC
+  scenarios:
+  - name: Use an icon action without editing its neighboring field
+- id: EDITOR-CONTROL-CHECKBOX
+  name: Checkboxes
+  type: ATOMIC
+  scenarios:
+  - name: Toggle Clip content from its label and checkbox
+- id: EDITOR-CONTROL-SEGMENTED
+  name: Segmented controls
+  type: ATOMIC
+  scenarios:
+  - name: Keep the selected Flow visible
+- id: EDITOR-CONTROL-SEARCH-PICKER
+  name: Searchable pickers
+  type: ATOMIC
+  scenarios:
+  - name: Filter a picker without losing the query
+- id: EDITOR-CONTROL-MENU
+  name: Menus
+  type: ATOMIC
+  scenarios:
+  - name: Activate a command from a layer menu
+- id: EDITOR-CONTROL-POPOVER
+  name: Property popups
+  type: ATOMIC
+  scenarios:
+  - name: Return from a nested stop Color popup
+- id: EDIT-08
+  name: Move focus between text, names, and properties
+  type: ATOMIC
+  scenarios:
+  - name: Edit text, rename its layer, and set its width
+  - name: Commit and cancel Chinese text composition
+- id: EDIT-11
+  name: Zoom, pan, and fit the canvas
+  type: ATOMIC
+  scenarios:
+  - name: Navigate without changing layer geometry
+  - name: Use temporary Hand from a selected layer
+  - name: Select and drag after scroll and zoom
+  - name: Anchor numeric zoom at the viewport center
+  - name: Enter a zoom value and choose a preset
+  - name: Pan with the middle mouse button
+- id: EDIT-03
+  name: Select nested layers and multiple layers
+  type: ATOMIC
+  scenarios:
+  - name: Deep-select and add or remove layers
+  - name: Use keyboard selection through Frame and Group levels
+- id: EDIT-10
+  name: Select layers with a marquee
+  type: ATOMIC
+  scenarios:
+  - name: Select two shapes from empty canvas
+  - name: Select a partially covered shape and a nested child
+- id: EDIT-12
+  name: Drag and resize layers on the canvas
+  type: ATOMIC
+  scenarios:
+  - name: Drag and resize a rectangle
+  - name: Move a layer across Frame boundaries
+  - name: Drag an unselected layer and resize with Shift
+- id: EDIT-13
+  name: Scale layers and their content
+  type: ATOMIC
+  scenarios:
+  - name: Scale from the center and return to Move
+  - name: Scale a Frame and its children
+  - name: Scale a selection around its combined center
+  - name: Scale appearance dimensions
+- id: EDIT-04
+  name: Set geometry and align layers
+  type: ATOMIC
+  scenarios:
+  - name: Set a position and align siblings
+  - name: Rotate a rectangle around its default center
+  - name: Commit an expression and nudge at different zoom levels
+- id: CREATE-01
+  name: Create top-level and nested Frames
+  type: ATOMIC
+  scenarios:
+  - name: Create a Frame and move its child content
+  - name: Click to create top-level and nested Frames
+- id: FRAME-TITLE
+  name: Use a Frame title on the canvas
+  type: ATOMIC
+  scenarios:
+  - name: Select, move, and rename a Frame from its title
+- id: FRAME-SELECTION
+  name: Frame selection
+  type: ATOMIC
+  scenarios:
+  - name: Frame existing layers and remove the container
+- id: FRAME-CONTENT
+  name: Frame bounds and children
+  type: ATOMIC
+  scenarios:
+  - name: Draw a Frame around existing layers
+- id: FRAME-CLIP
+  name: Clip Frame content
+  type: ATOMIC
+  scenarios:
+  - name: Toggle clipping and keep child geometry
+- id: CREATE-02
+  name: Create basic shapes
+  type: ATOMIC
+  scenarios:
+  - name: Create and edit different shape types
+  - name: Click-create and move a rectangle and ellipse
+- id: SHAPE-GEOMETRY
+  name: Edit shape dimensions and endpoints
+  type: ATOMIC
+  scenarios:
+  - name: Keep shape contours after geometry edits
+  - name: Set a diagonal Arrow length
+  - name: Drag a Line endpoint
+- id: CREATE-03
+  name: Create and edit text
+  type: ATOMIC
+  scenarios:
+  - name: Create text by click and drag
+- id: PAINT-01
+  name: Set text sizing and line height
+  type: ATOMIC
+  scenarios:
+  - name: Reflow text across sizing modes
+- id: PAINT-02
+  name: Format selected characters
+  type: ATOMIC
+  scenarios:
+  - name: Format one character range
+  - name: Keep format during replacement and further input
+- id: TEXT-ALIGN
+  name: Align text inside its box
+  type: ATOMIC
+  scenarios:
+  - name: Align text and resize its fixed box
+- id: CREATE-05
+  name: Create a Section
+  type: ATOMIC
+  scenarios:
+  - name: Create a Section and organize content
+  - name: Wrap selected Frames in a Section
+- id: SECTION-MEMBERS
+  name: Move content into and out of Sections
+  type: ATOMIC
+  scenarios:
+  - name: Move a Frame through nested Sections
+  - name: Create a Frame inside the inner Section
+  - name: Move a Frame with fields and arrow keys
+- id: SECTION-BOUNDS
+  name: Section bounds
+  type: ATOMIC
+  scenarios:
+  - name: Resize a Section boundary
+  - name: Fit populated and empty Sections
+  - name: Expand a Section for a copied Frame
+- id: SECTION-REMOVE
+  name: Delete a Section or remove only its container
+  type: ATOMIC
+  scenarios:
+  - name: Delete content or keep it after Section removal
+- id: SECTION-CONVERT
+  name: Convert a Group to a Section
+  type: ATOMIC
+  scenarios:
+  - name: Convert a Group to a Section
+- id: CREATE-04
+  name: Group and ungroup layers
+  type: ATOMIC
+  scenarios:
+  - name: Move a Group and edit a member
+  - name: Group and ungroup inside a Frame
+- id: GROUP-BOUNDS
+  name: Group bounds
+  type: ATOMIC
+  scenarios:
+  - name: Undo and redo a Group bounds change
+  - name: Show member positions and recalculate Group bounds
+  - name: Recalculate bounds after membership changes
+  - name: Show bounds of visible Group members
+- id: GROUP-FILL
+  name: Edit common and mixed Group fills
+  type: ATOMIC
+  scenarios:
+  - name: Edit the common Fill of Group members
+  - name: Edit one mixed color, then replace all fills
+  - name: Keep hidden member fills
+- id: ASSET-03
+  name: Import and edit an SVG icon
+  type: ATOMIC
+  scenarios:
+  - name: Import, recolor, and scale an SVG
+- id: CANVAS-MEASURE
+  name: Measure distances between layers
+  type: ATOMIC
+  scenarios:
+  - name: Measure a gap across zoom levels
+- id: CANVAS-RULERS
+  name: Use rulers and guides
+  type: ATOMIC
+  scenarios:
+  - name: Place, move, and remove ruler guides
+  - name: Place and transfer a guide between owners
+- id: LAY-04
+  name: Set child Constraints in an ordinary Frame
+  type: ATOMIC
+  scenarios:
+  - name: Resize a Frame with Right and Center constraints
+  - name: Keep both horizontal margins
+  - name: Combine Scale and both-edge constraints
+  - name: Resize a Frame that contains grouped members
+- id: LAY-SMART
+  name: Arrange a Smart selection
+  type: ATOMIC
+  scenarios:
+  - name: Rearrange freely positioned objects
+  - name: Duplicate and delete in a two-dimensional Smart selection
+- id: LAY-07
+  name: Add, change, and remove Auto Layout
+  type: ATOMIC
+  scenarios:
+  - name: Create a centered vertical layout
+  - name: Convert containers and return to Freeform
+- id: LAY-01
+  name: Set vertical gap and padding
+  type: ATOMIC
+  scenarios:
+  - name: Change gap and padding in a vertical layout
+  - name: Edit paired and independent padding
+- id: LAY-ALIGN
+  name: Align and distribute flow children
+  type: ATOMIC
+  scenarios:
+  - name: Compare automatic spacing distributions
+  - name: Change stacking without reordering
+- id: LAY-02
+  name: Distribute Fill space with min and max sizes
+  type: ATOMIC
+  scenarios:
+  - name: Recalculate Fill width after a parent resize
+  - name: Apply minimum and maximum Fill width
+- id: LAY-03
+  name: Wrap children and restore deleted content
+  type: ATOMIC
+  scenarios:
+  - name: Reflow Wrap and undo a deletion
+  - name: Redistribute Fill widths after Wrap changes
+  - name: Wrap a vertical list into columns
+- id: LAY-06
+  name: Position a child with Ignore auto layout
+  type: ATOMIC
+  scenarios:
+  - name: Keep an ignored child and size the parent from flow content
+- id: LAY-08
+  name: Resize nested horizontal and vertical layouts
+  type: ATOMIC
+  scenarios:
+  - name: Recalculate a nested row width
+- id: LAY-10
+  name: Size a Hug parent from text bounds
+  type: ATOMIC
+  scenarios:
+  - name: Reflow text and update its Hug parent
+- id: LAY-GRID-TRACKS
+  name: Size and edit Grid tracks
+  type: ATOMIC
+  scenarios:
+  - name: Resize weighted tracks
+  - name: Distinguish track deletion from count reduction
+- id: LAY-GRID-CELLS
+  name: Place and span Grid children
+  type: ATOMIC
+  scenarios:
+  - name: Preserve empty cells or compact the grid
+  - name: Span a nested layout across columns
+- id: LAY-DIRECT
+  name: Edit layout on the canvas
+  type: ATOMIC
+  scenarios:
+  - name: Edit opposite padding on the canvas
+- id: CANVAS-FILL-SOLID
+  name: Solid fills
+  type: ATOMIC
+  scenarios:
+  - name: Apply the same paint to different object regions
+- id: CANVAS-FILL-STACK
+  name: Stack fills
+  type: ATOMIC
+  scenarios:
+  - name: Reorder, hide, and remove fills
+- id: PAINT-GRADIENT
+  name: Linear gradients
+  type: ATOMIC
+  scenarios:
+  - name: Reopen and edit a Linear gradient
+  - name: Keep stop alpha and Fill opacity separate
+- id: ASSET-01
+  name: Place an image
+  type: ATOMIC
+  scenarios:
+  - name: Apply an image to an existing layer
+  - name: Create an image layer on empty canvas
+- id: ASSET-02
+  name: Crop an image
+  type: ATOMIC
+  scenarios:
+  - name: Reposition image content inside fixed layer bounds
+  - name: Crop a layer boundary and distinguish apply from Cancel
+  - name: Scale image content and fit the layer to the full image
+- id: ASSET-04
+  name: Replace an image fill
+  type: ATOMIC
+  scenarios:
+  - name: Replace an image and keep its layer
+  - name: Keep a committed crop after replacement
+- id: PAINT-STROKE
+  name: Strokes
+  type: ATOMIC
+  scenarios:
+  - name: Set stroke color, width, and alignment
+- id: PAINT-CORNERS
+  name: Corners
+  type: ATOMIC
+  scenarios:
+  - name: Set opacity and individual corners
+- id: PAINT-EFFECTS
+  name: Drop shadows
+  type: ATOMIC
+  scenarios:
+  - name: Set and reopen a drop shadow
+- id: PAINT-03
+  name: Combine appearance and layer opacity
+  type: ATOMIC
+  scenarios:
+  - name: Combine Fill, Stroke, corners, opacity, and shadow
+- id: COMP-05
+  name: Create a main component and insert instances
+  type: ATOMIC
+  scenarios:
+  - name: Create a component and insert a linked instance
+  - name: Convert an existing Frame to a main component
+  - name: Insert two instances from Assets
+- id: COMP-02
+  name: Define and edit component properties
+  type: ATOMIC
+  scenarios:
+  - name: Define Text, Boolean, and Instance swap properties
+  - name: Set Boolean visibility and a nested icon source
+- id: COMP-03
+  name: Create variants and switch an instance
+  type: ATOMIC
+  scenarios:
+  - name: Create and use a two-state component set
+  - name: Reset an instance and keep its selected variant
+  - name: Apply different rules to text and Fill overrides
+- id: COMP-01
+  name: Update instances and keep text overrides
+  type: ATOMIC
+  scenarios:
+  - name: Update source text and Fill across pages
+- id: COMP-CHILDREN
+  name: Manage inherited instance children
+  type: ATOMIC
+  scenarios:
+  - name: Hide an inherited child and receive source order
+- id: COMP-04
+  name: Detach an outer instance and keep nested links
+  type: ATOMIC
+  scenarios:
+  - name: Detach the outer instance while its icon stays linked
+- id: STYLE-03
+  name: Create, apply, and detach a color Style
+  type: ATOMIC
+  scenarios:
+  - name: Create and apply a shared color Style
+  - name: Detach a color Style and keep the current color
+  - name: Distinguish a Style link from a document color sample
+  - name: Share a paint stack between Fill and Stroke
+- id: STYLE-04
+  name: Create, update, and detach a text Style
+  type: ATOMIC
+  scenarios:
+  - name: Create and detach a text Style
+  - name: Update a text Style across reopen
+  - name: Apply and detach a text Style on one character range
+  - name: Keep a Text Style through a Bold shortcut
+- id: SAVE-03
+  name: Export a Frame as PNG
+  type: ATOMIC
+  scenarios:
+  - name: Export PNG at two scales and continue text edit
+  - name: Export visible overflow from an unclipped Frame
+  - name: Export the Frame outline and shadow
+- id: SAVE-04
+  name: Export Frames and vector icons as SVG
+  type: ATOMIC
+  scenarios:
+  - name: Export a Frame with vector shapes
+  - name: Export an edited vector icon
+- id: FLOW-02
+  name: Create, reuse, and deliver desktop and mobile designs
+  type: ATOMIC
+  scenarios:
+  - name: Create editable Frame, shape, and text content
+  - name: Create, reuse, maintain, reopen, and export a design
+- id: FLOW-01
+  name: Maintain a shared card design across pages
+  type: ATOMIC
+  scenarios:
+  - name: Maintain a shared responsive card design
+- id: FLOW-03
+  name: Continue edits across views and input contexts
+  type: ATOMIC
+  scenarios:
+  - name: Pan, drag, edit a property, and undo
+  - name: Switch between temporary Hand, object drag, and text input
+  - name: Continue edits after panel scroll and page changes

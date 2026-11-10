@@ -1,0 +1,38 @@
+{
+  "source": "Figma Design rendered Drop shadow controls, 2026-10-31",
+  "normalization": "Only page metadata and color variables. Geometry and drawing attributes are retained.",
+  "icons": [
+    {
+      "id": "DropShadow",
+      "file": "DropShadow.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "79ed3d7b1cd44c325f27ee9425f148849fc8f4361ce321d2aa3e26924daf257b",
+      "raw_sha256": "86b4bdf840c6f8cd2c8e7fe9b8e7e512a2594e80c8a1d152d2d73e6b0004b7d2"
+    },
+    {
+      "id": "ShadowBlur",
+      "file": "ShadowBlur.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "fdb811b7c49773d036f39b6e836fb4673fb4eb7952d26eb048f9bb90a32363a0",
+      "raw_sha256": "e30b040d848458fb0d449031d18bbfa8df9736fec0d3ce99fdc86df473bc42f3"
+    },
+    {
+      "id": "ShadowSpread",
+      "file": "ShadowSpread.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "0ca93d1345404df971195d689ba635ab995b0d877542da9175d229113e185006",
+      "raw_sha256": "8fd25fb67cd1f37711929cf9af0a6387e31ede75e8f35fc60e1136883da20887"
+    },
+    {
+      "id": "EffectClose",
+      "file": "EffectClose.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "114c6092738a7e2d4f12ab97eb49661819684cdcaf377c58715c5edae9bb73ab",
+      "raw_sha256": "da171a77841811238607b0d3fa1ae557ffef63806b5abe6e2b58f62579d5cb6b"
+    }
+  ]
+}

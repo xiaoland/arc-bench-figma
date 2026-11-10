@@ -1,0 +1,351 @@
+{
+  "version": "0.3.1",
+  "policy": "Fixed interface symbols use these namespaced assets. Dynamic diagrams and content previews are defined by their product owners. A referenced subset identifier uses its feature-specific meaning and native box.",
+  "owners": [
+    {
+      "requirement": "EDITOR",
+      "fixed": {
+        "toolbar.move": "editor/ToolMove",
+        "toolbar.hand": "editor/ToolHand",
+        "toolbar.scale": "position/ScaleTool",
+        "toolbar.frame": "editor/ToolFrame",
+        "toolbar.section": "editor/ToolSection",
+        "toolbar.rectangle": "editor/ToolRectangle",
+        "toolbar.line": "editor/ToolLine",
+        "toolbar.arrow": "editor/ToolArrow",
+        "toolbar.ellipse": "editor/ToolEllipse",
+        "toolbar.text": "editor/ToolText",
+        "toolbar.group-arrow": "ui/Dropdown24",
+        "menu.move": "editor/MenuMove",
+        "menu.hand": "editor/MenuHand",
+        "menu.scale": "position/ScaleFactor",
+        "menu.frame": "editor/MenuFrame",
+        "menu.section": "editor/MenuSection",
+        "menu.rectangle": "editor/MenuRectangle",
+        "menu.line": "editor/MenuLine",
+        "menu.arrow": "editor/MenuArrow",
+        "menu.ellipse": "editor/MenuEllipse",
+        "menu.place-image": "editor/MenuPlaceImage",
+        "menu.option-check": "ui/Check16",
+        "menu.submenu-arrow": "ui/SubmenuArrow24",
+        "nav.menu": "editor/NavMenu",
+        "nav.file": "editor/NavFile",
+        "nav.assets": "editor/NavAssets",
+        "file.menu-arrow": "ui/ChevronDown16",
+        "zoom.menu-arrow": "ui/ChevronDown16",
+        "section.expanded": "ui/ChevronDown16",
+        "section.collapsed": "ui/ChevronRight16",
+        "selected-object.more": "ui/More24"
+      }
+    },
+    {
+      "requirement": "EDITOR-PAGES",
+      "fixed": {
+        "add-page": "ui/Add24"
+      }
+    },
+    {
+      "requirement": "EDITOR-LAYERS",
+      "fixed": {
+        "container.expanded": "ui/ChevronDown16",
+        "container.collapsed": "ui/ChevronRight16",
+        "row.locked": "layer/LayerLocked",
+        "row.unlocked": "layer/LayerUnlocked",
+        "row.visible": "layer/LayerVisible",
+        "row.hidden": "layer/LayerHidden",
+        "collapse-expanded-subtrees": "ui/CollapseLayers24"
+      },
+      "dynamic": [
+        "The type symbol follows ROOT and the Layer library. Shape/vector thumbnails follow current geometry, proportions and direction. Action visibility follows Layers."
+      ]
+    },
+    {
+      "requirement": "WORKSPACE-ASSETS",
+      "fixed": {
+        "search": "ui/Search24",
+        "clear-search": "ui/Clear16",
+        "details.close": "ui/Close24"
+      },
+      "dynamic": [
+        "Component cards and Details preview render current source/default-variant content. Breadcrumb separators are text, not icon assets."
+      ]
+    },
+    {
+      "requirement": "EDITOR-CONTROLS",
+      "fixed": {
+        "menu.option-check": "ui/Check16",
+        "menu.submenu-arrow": "ui/SubmenuArrow24",
+        "popup.close": "ui/Close24",
+        "picker.arrow16": "ui/ChevronDown16",
+        "search": "ui/Search24",
+        "search.clear": "ui/Clear16"
+      },
+      "dynamic": [
+        "Checkbox box/check state, segmented selection backgrounds and text selection follow the shared control descriptions. Use the owner-specific asset size and commit profile."
+      ]
+    },
+    {
+      "requirement": "DESIGN-POSITION",
+      "fixed": {
+        "AlignLeft": "position/AlignLeft",
+        "AlignHorizontalCenters": "position/AlignHorizontalCenters",
+        "AlignRight": "position/AlignRight",
+        "AlignTop": "position/AlignTop",
+        "AlignVerticalCenters": "position/AlignVerticalCenters",
+        "AlignBottom": "position/AlignBottom",
+        "RotateRight90": "position/RotateRight90",
+        "FlipHorizontal": "position/FlipHorizontal",
+        "FlipVertical": "position/FlipVertical",
+        "PositionMore": "position/PositionMore",
+        "Rotation": "position/Rotation",
+        "Constraints": "position/Constraints",
+        "ConstraintHorizontal": "position/ConstraintHorizontal",
+        "ConstraintVertical": "position/ConstraintVertical",
+        "ConstraintHorizontalLeft": "position/ConstraintHorizontalLeft",
+        "ConstraintHorizontalRight": "position/ConstraintHorizontalRight",
+        "ConstraintHorizontalBoth": "position/ConstraintHorizontalBoth",
+        "ConstraintHorizontalCenter": "position/ConstraintHorizontalCenter",
+        "ConstraintHorizontalScale": "position/ConstraintHorizontalScale",
+        "ConstraintVerticalTop": "position/ConstraintVerticalTop",
+        "ConstraintVerticalBottom": "position/ConstraintVerticalBottom",
+        "ConstraintVerticalBoth": "position/ConstraintVerticalBoth",
+        "ConstraintVerticalCenter": "position/ConstraintVerticalCenter",
+        "ConstraintVerticalScale": "position/ConstraintVerticalScale",
+        "ScaleFactor": "position/ScaleFactor",
+        "ScaleClose": "position/ScaleClose",
+        "ScaleTool": "position/ScaleTool",
+        "ConstraintHorizontalMixed": "position/ConstraintHorizontalMixed",
+        "ConstraintVerticalMixed": "position/ConstraintVerticalMixed"
+      }
+    },
+    {
+      "requirement": "DESIGN-LAYOUT",
+      "fixed": {
+        "FlowFreeform": "layout/FlowFreeform",
+        "FlowVertical": "layout/FlowVertical",
+        "FlowHorizontal": "layout/FlowHorizontal",
+        "FlowGrid": "layout/FlowGrid",
+        "AutoLayoutAdd": "layout/AutoLayoutAdd",
+        "AspectRatioUnlocked": "layout/AspectRatioUnlocked",
+        "Check": "layout/Check",
+        "ResizeToFit": "layout/ResizeToFit",
+        "AutoLayoutActive": "layout/AutoLayoutActive",
+        "Wrap": "layout/Wrap",
+        "GapHorizontal": "layout/GapHorizontal",
+        "ChevronDown": "layout/ChevronDown",
+        "AutoLayoutSettings": "layout/AutoLayoutSettings",
+        "PaddingHorizontal": "layout/PaddingHorizontal",
+        "PaddingVertical": "layout/PaddingVertical",
+        "PaddingIndividual": "layout/PaddingIndividual",
+        "GapVertical": "layout/GapVertical",
+        "AspectRatioLocked": "layout/AspectRatioLocked",
+        "PaddingLeft": "layout/PaddingLeft",
+        "PaddingRight": "layout/PaddingRight",
+        "PaddingTop": "layout/PaddingTop",
+        "PaddingBottom": "layout/PaddingBottom",
+        "GridAutoPositioning": "layout/GridAutoPositioning",
+        "GridColumns": "layout/GridColumns",
+        "GridRows": "layout/GridRows",
+        "GridColumnSpan": "layout/GridColumnSpan",
+        "GridRowSpan": "layout/GridRowSpan",
+        "WidthLimits": "layout/WidthLimits",
+        "HeightLimits": "layout/HeightLimits",
+        "AddMinWidth": "layout/AddMinWidth",
+        "AddMaxWidth": "layout/AddMaxWidth",
+        "AddMinHeight": "layout/AddMinHeight",
+        "AddMaxHeight": "layout/AddMaxHeight",
+        "SmartSpacingHorizontal": "layout/SmartSpacingHorizontal",
+        "SmartSpacingVertical": "layout/SmartSpacingVertical"
+      }
+    },
+    {
+      "requirement": "DESIGN-APPEARANCE",
+      "fixed": {
+        "LayerOpacity": "appearance/LayerOpacity",
+        "CornerRadius": "appearance/CornerRadius",
+        "CornerSmoothing": "appearance/CornerSmoothing",
+        "CornerTopLeft": "appearance/CornerTopLeft",
+        "CornerTopRight": "appearance/CornerTopRight",
+        "CornerBottomLeft": "appearance/CornerBottomLeft",
+        "CornerBottomRight": "appearance/CornerBottomRight"
+      }
+    },
+    {
+      "requirement": "DESIGN-STROKE",
+      "fixed": {
+        "StrokeSettings": "stroke/StrokeSettings",
+        "StrokeSides": "stroke/StrokeSides",
+        "StrokeWeight": "stroke/StrokeWeight",
+        "StrokeSwap": "stroke/StrokeSwap",
+        "StrokeSideLeft": "stroke/StrokeSideLeft",
+        "StrokeSideTop": "stroke/StrokeSideTop",
+        "StrokeSideRight": "stroke/StrokeSideRight",
+        "StrokeSideBottom": "stroke/StrokeSideBottom",
+        "EndpointNone": "stroke/EndpointNone",
+        "EndpointPreviewNone": "stroke/EndpointPreviewNone",
+        "EndpointRound": "stroke/EndpointRound",
+        "EndpointPreviewRound": "stroke/EndpointPreviewRound",
+        "EndpointSquare": "stroke/EndpointSquare",
+        "EndpointPreviewSquare": "stroke/EndpointPreviewSquare",
+        "EndpointLineArrow": "stroke/EndpointLineArrow",
+        "EndpointPreviewLineArrow": "stroke/EndpointPreviewLineArrow",
+        "EndpointTriangleArrow": "stroke/EndpointTriangleArrow",
+        "EndpointPreviewTriangleArrow": "stroke/EndpointPreviewTriangleArrow",
+        "EndpointReversedTriangle": "stroke/EndpointReversedTriangle",
+        "EndpointPreviewReversedTriangle": "stroke/EndpointPreviewReversedTriangle",
+        "EndpointCircleArrow": "stroke/EndpointCircleArrow",
+        "EndpointPreviewCircleArrow": "stroke/EndpointPreviewCircleArrow",
+        "EndpointDiamondArrow": "stroke/EndpointDiamondArrow",
+        "EndpointPreviewDiamondArrow": "stroke/EndpointPreviewDiamondArrow",
+        "JoinMiter": "stroke/JoinMiter",
+        "JoinBevel": "stroke/JoinBevel",
+        "JoinRound": "stroke/JoinRound",
+        "StyleSolid": "stroke/StyleSolid",
+        "StyleDashed": "stroke/StyleDashed",
+        "MiterAngle": "stroke/MiterAngle"
+      }
+    },
+    {
+      "requirement": "DESIGN-EFFECTS",
+      "fixed": {
+        "DropShadow": "effects/DropShadow",
+        "ShadowBlur": "effects/ShadowBlur",
+        "ShadowSpread": "effects/ShadowSpread",
+        "EffectClose": "effects/EffectClose"
+      }
+    },
+    {
+      "requirement": "DESIGN-TYPOGRAPHY",
+      "fixed": {
+        "TextAutoWidth": "text/TextAutoWidth",
+        "TextAutoHeight": "text/TextAutoHeight",
+        "TextFixedSize": "text/TextFixedSize",
+        "TextAlignLeft": "text/TextAlignLeft",
+        "TextAlignCenter": "text/TextAlignCenter",
+        "TextAlignRight": "text/TextAlignRight",
+        "TextAlignTop": "text/TextAlignTop",
+        "TextAlignMiddle": "text/TextAlignMiddle",
+        "TextAlignBottom": "text/TextAlignBottom",
+        "TextLineHeight": "text/TextLineHeight"
+      }
+    },
+    {
+      "requirement": "EDITOR-IMAGE",
+      "fixed": {
+        "CropAspectRatio": "image/CropAspectRatio",
+        "ImageCrop": "image/ImageCrop",
+        "ImageRotate90": "image/ImageRotate90"
+      }
+    },
+    {
+      "requirement": "DESIGN-COMPONENTS",
+      "fixed": {
+        "CreateComponent": "component/CreateComponent",
+        "PropertyText": "component/PropertyText",
+        "ApplyProperty": "component/ApplyProperty",
+        "ResetInstance": "component/ResetInstance",
+        "DetachInstance": "component/DetachInstance"
+      }
+    },
+    {
+      "requirement": "DESIGN-EXPORT",
+      "fixed": {
+        "ExportOptions": "export/ExportOptions"
+      }
+    },
+    {
+      "requirement": "PAINT-FILL",
+      "fixed": {
+        "add": "ui/Add24",
+        "styles": "paint/ApplyStyles",
+        "visible": "paint/PaintVisible",
+        "hidden": "paint/PaintHidden",
+        "remove": "paint/PaintRemove",
+        "reorder": "paint/PaintReorder",
+        "style.detach": "paint/DetachStyle",
+        "style.edit": "paint/EditStyle"
+      },
+      "dynamic": [
+        "A paint preview displays that paint; a bound Color Style preview combines its ordered stack. It is not an Apply styles control icon."
+      ]
+    },
+    {
+      "requirement": "EDITOR-PAINT",
+      "fixed": {
+        "type.solid": "paint/PaintTypeSolid",
+        "type.gradient": "paint/PaintTypeGradient",
+        "type.image": "paint/PaintTypeImage",
+        "close": "ui/Close24"
+      }
+    },
+    {
+      "requirement": "EDITOR-GRADIENT",
+      "fixed": {
+        "flip": "paint/GradientFlip",
+        "rotate": "paint/GradientRotate",
+        "add-stop": "ui/Add24",
+        "remove-stop": "paint/PaintRemove"
+      },
+      "dynamic": [
+        "The stop strip, selected stop indicators and Canvas gradient handles follow current stop positions/colors and the gradient geometry."
+      ]
+    },
+    {
+      "requirement": "EDITOR-COLOR",
+      "fixed": {
+        "sample-color": "color/SampleColor",
+        "close": "ui/Close24",
+        "format.arrow": "ui/ChevronDown16"
+      },
+      "dynamic": [
+        "The color field, sliders, checkerboard, current color and page samples display current values."
+      ]
+    },
+    {
+      "requirement": "DESIGN-SELECTION-COLORS",
+      "fixed": {
+        "select-users": "paint/SelectionUses"
+      },
+      "dynamic": [
+        "Swatches display current Solid or Linear paints and their alpha."
+      ]
+    },
+    {
+      "requirement": "DESIGN-STYLES",
+      "fixed": {
+        "apply": "paint/ApplyStyles",
+        "add": "ui/Add24",
+        "edit": "paint/EditStyle",
+        "detach": "paint/DetachStyle",
+        "reapply": "paint/ReapplyStyle",
+        "close": "ui/Close24"
+      },
+      "dynamic": [
+        "Catalog cards, bound-style circular samples and definition previews render current definition content."
+      ]
+    },
+    {
+      "requirement": "EDITOR-GUIDES",
+      "fixed": {
+        "add": "ui/Add24",
+        "remove": "paint/PaintRemove",
+        "position-menu": "ui/ChevronDown16"
+      },
+      "dynamic": [
+        "Guide lines and direction/selection feedback use Canvas geometry."
+      ]
+    },
+    {
+      "requirement": "DESIGN-SCALE",
+      "fixed": {
+        "scale-tool": "position/ScaleTool",
+        "scale-factor": "position/ScaleFactor",
+        "close": "position/ScaleClose"
+      },
+      "dynamic": [
+        "The nine-point anchor matrix is an interactive diagram; the selected anchor changes without replacing the whole control with a generic glyph."
+      ]
+    }
+  ],
+  "coverage_boundary": "Included fixed roles are mapped explicitly. Geometry thumbnails, paint/content previews, selection/measurement/guide overlays and stateful control diagrams are dynamic product graphics, not missing static icons."
+}

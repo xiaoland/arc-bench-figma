@@ -1,0 +1,154 @@
+{
+  "version": "2026-11-01",
+  "source": "Rendered Figma Design Fill, gradient, and Selection colors controls. Names are local aliases.",
+  "normalization": "Only page metadata and monochrome paint are normalized. Paths, viewBox, fill/clip rules, opacity and stroke settings remain.",
+  "icons": [
+    {
+      "id": "PaintAdd",
+      "label": "Add fill",
+      "file": "PaintAdd.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "46de3a3a138fec233172c8a3ed0b3237eef848c11ed339a414c6b8b86b3dbc8e",
+      "source": "two-fills.json",
+      "raw_sha256": "5ba080e7891ce0c8a05b9b930aa0f4a8ee7963bf8d0a465dbb8bd8380094d33e"
+    },
+    {
+      "id": "ApplyStyles",
+      "label": "Apply styles",
+      "file": "ApplyStyles.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "93f543527edd94cd47038f06794e1cbfdae485a66bf21e2f144df11cf6990554",
+      "source": "two-fills.json",
+      "raw_sha256": "cdcfeaf9a26eb50c1b69353853ea1bc5f6aedec1472bc38cba50f17aa0aaf7cb"
+    },
+    {
+      "id": "PaintVisible",
+      "label": "Visible paint",
+      "file": "PaintVisible.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "7cfd6ee9c04436fe74c1f5bf3709294de2382ab9c95546bd6ee5892af0100dc4",
+      "source": "two-fills.json",
+      "raw_sha256": "5cbd5d1320ca5cdbec21bf9e552bad100ee71ba1a81e1afe2869223f63c2e970"
+    },
+    {
+      "id": "PaintHidden",
+      "label": "Hidden paint",
+      "file": "PaintHidden.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "f5099b2fea332d41ee47f95ccef9c17b59105627e40b7e2eae51b7b409c067a7",
+      "source": "hidden-red.json",
+      "raw_sha256": "26d8325e005777b0a1e6f16cecc7dcf88753ab806fe70e261aa34d7568c14faf"
+    },
+    {
+      "id": "PaintRemove",
+      "label": "Remove paint",
+      "file": "PaintRemove.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "2524b7f90e835dbfaf947a9318ef3e22acb8ea9af63ef584cf6cfa86fe645c4e",
+      "source": "two-fills.json",
+      "raw_sha256": "f38099bc55760d2c9ab69a03c07c442346399f0792cda80485c8233ad9862aff"
+    },
+    {
+      "id": "PaintReorder",
+      "label": "Reorder paint",
+      "file": "PaintReorder.svg",
+      "width": 16,
+      "height": 32,
+      "sha256": "40a24a42b15b056236c762df5e9790e00fd24fc6acd98318a36e8ee01eb93ab1",
+      "source": "two-fills.json",
+      "raw_sha256": "603ca807fcaeb384a652d928dad3aa40a3ae9f75a436cf59d02af15bad8eadf5"
+    },
+    {
+      "id": "GradientFlip",
+      "label": "Flip gradient",
+      "file": "GradientFlip.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "e14d07dcc79a51acd702bbe2a0889e37f6a1c750d1a11775eb15c880d7bca37a",
+      "source": "../figma-gradient-20261029/gradient-icons.json",
+      "raw_sha256": "f9164fbf952a4d52e0ba96b9c332e64bdfdf409322f6f71dbe53c90f30ddc2fc"
+    },
+    {
+      "id": "GradientRotate",
+      "label": "Rotate gradient",
+      "file": "GradientRotate.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "37d7a6fa30a6150630f46557f8521a67ddc6c138ac717ffde120a92cc6b20a9b",
+      "source": "../figma-gradient-20261029/gradient-icons.json",
+      "raw_sha256": "f24e96169f5002ec4d64d2ca2be6afccc7340d52955143e9f89c1f41b0e8c51e"
+    },
+    {
+      "id": "SelectionUses",
+      "label": "Select layers using this paint",
+      "file": "SelectionUses.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "d0457799ac7a4b943cc52cd8091f0c3a1969f13d9d5e9be2fce1b3de8aa88fde",
+      "source": "evidence/figma-group-colors-20261101/SelectionUses.original.svg",
+      "raw_sha256": "65a282e0f2b7f3e0abbfa4607b30abf53172478bb77366cbf60af9672d2284ef"
+    },
+    {
+      "id": "DetachStyle",
+      "label": "Detach style",
+      "file": "DetachStyle.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "a1c89b64febdf60d3fcd93991bbcfdf711dfe01495c22e0ae145ba1991ef8460",
+      "source": "evidence/figma-group-colors-20261101/DetachStyle.original.svg",
+      "raw_sha256": "27cf25c7ffa636f3016d364862c9bd491e309483ed73274f83d6d249b6e501d1"
+    },
+    {
+      "id": "PaintTypeSolid",
+      "file": "PaintTypeSolid.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "50d59b0592a2b151629c17da26d283e9b9131e64fa0d57811d17bd3504d6649d",
+      "source": "evidence/figma-paint-type-controls-20261101/icons/PaintTypeSolid.svg",
+      "raw_sha256": "26f34ea6afab515f11cb5c4c58065bde150da330f569db6a5d326b269cd50313"
+    },
+    {
+      "id": "PaintTypeGradient",
+      "file": "PaintTypeGradient.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "a6585009ec95024a8527951d22d6c6e5f4a2800e800bcfdc532832b7635dc4c2",
+      "source": "evidence/figma-paint-type-controls-20261101/icons/PaintTypeGradient.svg",
+      "raw_sha256": "5d0aabd231d3fe90f2630729aebfe3c32064ea4cda30c01faf785e81910d28f8"
+    },
+    {
+      "id": "PaintTypeImage",
+      "file": "PaintTypeImage.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "c106618f3e024324cff8dd3df47bc06c1cc7f02ac20a344935b5c136222e7010",
+      "source": "evidence/figma-paint-type-controls-20261101/icons/PaintTypeImage.svg",
+      "raw_sha256": "150f052692e683c32645e03b718b2a725d4c70c59397ccb3a0d23a719f9e04fb"
+    },
+    {
+      "id": "EditStyle",
+      "label": "Edit style",
+      "file": "EditStyle.svg",
+      "width": 12,
+      "height": 14,
+      "sha256": "65c2369c4da041d252ce3684fcbda727d8867d4e8a6ea6475b9829a9c2db5f0e",
+      "source": "evidence/figma-styles-lifecycle-20261101/icons/EditStyle.svg",
+      "raw_sha256": "3baeba55bc6c9fb34e23b4f60912227a859add83855fab148bdb09db2cf210ad"
+    },
+    {
+      "id": "ReapplyStyle",
+      "label": "Reapply text style",
+      "file": "ReapplyStyle.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "0f7a1e88345dd23c242d55f36ba26f4752b6e40c0c04b30f098ca6fd464ce9b7",
+      "source": "evidence/figma-text-style-range-20261101/icons/ReapplyStyle.svg",
+      "raw_sha256": "370ed7ae67ec19b776fb7a4edabc52f3fc22b3ac082837b7cbf98b8bf5222729"
+    }
+  ]
+}

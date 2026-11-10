@@ -1,0 +1,1080 @@
+version: 1
+contract: The environment creates the selected document starting state. Subsequent
+  edits use the UI. Reopening the same workset restores its saved editable document.
+defaults:
+  page: Desktop
+  history: empty
+  zoom: 1
+  canvasOrigin:
+    x: 0
+    y: 0
+  selection: []
+  fill: '000000'
+  opacity: 1
+  stroke: null
+  shadow: null
+  cornerRadius: 0
+  font:
+    family: Inter
+    style: Regular
+    size: 12
+    lineHeight: auto
+  order: Within one parent, objects array order is back to front. siblingIndex starts
+    at zero.
+  identity: Names are public aliases. The application assigns persistent IDs to continuing
+    layers within a workset. Detach and clipboard reconstruction can create replacement
+    IDs as specified by the relevant behavior.
+  geometry: x/y are relative to parent, or to the page for top-level layers. Layout
+    determines effective geometry. parent describes the actual document hierarchy.
+  type_defaults:
+    frame:
+      fill: FFFFFF
+    rectangle:
+      fill: D9D9D9
+    text:
+      textSizing: fixed
+      fill: '000000'
+  view:
+    panX: 0
+    panY: 0
+  image_crop_offset: cropOffsetX/Y use host-local units for the image center's displacement
+    from the host center. An untransformed centered Fill has zero offset. Source pixels,
+    rendered image size, and layer geometry remain separate values.
+seeds:
+  blank:
+    pages: &id001
+    - Desktop
+    current_page: Desktop
+    objects: []
+  core:
+    pages: *id001
+    current_page: Desktop
+    objects:
+    - name: Probe
+      type: rectangle
+      parent: null
+      geometry:
+        x: 0
+        y: 0
+        width: 80
+        height: 60
+      visible: true
+      locked: false
+      fill: '010203'
+  editing:
+    pages:
+    - Desktop
+    - Mobile
+    current_page: Desktop
+    objects:
+    - name: Workspace
+      type: frame
+      parent: null
+      geometry:
+        x: 0
+        y: 0
+        width: 600
+        height: 400
+      visible: true
+      locked: false
+    - name: Nested
+      type: frame
+      parent: Workspace
+      geometry:
+        x: 40
+        y: 40
+        width: 300
+        height: 220
+      visible: true
+      locked: false
+    - name: Red
+      type: rectangle
+      parent: Nested
+      geometry:
+        x: 20
+        y: 20
+        width: 80
+        height: 60
+      visible: true
+      locked: false
+      fill: FF0000
+    - name: Blue
+      type: rectangle
+      parent: Nested
+      geometry:
+        x: 80
+        y: 40
+        width: 80
+        height: 60
+      visible: true
+      locked: false
+      fill: 0000FF
+    - name: Title
+      type: text
+      parent: Nested
+      geometry:
+        x: 20
+        y: 130
+        width: 180
+        height: 24
+      visible: true
+      locked: false
+      text: Draft title
+      font:
+        family: Inter
+        style: Regular
+        size: 16
+        lineHeight: 24
+    - name: Target
+      type: frame
+      parent: null
+      geometry:
+        x: 640
+        y: 0
+        width: 300
+        height: 400
+      visible: true
+      locked: false
+  flow:
+    pages: *id001
+    current_page: Desktop
+    objects:
+    - name: Flow
+      type: frame
+      parent: null
+      geometry:
+        x: 0
+        y: 0
+        width: 200
+        height: 116
+      visible: true
+      locked: false
+      layout:
+        direction: vertical
+        width: fixed
+        height: hug
+        padding: 12
+        gap: 12
+        align: start
+    - name: Flow A
+      type: rectangle
+      parent: Flow
+      geometry:
+        x: 12
+        y: 12
+        width: 70
+        height: 40
+      visible: true
+      locked: false
+    - name: Flow B
+      type: rectangle
+      parent: Flow
+      geometry:
+        x: 12
+        y: 64
+        width: 70
+        height: 40
+      visible: true
+      locked: false
+  wrap:
+    pages: *id001
+    current_page: Desktop
+    objects:
+    - name: Wrap
+      type: frame
+      parent: null
+      geometry:
+        x: 0
+        y: 0
+        width: 200
+        height: 115
+      visible: true
+      locked: false
+      layout:
+        direction: horizontal
+        wrap: true
+        width: fixed
+        height: hug
+        padding: 12
+        gap: 12
+        counterGap: 12
+        align: start
+    - name: Wrap A
+      type: rectangle
+      parent: Wrap
+      geometry:
+        x: 12
+        y: 12
+        width: 70
+        height: 40
+      visible: true
+      locked: false
+    - name: Wrap B
+      type: rectangle
+      parent: Wrap
+      geometry:
+        x: 94
+        y: 12
+        width: 70
+        height: 39
+      visible: true
+      locked: false
+    - name: Wrap C
+      type: rectangle
+      parent: Wrap
+      geometry:
+        x: 12
+        y: 64
+        width: 70
+        height: 39
+      visible: true
+      locked: false
+  constraints:
+    pages: *id001
+    current_page: Desktop
+    objects:
+    - name: Constraint Frame
+      type: frame
+      parent: null
+      geometry:
+        x: 0
+        y: 0
+        width: 432
+        height: 462
+      visible: true
+      locked: false
+      clip: true
+    - name: Anchor
+      type: rectangle
+      parent: Constraint Frame
+      geometry:
+        x: 142
+        y: 92
+        width: 80
+        height: 60
+      visible: true
+      locked: false
+      constraints:
+        horizontal: right
+        vertical: center
+  limits:
+    pages: *id001
+    current_page: Desktop
+    objects:
+    - name: Limit Frame
+      type: frame
+      parent: null
+      geometry:
+        x: 0
+        y: 0
+        width: 200
+        height: 80
+      visible: true
+      locked: false
+      layout:
+        direction: vertical
+        width: fixed
+        height: hug
+        padding: 10
+        gap: 10
+    - name: Limited
+      type: rectangle
+      parent: Limit Frame
+      geometry:
+        x: 10
+        y: 10
+        width: 180
+        height: 60
+      visible: true
+      locked: false
+      layout:
+        width: fill
+        height: fixed
+        minWidth: 120
+        maxWidth: 240
+    - name: Flow spare
+      type: rectangle
+      parent: null
+      geometry:
+        x: 400
+        y: 0
+        width: 38
+        height: 20
+      visible: true
+      locked: false
+      fill: D9D9D9
+  text:
+    pages: *id001
+    current_page: Desktop
+    objects:
+    - name: Paragraph
+      type: text
+      parent: null
+      geometry:
+        x: 0
+        y: 0
+        width: 275
+        height: 32
+      visible: true
+      locked: false
+      text: Review a shared workspace and turn feedback into clear next steps.
+      font:
+        family: Inter
+        style: Regular
+        size: 12
+        lineHeight: 16
+      textSizing: auto-height
+    - name: Text Frame
+      type: frame
+      parent: null
+      geometry:
+        x: 0
+        y: 200
+        width: 320
+        height: 200
+      visible: true
+      locked: false
+  paint:
+    pages: *id001
+    current_page: Desktop
+    objects:
+    - name: Paint
+      type: rectangle
+      parent: null
+      geometry:
+        x: 0
+        y: 0
+        width: 160
+        height: 80
+      visible: true
+      locked: false
+      fill: D9D9D9
+    - name: Circle
+      type: ellipse
+      parent: null
+      geometry:
+        x: 200
+        y: 0
+        width: 80
+        height: 80
+      visible: true
+      locked: false
+      fill: D9D9D9
+  components:
+    pages:
+    - Desktop
+    - Mobile
+    current_page: Desktop
+    objects:
+    - name: Dot
+      type: component
+      parent: null
+      geometry:
+        x: 0
+        y: 0
+        width: 16
+        height: 16
+      visible: true
+      locked: false
+      fill: '000000'
+      cornerRadius: 8
+    - name: Square
+      type: component
+      parent: null
+      geometry:
+        x: 40
+        y: 0
+        width: 16
+        height: 16
+      visible: true
+      locked: false
+      fill: '000000'
+    - name: Button
+      type: component
+      parent: null
+      geometry:
+        x: 0
+        y: 100
+        width: 130
+        height: 37
+      visible: true
+      locked: false
+      fill: D9D9D9
+      layout:
+        direction: horizontal
+        width: hug
+        height: hug
+        padding: 10
+        gap: 10
+      properties:
+        Label:
+          type: text
+          default: Continue
+          target: Button label
+        Show icon:
+          type: boolean
+          default: true
+          target: Button icon
+        Icon:
+          type: instance-swap
+          default: Dot
+          target: Button icon
+    - name: Button icon
+      type: instance
+      parent: Button
+      geometry:
+        x: 10
+        y: 10
+        width: 16
+        height: 16
+      visible: true
+      locked: false
+      source: Dot
+    - name: Button label
+      type: text
+      parent: Button
+      geometry:
+        x: 36
+        y: 10
+        width: 74
+        height: 17
+      visible: true
+      locked: false
+      text: Continue
+      textSizing: auto-width
+      font:
+        family: Inter
+        style: Regular
+        size: 12
+        lineHeight: auto
+    - name: Instance A
+      type: instance
+      parent: null
+      geometry:
+        x: 0
+        y: 200
+        width: 130
+        height: 37
+      visible: true
+      locked: false
+      source: Button
+    - name: Instance B
+      type: instance
+      parent: null
+      geometry:
+        x: 0
+        y: 300
+        width: 130
+        height: 37
+      visible: true
+      locked: false
+      source: Button
+      page: Mobile
+    instance_expansion: Instances have independent child nodes. Each public child
+      alias is instance name/source child name. Source identities and mappings remain
+      available. Font and layout calculate initial geometry. Width130 is reserved
+      space; Hug uses actual content and layout.
+  variants:
+    pages: *id001
+    current_page: Desktop
+    objects:
+    - name: Button states
+      type: component-set
+      parent: null
+      geometry:
+        x: 0
+        y: 0
+        width: 250
+        height: 100
+      visible: true
+      locked: false
+    - name: Default button
+      type: component
+      parent: Button states
+      geometry:
+        x: 0
+        y: 0
+        width: 100
+        height: 37
+      visible: true
+      locked: false
+      fill: 3366FF
+      variant:
+        State: Default
+    - name: Default label
+      type: text
+      parent: Default button
+      geometry:
+        x: 10
+        y: 10
+        width: 80
+        height: 17
+      visible: true
+      locked: false
+      text: Continue
+      font:
+        family: Inter
+        style: Regular
+        size: 12
+        lineHeight: auto
+    - name: Active button
+      type: component
+      parent: Button states
+      geometry:
+        x: 120
+        y: 0
+        width: 100
+        height: 37
+      visible: true
+      locked: false
+      fill: 8B5CF6
+      variant:
+        State: Active
+    - name: Active label
+      type: text
+      parent: Active button
+      geometry:
+        x: 10
+        y: 10
+        width: 80
+        height: 17
+      visible: true
+      locked: false
+      text: Continue
+      font:
+        family: Inter
+        style: Regular
+        size: 12
+        lineHeight: auto
+    - name: State instance
+      type: instance
+      parent: null
+      geometry:
+        x: 0
+        y: 200
+        width: 100
+        height: 37
+      visible: true
+      locked: false
+      source: Default button
+      overrides:
+        Label.text: Proceed
+    matching_layers: Default label and Active label are public aliases. Both corresponding
+      layer names are Label. The read-only adapter maps aliases; actual layer names
+      determine override matching.
+    instance_expansion: The unique text descendant uses public alias State instance/Label.
+      Both variant descendants have display name Label. sourceId follows the selected
+      variant; matching layers retain the text override.
+  styles:
+    pages: *id001
+    current_page: Desktop
+    objects:
+    - name: Bound
+      type: rectangle
+      parent: null
+      geometry:
+        x: 0
+        y: 0
+        width: 80
+        height: 60
+      visible: true
+      locked: false
+      fill: F43F5E
+      styles:
+        fill: Color/Action
+    - name: Detached
+      type: rectangle
+      parent: null
+      geometry:
+        x: 120
+        y: 0
+        width: 80
+        height: 60
+      visible: true
+      locked: false
+      fill: F43F5E
+      styles:
+        fill: Color/Action
+    - name: Styled text
+      type: text
+      parent: null
+      geometry:
+        x: 0
+        y: 120
+        width: 240
+        height: 32
+      visible: true
+      locked: false
+      text: Continue
+      font:
+        family: Inter
+        style: Medium
+        size: 24
+        lineHeight: 32
+      styles:
+        text: Type/Action
+    styles:
+      Color/Action:
+        type: color
+        color: F43F5E
+      Type/Action:
+        type: text
+        family: Inter
+        style: Medium
+        size: 24
+        lineHeight: 32
+  assets:
+    pages: *id001
+    current_page: Desktop
+    objects:
+    - name: Image box
+      type: rectangle
+      parent: null
+      geometry:
+        x: 0
+        y: 0
+        width: 80
+        height: 80
+      visible: true
+      locked: false
+    - name: Icon frame
+      type: frame
+      parent: null
+      geometry:
+        x: 200
+        y: 0
+        width: 24
+        height: 24
+      visible: true
+      locked: false
+  export:
+    pages: *id001
+    current_page: Desktop
+    objects:
+    - name: Export frame
+      type: frame
+      parent: null
+      geometry:
+        x: 0
+        y: 0
+        width: 320
+        height: 240
+      visible: true
+      locked: false
+      fill: FFFFFF
+    - name: Export surface
+      type: rectangle
+      parent: Export frame
+      geometry:
+        x: 20
+        y: 20
+        width: 160
+        height: 80
+      visible: true
+      locked: false
+      fill: 3366FF
+    - name: Export text
+      type: text
+      parent: Export frame
+      geometry:
+        x: 20
+        y: 120
+        width: 160
+        height: 32
+      visible: true
+      locked: false
+      text: Arc Bench
+      font:
+        family: Inter
+        style: Regular
+        size: 24
+        lineHeight: 32
+  selection:
+    pages: *id001
+    current_page: Desktop
+    objects:
+    - name: Select A
+      type: rectangle
+      parent: null
+      geometry:
+        x: 20
+        y: 20
+        width: 60
+        height: 40
+      visible: true
+      locked: false
+    - name: Select B
+      type: rectangle
+      parent: null
+      geometry:
+        x: 140
+        y: 20
+        width: 60
+        height: 40
+      visible: true
+      locked: false
+  new-component:
+    pages: *id001
+    current_page: Desktop
+    objects:
+    - name: New source
+      type: frame
+      parent: null
+      geometry:
+        x: 0
+        y: 0
+        width: 160
+        height: 50
+      visible: true
+      locked: false
+      fill: D9D9D9
+    - name: New label
+      type: text
+      parent: New source
+      geometry:
+        x: 10
+        y: 10
+        width: 100
+        height: 30
+      visible: true
+      locked: false
+      text: Continue
+      font:
+        family: Inter
+        style: Regular
+        size: 16
+        lineHeight: 24
+  image-filled:
+    pages: *id001
+    current_page: Desktop
+    objects:
+    - name: Image box
+      type: rectangle
+      parent: null
+      geometry:
+        x: 0
+        y: 0
+        width: 80
+        height: 80
+      visible: true
+      locked: false
+      image:
+        fixture: fixtures/quadrants-120x80.png
+        mode: fill
+        sourceWidth: 120
+        sourceHeight: 80
+  icon:
+    pages: *id001
+    current_page: Desktop
+    objects:
+    - name: Arrow
+      type: vector
+      parent: null
+      geometry:
+        x: 4
+        y: 5
+        width: 16
+        height: 14
+      visible: true
+      locked: false
+      vector:
+        source: fixtures/arrow-24.svg
+        path: M4 10H13V5L20 12L13 19V14H4Z
+        pathCount: 1
+      fill: 2563EB
+  nested:
+    pages: *id001
+    current_page: Desktop
+    objects:
+    - name: List
+      type: frame
+      parent: null
+      geometry:
+        x: 0
+        y: 0
+        width: 200
+        height: 120
+      visible: true
+      locked: false
+      layout:
+        direction: vertical
+        width: fixed
+        height: hug
+        padding: 10
+        gap: 10
+    - name: Row
+      type: frame
+      parent: List
+      geometry:
+        x: 10
+        y: 10
+        width: 180
+        height: 40
+      visible: true
+      locked: false
+      layout:
+        direction: horizontal
+        width: fill
+        height: hug
+        padding: 5
+        gap: 10
+        align: center
+    - name: Row icon
+      type: rectangle
+      parent: Row
+      geometry:
+        x: 5
+        y: 5
+        width: 30
+        height: 30
+      visible: true
+      locked: false
+    - name: Row text
+      type: text
+      parent: Row
+      geometry:
+        x: 45
+        y: 8
+        width: 130
+        height: 24
+      visible: true
+      locked: false
+      text: Next
+      textSizing: auto-height
+      font:
+        family: Inter
+        style: Regular
+        size: 16
+        lineHeight: 24
+      layout:
+        width: fill
+        height: hug
+    - name: Footer
+      type: rectangle
+      parent: List
+      geometry:
+        x: 10
+        y: 60
+        width: 80
+        height: 50
+      visible: true
+      locked: false
+  text-flow:
+    pages:
+    - Desktop
+    current_page: Desktop
+    objects:
+    - name: Text flow
+      type: frame
+      parent: null
+      geometry:
+        x: 0
+        y: 0
+        width: 275
+        height: 82
+      visible: true
+      locked: false
+      layout:
+        direction: vertical
+        width: fixed
+        height: hug
+        padding: 10
+        gap: 10
+    - name: Flow paragraph
+      type: text
+      parent: Text flow
+      geometry:
+        x: 10
+        y: 10
+        width: 255
+        height: 32
+      visible: true
+      locked: false
+      text: Review a shared workspace and turn feedback into clear next steps.
+      font:
+        family: Inter
+        style: Regular
+        size: 12
+        lineHeight: 16
+      textSizing: auto-height
+      layout:
+        width: fill
+        height: hug
+    - name: Flow sibling
+      type: rectangle
+      parent: Text flow
+      geometry:
+        x: 10
+        y: 52
+        width: 40
+        height: 20
+      visible: true
+      locked: false
+  design-workflow:
+    pages:
+    - Desktop
+    - Mobile
+    current_page: Desktop
+    objects:
+    - name: Card
+      type: component
+      parent: null
+      geometry:
+        x: 0
+        y: 420
+        width: 200
+        height: 110
+      visible: true
+      locked: false
+      fill: D9D9D9
+      layout:
+        direction: vertical
+        width: fixed
+        height: hug
+        padding: 10
+        gap: 10
+        align: start
+      properties:
+        Label:
+          type: text
+          default: Explore
+          target: Card label
+    - name: Card image
+      type: rectangle
+      parent: Card
+      geometry:
+        x: 10
+        y: 10
+        width: 180
+        height: 60
+      visible: true
+      locked: false
+      layout:
+        width: fill
+        height: fixed
+      fill: 3366FF
+    - name: Card label
+      type: text
+      parent: Card
+      geometry:
+        x: 10
+        y: 80
+        width: 180
+        height: 20
+      visible: true
+      locked: false
+      layout:
+        width: fill
+        height: fixed
+      text: Explore
+      textSizing: fixed
+      font:
+        family: Inter
+        style: Regular
+        size: 14
+        lineHeight: 20
+      styles:
+        text: Type/Card
+    - name: Desktop list
+      type: frame
+      parent: null
+      geometry:
+        x: 0
+        y: 0
+        width: 500
+        height: 130
+      visible: true
+      locked: false
+      page: Desktop
+      layout:
+        direction: horizontal
+        wrap: true
+        width: fixed
+        height: hug
+        padding: 10
+        gap: 20
+        counterGap: 20
+        align: start
+    - name: Mobile list
+      type: frame
+      parent: null
+      geometry:
+        x: 0
+        y: 0
+        width: 260
+        height: 130
+      visible: true
+      locked: false
+      page: Mobile
+      layout:
+        direction: horizontal
+        wrap: true
+        width: fixed
+        height: hug
+        padding: 10
+        gap: 20
+        counterGap: 20
+        align: start
+    - name: Desktop card A
+      type: instance
+      parent: Desktop list
+      geometry:
+        x: 10
+        y: 10
+        width: 230
+        height: 110
+      visible: true
+      locked: false
+      page: Desktop
+      source: Card
+      layout:
+        width: fill
+        height: hug
+        minWidth: 200
+    - name: Desktop card B
+      type: instance
+      parent: Desktop list
+      geometry:
+        x: 260
+        y: 10
+        width: 230
+        height: 110
+      visible: true
+      locked: false
+      page: Desktop
+      source: Card
+      layout:
+        width: fill
+        height: hug
+        minWidth: 200
+    - name: Mobile card
+      type: instance
+      parent: Mobile list
+      geometry:
+        x: 10
+        y: 10
+        width: 240
+        height: 110
+      visible: true
+      locked: false
+      page: Mobile
+      source: Card
+      layout:
+        width: fill
+        height: hug
+        minWidth: 200
+    styles:
+      Type/Card:
+        type: text
+        family: Inter
+        style: Regular
+        size: 14
+        lineHeight: 20
+    instance_expansion: Independent descendants use the same expansion rule as components.
+      Aliases use instance name/source child name. Local Style links and source mappings
+      remain. Parent layout determines instance width and its internal Fill widths.
+    derivation: Card Height is 10+60+10+20+10=110. Desktop content Width480 gives
+      two Fill widths230. Mobile content Width240 gives one card Width240. Desktop
+      Width260 wraps the minWidth200 cards into separate rows at Width240. The second
+      card Y is140, and list Height is260. Fixed text Height20 remains during font-size
+      edits. These values are away from integer line-break thresholds.

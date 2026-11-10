@@ -1,0 +1,49 @@
+{
+  "icons": [
+    {
+      "id": "CreateComponent",
+      "file": "CreateComponent.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "1d895ba9ab1366f0f5ee8d2659a43fd7ed4acdb96c5e0964111a6e011e48133c",
+      "source": "evidence/figma-components-lifecycle-20261101/icons/CreateComponent.svg",
+      "raw_sha256": "b7fa9aef2d610c50ab6e8054408f7df89a4527071b0cc036a6398520ec6f38b7"
+    },
+    {
+      "id": "PropertyText",
+      "file": "PropertyText.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "9578be431b793865738a70de098dc305e181148013d6bd834beb6bf222a09b8b",
+      "source": "evidence/figma-components-lifecycle-20261101/icons/PropertyText.svg",
+      "raw_sha256": "0150bbb50ef7004fbf5f6a999de4a7902977082dad9606b7c39a8bbf846b5ed8"
+    },
+    {
+      "id": "ApplyProperty",
+      "file": "ApplyProperty.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "6adfe41d40bd3d4528c4caadbadc943ea87ae850cb36a4898e504c4404f0522a",
+      "source": "evidence/figma-components-lifecycle-20261101/icons/ApplyProperty.svg",
+      "raw_sha256": "deb1e21b42ce08fb2f20f8a57938a04e47728dce55fd208197867c1c6ef87c1e"
+    },
+    {
+      "id": "ResetInstance",
+      "file": "ResetInstance.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "452a6a817641684bc52cbb2d46dbdf86bb789d9d28132b94b25cb6eb24c6cc67",
+      "source": "evidence/figma-components-lifecycle-20261101/icons/ResetInstance.svg",
+      "raw_sha256": "914932da26f69e591797b7b66cc9ffce4b887fa2b5b006ccf800e9283ecf0af7"
+    },
+    {
+      "id": "DetachInstance",
+      "file": "DetachInstance.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "fa2981746abdf04b724738c90a0ac33916dc128dac4b84210e619f25e588186a",
+      "source": "evidence/figma-components-lifecycle-20261101/icons/DetachInstance.svg",
+      "raw_sha256": "27cf25c7ffa636f3016d364862c9bd491e309483ed73274f83d6d249b6e501d1"
+    }
+  ]
+}

@@ -1,0 +1,1697 @@
+{
+  "name": "figma-icons",
+  "version": "0.3.1",
+  "runtime_base": "/resources/",
+  "icons": {
+    "appearance/LayerOpacity": {
+      "id": "appearance/LayerOpacity",
+      "file": "appearance-icons/LayerOpacity.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "223067008410eececb17536f4d0994361a773539d6b72de6e1e4586f47c6b914",
+      "kind": "fixed-icon"
+    },
+    "appearance/CornerRadius": {
+      "id": "appearance/CornerRadius",
+      "file": "appearance-icons/CornerRadius.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "00382cc6a221d004fe0a838e4732321e807834fab7f79b30fa081875bfdf3e31",
+      "kind": "fixed-icon"
+    },
+    "appearance/CornerSmoothing": {
+      "id": "appearance/CornerSmoothing",
+      "file": "appearance-icons/CornerSmoothing.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "b09037397d3d1007eac612d6828e25471e63411a90a2a0262b69b8add25ffe44",
+      "kind": "fixed-icon"
+    },
+    "appearance/CornerTopLeft": {
+      "id": "appearance/CornerTopLeft",
+      "file": "appearance-icons/CornerTopLeft.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "d6fd8b8fa192598a602e7b10aaebe1b7bafe73836a24895a29daf407c8778e3f",
+      "kind": "fixed-icon"
+    },
+    "appearance/CornerTopRight": {
+      "id": "appearance/CornerTopRight",
+      "file": "appearance-icons/CornerTopRight.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "2d50b635336a146142503f9dda621df1837cb2a47d7e2f58b4f9d8100748e469",
+      "kind": "fixed-icon"
+    },
+    "appearance/CornerBottomLeft": {
+      "id": "appearance/CornerBottomLeft",
+      "file": "appearance-icons/CornerBottomLeft.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "085c1df59cec0fafd78451ea7ab87630a46b53c0b849f1cdf40c746409b6ae0b",
+      "kind": "fixed-icon"
+    },
+    "appearance/CornerBottomRight": {
+      "id": "appearance/CornerBottomRight",
+      "file": "appearance-icons/CornerBottomRight.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "0d10a6a88997769e0f0c78cffe4ff74eae1dd409edc5dbdde4e3d9a2ccfbd2b4",
+      "kind": "fixed-icon"
+    },
+    "color/SampleColor": {
+      "id": "color/SampleColor",
+      "file": "color-icons/SampleColor.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "464537e43ea955d33787fe9f7a18035fcc534999cb3ae4ed1bbb9351e30267d4",
+      "kind": "fixed-icon"
+    },
+    "component/CreateComponent": {
+      "id": "component/CreateComponent",
+      "file": "component-icons/CreateComponent.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "1d895ba9ab1366f0f5ee8d2659a43fd7ed4acdb96c5e0964111a6e011e48133c",
+      "kind": "fixed-icon"
+    },
+    "component/PropertyText": {
+      "id": "component/PropertyText",
+      "file": "component-icons/PropertyText.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "9578be431b793865738a70de098dc305e181148013d6bd834beb6bf222a09b8b",
+      "kind": "fixed-icon"
+    },
+    "component/ApplyProperty": {
+      "id": "component/ApplyProperty",
+      "file": "component-icons/ApplyProperty.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "6adfe41d40bd3d4528c4caadbadc943ea87ae850cb36a4898e504c4404f0522a",
+      "kind": "fixed-icon"
+    },
+    "component/ResetInstance": {
+      "id": "component/ResetInstance",
+      "file": "component-icons/ResetInstance.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "452a6a817641684bc52cbb2d46dbdf86bb789d9d28132b94b25cb6eb24c6cc67",
+      "kind": "fixed-icon"
+    },
+    "component/DetachInstance": {
+      "id": "component/DetachInstance",
+      "file": "component-icons/DetachInstance.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "fa2981746abdf04b724738c90a0ac33916dc128dac4b84210e619f25e588186a",
+      "kind": "fixed-icon"
+    },
+    "editor/ToolMove": {
+      "id": "editor/ToolMove",
+      "file": "editor-icons/ToolMove.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "c9185e491e924a37e9a0b7172a693251b5eea2c6c09c0e6462bb3099ccb812d3",
+      "kind": "fixed-icon"
+    },
+    "editor/ToolFrame": {
+      "id": "editor/ToolFrame",
+      "file": "editor-icons/ToolFrame.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "c1e7bd8e6b82c9fc69a640c7707c6800ce414ec14f189d75ed29f75fcf22c79d",
+      "kind": "fixed-icon"
+    },
+    "editor/ToolRectangle": {
+      "id": "editor/ToolRectangle",
+      "file": "editor-icons/ToolRectangle.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "13267de4be5457c52bcb432732ed0e6b3060844ecb4c29a929e22fd9646a8f32",
+      "kind": "fixed-icon"
+    },
+    "editor/ToolText": {
+      "id": "editor/ToolText",
+      "file": "editor-icons/ToolText.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "cb176037956973b5c7c1bc502ea93285add8c7b93835884805a932356c2d8b48",
+      "kind": "fixed-icon"
+    },
+    "editor/NavMenu": {
+      "id": "editor/NavMenu",
+      "file": "editor-icons/NavMenu.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "a47e0fce130bc144b0f39de8a595e9ca79df4e24102d8609da3edfff3ccefde9",
+      "kind": "fixed-icon"
+    },
+    "editor/NavFile": {
+      "id": "editor/NavFile",
+      "file": "editor-icons/NavFile.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "06280bf3c84032dd5213b9ed8d7fa4dbc542b06de91e5ec4f8cb2b00895f841b",
+      "kind": "fixed-icon"
+    },
+    "editor/NavAssets": {
+      "id": "editor/NavAssets",
+      "file": "editor-icons/NavAssets.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "29c1714e9f6df939d61c72d5bc2b0b20c9b52cafe5cf0a928f00a139fc6b0f45",
+      "kind": "fixed-icon"
+    },
+    "editor/ToolSection": {
+      "id": "editor/ToolSection",
+      "file": "editor-icons/ToolSection.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "02af5d136224ed498ce56901c066b9a460353c3facde9da04713b46f4e80fc86",
+      "kind": "fixed-icon"
+    },
+    "editor/ToolEllipse": {
+      "id": "editor/ToolEllipse",
+      "file": "editor-icons/ToolEllipse.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "6e3fb19722f0dbc4ba4faee1112eb722f289ac9b5e443d48b53f7b29c635d272",
+      "kind": "fixed-icon"
+    },
+    "editor/ToolLine": {
+      "id": "editor/ToolLine",
+      "file": "editor-icons/ToolLine.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "2ea90d79227d117bfb4fb051b57309f3f7000d1d57c57e54696830450fff5db3",
+      "kind": "fixed-icon"
+    },
+    "editor/ToolArrow": {
+      "id": "editor/ToolArrow",
+      "file": "editor-icons/ToolArrow.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "1771740f8c13d7c83a95e00ee109df241f5d762e340be4c19c62257173306c71",
+      "kind": "fixed-icon"
+    },
+    "editor/ToolHand": {
+      "id": "editor/ToolHand",
+      "file": "editor-icons/ToolHand.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "2c112ddc1f30ad8824fecfe7f2d3333dcbc7ea2a63eb6850527642986c863a71",
+      "kind": "fixed-icon"
+    },
+    "editor/MenuMove": {
+      "id": "editor/MenuMove",
+      "file": "editor-icons/MenuMove.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "ad9f69418a80cfd5bd1f8ba7e32c03968b661e64df75d6dd1bf9a333ee483af0",
+      "kind": "fixed-icon"
+    },
+    "editor/MenuHand": {
+      "id": "editor/MenuHand",
+      "file": "editor-icons/MenuHand.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "e57a0e8874a2f3a0f171e039d8daf42d16ae07accdd2194a87412095d2098be6",
+      "kind": "fixed-icon"
+    },
+    "editor/MenuFrame": {
+      "id": "editor/MenuFrame",
+      "file": "editor-icons/MenuFrame.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "7899b23b17013385bbd2bba2f4848b9ba5f4db845dc3011b02cb20fbfcc8424f",
+      "kind": "fixed-icon"
+    },
+    "editor/MenuSection": {
+      "id": "editor/MenuSection",
+      "file": "editor-icons/MenuSection.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "80481b4c527d5a7bc4a7d29a43843534188b1c7bf3510820c6e403117dbfd29a",
+      "kind": "fixed-icon"
+    },
+    "editor/MenuRectangle": {
+      "id": "editor/MenuRectangle",
+      "file": "editor-icons/MenuRectangle.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "9136a9ecb5f7b607905dd13fd7fb28d106918b045b018694c8d9ef081ca0bd7f",
+      "kind": "fixed-icon"
+    },
+    "editor/MenuLine": {
+      "id": "editor/MenuLine",
+      "file": "editor-icons/MenuLine.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "a99ef16d9f1962396ad4e8b63ffa427155a5aa7560434a1d2bcb62b2155d8596",
+      "kind": "fixed-icon"
+    },
+    "editor/MenuArrow": {
+      "id": "editor/MenuArrow",
+      "file": "editor-icons/MenuArrow.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "ca8fca70d2e5039a0d4fc893e4bdda2502023df5213395d4c4d8dd62c7dddcdd",
+      "kind": "fixed-icon"
+    },
+    "editor/MenuEllipse": {
+      "id": "editor/MenuEllipse",
+      "file": "editor-icons/MenuEllipse.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "f99dde8c744da6d14e355e6de4a5569de8071e77b97b1de1866d62a447851ced",
+      "kind": "fixed-icon"
+    },
+    "editor/MenuPlaceImage": {
+      "id": "editor/MenuPlaceImage",
+      "file": "editor-icons/MenuPlaceImage.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "bcc98f16dba4e677b052a05a610cab89550a4cf4cf3e8366217ca4c0c6744365",
+      "kind": "fixed-icon"
+    },
+    "editor/MenuCheck": {
+      "id": "editor/MenuCheck",
+      "file": "editor-icons/MenuCheck.svg",
+      "width": 16,
+      "height": 16,
+      "viewBox": "0 0 16 16",
+      "sha256": "78c1288464b9a7c5df2535664586d92facb72322785191277f7a607518d8b84d",
+      "kind": "fixed-icon"
+    },
+    "effects/DropShadow": {
+      "id": "effects/DropShadow",
+      "file": "effects-icons/DropShadow.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "79ed3d7b1cd44c325f27ee9425f148849fc8f4361ce321d2aa3e26924daf257b",
+      "kind": "fixed-icon"
+    },
+    "effects/ShadowBlur": {
+      "id": "effects/ShadowBlur",
+      "file": "effects-icons/ShadowBlur.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "fdb811b7c49773d036f39b6e836fb4673fb4eb7952d26eb048f9bb90a32363a0",
+      "kind": "fixed-icon"
+    },
+    "effects/ShadowSpread": {
+      "id": "effects/ShadowSpread",
+      "file": "effects-icons/ShadowSpread.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "0ca93d1345404df971195d689ba635ab995b0d877542da9175d229113e185006",
+      "kind": "fixed-icon"
+    },
+    "effects/EffectClose": {
+      "id": "effects/EffectClose",
+      "file": "effects-icons/EffectClose.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "114c6092738a7e2d4f12ab97eb49661819684cdcaf377c58715c5edae9bb73ab",
+      "kind": "fixed-icon"
+    },
+    "export/ExportOptions": {
+      "id": "export/ExportOptions",
+      "file": "export-icons/ExportOptions.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "f361656358fffccd241c61fb3c53b017b7f7066d72e4b522b40cb7ec30533c01",
+      "kind": "fixed-icon"
+    },
+    "image/CropAspectRatio": {
+      "id": "image/CropAspectRatio",
+      "file": "image-icons/CropAspectRatio.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "0428457fb93f73465e16a53da4d31abd4193349102ac5ad430fcd9f09f3b0699",
+      "kind": "fixed-icon"
+    },
+    "image/ImageCrop": {
+      "id": "image/ImageCrop",
+      "file": "image-icons/ImageCrop.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "b0c1d26c10b45ff3839df44d61a35a6bdf1dfa5289ef79b1ba9c2f86e471b63a",
+      "kind": "fixed-icon"
+    },
+    "image/ImageRotate90": {
+      "id": "image/ImageRotate90",
+      "file": "image-icons/ImageRotate90.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "db0a96b65ab751eab5f3dcaf19b4adf22841a7247c086e04312150a4c575c324",
+      "kind": "fixed-icon"
+    },
+    "layer/LayerFrame": {
+      "id": "layer/LayerFrame",
+      "file": "layer-icons/LayerFrame.svg",
+      "width": 16,
+      "height": 16,
+      "viewBox": "0 0 16 16",
+      "sha256": "106654fbe59dac3161003899277f6c5e04dcbb919005b50b01bc80750d9aacbe",
+      "kind": "fixed-icon"
+    },
+    "layer/LayerGroup": {
+      "id": "layer/LayerGroup",
+      "file": "layer-icons/LayerGroup.svg",
+      "width": 16,
+      "height": 16,
+      "viewBox": "0 0 16 16",
+      "sha256": "a87c0ecc974b98835bab689136c822404cbf3ef56c355e0fa8cf61979bdf9855",
+      "kind": "fixed-icon"
+    },
+    "layer/LayerComponent": {
+      "id": "layer/LayerComponent",
+      "file": "layer-icons/LayerComponent.svg",
+      "width": 16,
+      "height": 16,
+      "viewBox": "0 0 16 16",
+      "sha256": "263570aa2a061545728b0ae12c798263b167df6ff427bbad8a91400a829baf01",
+      "kind": "fixed-icon"
+    },
+    "layer/LayerVariant": {
+      "id": "layer/LayerVariant",
+      "file": "layer-icons/LayerVariant.svg",
+      "width": 16,
+      "height": 16,
+      "viewBox": "0 0 16 16",
+      "sha256": "baa0b73cb863a2add2c80cf945dfa1e63d6ae86698cd9bb1f10f490ea739fbc5",
+      "kind": "fixed-icon"
+    },
+    "layer/LayerInstance": {
+      "id": "layer/LayerInstance",
+      "file": "layer-icons/LayerInstance.svg",
+      "width": 16,
+      "height": 16,
+      "viewBox": "0 0 16 16",
+      "sha256": "d9022b7f18206d5d3a410149904f72a91d14ee20cf3c378cb36044bb917f8e5b",
+      "kind": "fixed-icon"
+    },
+    "layer/LayerText": {
+      "id": "layer/LayerText",
+      "file": "layer-icons/LayerText.svg",
+      "width": 16,
+      "height": 16,
+      "viewBox": "0 0 16 16",
+      "sha256": "4aae81fb016663c02e2e3b6b131288312be9d4588d8788abfae733dbeca65402",
+      "kind": "fixed-icon"
+    },
+    "layer/LayerImage": {
+      "id": "layer/LayerImage",
+      "file": "layer-icons/LayerImage.svg",
+      "width": 16,
+      "height": 16,
+      "viewBox": "0 0 16 16",
+      "sha256": "574606cea0ad38b9efb5744a47902b122425bf753e5e071e8e86720fd572b8fd",
+      "kind": "fixed-icon"
+    },
+    "layer/LayerSection": {
+      "id": "layer/LayerSection",
+      "file": "layer-icons/LayerSection.svg",
+      "width": 16,
+      "height": 16,
+      "viewBox": "0 0 16 16",
+      "sha256": "bc826e5a4ab3a3f1bab372f000d0eb529590efcb658faa00bc44041ce642e54d",
+      "kind": "fixed-icon"
+    },
+    "layer/LayerFlowVertical": {
+      "id": "layer/LayerFlowVertical",
+      "file": "layer-icons/LayerFlowVertical.svg",
+      "width": 16,
+      "height": 16,
+      "viewBox": "0 0 16 16",
+      "sha256": "c1d1c3a77796f525bc2c70a2562bc54133dbd903baed419113984c5b2c10306a",
+      "kind": "fixed-icon"
+    },
+    "layer/LayerFlowHorizontal": {
+      "id": "layer/LayerFlowHorizontal",
+      "file": "layer-icons/LayerFlowHorizontal.svg",
+      "width": 16,
+      "height": 16,
+      "viewBox": "0 0 16 16",
+      "sha256": "3893147cbbea8dfe5870724e4879b6a9e723811e57ed332bedde05de6ef34aad",
+      "kind": "fixed-icon"
+    },
+    "layer/LayerFlowGrid": {
+      "id": "layer/LayerFlowGrid",
+      "file": "layer-icons/LayerFlowGrid.svg",
+      "width": 16,
+      "height": 16,
+      "viewBox": "0 0 16 16",
+      "sha256": "fcabed32d1c9b900daf4b136ab59e6b93d04ed5ea8e92308cc50037a6530e6d1",
+      "kind": "fixed-icon"
+    },
+    "layer/LayerUnlocked": {
+      "id": "layer/LayerUnlocked",
+      "file": "layer-icons/LayerUnlocked.svg",
+      "width": 16,
+      "height": 16,
+      "viewBox": "0 0 16 16",
+      "sha256": "a27cbc37a70fea8db21109747539f0bde34b8eacfe44ebef8ac88a3482607aa8",
+      "kind": "fixed-icon"
+    },
+    "layer/LayerLocked": {
+      "id": "layer/LayerLocked",
+      "file": "layer-icons/LayerLocked.svg",
+      "width": 16,
+      "height": 16,
+      "viewBox": "0 0 16 16",
+      "sha256": "76d5fe0f7116ec59edfbdcd018ae29ea63e38b01be7bbdcea38dfda6d63916a1",
+      "kind": "fixed-icon"
+    },
+    "layer/LayerVisible": {
+      "id": "layer/LayerVisible",
+      "file": "layer-icons/LayerVisible.svg",
+      "width": 16,
+      "height": 16,
+      "viewBox": "0 0 16 16",
+      "sha256": "47fe99c6121fa015adc7b8820ee8fd093d7ad3f833490ff4a7bb0dd53bf08d94",
+      "kind": "fixed-icon"
+    },
+    "layer/LayerHidden": {
+      "id": "layer/LayerHidden",
+      "file": "layer-icons/LayerHidden.svg",
+      "width": 16,
+      "height": 16,
+      "viewBox": "0 0 16 16",
+      "sha256": "6f24b00b1e798efdf8e9146b927c0714cb0b0f30192915f46cf8852b59893ad6",
+      "kind": "fixed-icon"
+    },
+    "layer/OutlineRectangleExample": {
+      "id": "layer/OutlineRectangleExample",
+      "file": "layer-icons/OutlineRectangleExample.svg",
+      "width": 10,
+      "height": 10,
+      "viewBox": null,
+      "sha256": "47667890e7effd361273f9c6985ac0f0928c97a9ead63a88dfdc27dd5215b15b",
+      "kind": "geometry-example"
+    },
+    "layer/OutlineEllipseExample": {
+      "id": "layer/OutlineEllipseExample",
+      "file": "layer-icons/OutlineEllipseExample.svg",
+      "width": 10,
+      "height": 10,
+      "viewBox": null,
+      "sha256": "4c66759586d07a2c739b71d42b19aad8e4f5a5425e6f8bcfa682f80df8da01a6",
+      "kind": "geometry-example"
+    },
+    "layer/OutlineLineExample": {
+      "id": "layer/OutlineLineExample",
+      "file": "layer-icons/OutlineLineExample.svg",
+      "width": 10,
+      "height": 10,
+      "viewBox": null,
+      "sha256": "29edafc1da7f291e1c2a29f6e5093ea5bf6d580226967c934fcd66dee0df8db5",
+      "kind": "geometry-example"
+    },
+    "layout/FlowFreeform": {
+      "id": "layout/FlowFreeform",
+      "file": "layout-icons/FlowFreeform.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "a1554d83259f3fe398ba40e9df3943adb977958501b041c1497a343cd5ae5341",
+      "kind": "fixed-icon"
+    },
+    "layout/FlowVertical": {
+      "id": "layout/FlowVertical",
+      "file": "layout-icons/FlowVertical.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "675e4d875e1fa318597fc0d8f83fa106a5b7a2c314c803c9cd713c20dc2e05bc",
+      "kind": "fixed-icon"
+    },
+    "layout/FlowHorizontal": {
+      "id": "layout/FlowHorizontal",
+      "file": "layout-icons/FlowHorizontal.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "1e06e1e1116dd55407a91a1fe1a9d887321365ca2236f62570aceae879e27845",
+      "kind": "fixed-icon"
+    },
+    "layout/FlowGrid": {
+      "id": "layout/FlowGrid",
+      "file": "layout-icons/FlowGrid.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "f2204adad0fbc93f3c3a404076769bd5b92c5b05d0e895b793b2ba3a84cc80c9",
+      "kind": "fixed-icon"
+    },
+    "layout/AutoLayoutAdd": {
+      "id": "layout/AutoLayoutAdd",
+      "file": "layout-icons/AutoLayoutAdd.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "9278baaaaf8602209e7670f140b4d7c3a3a1deb6da5188803950dce0bcf71c1b",
+      "kind": "fixed-icon"
+    },
+    "layout/AspectRatioUnlocked": {
+      "id": "layout/AspectRatioUnlocked",
+      "file": "layout-icons/AspectRatioUnlocked.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "369b4b2ed64c1e09efe380e233863fe6a8bef4c6edefae3563d3986e040b4a45",
+      "kind": "fixed-icon"
+    },
+    "layout/Check": {
+      "id": "layout/Check",
+      "file": "layout-icons/Check.svg",
+      "width": 16,
+      "height": 16,
+      "viewBox": "0 0 16 16",
+      "sha256": "879ee4adfc570a5a4f1f19ebf85cbdf2f6c77e7fc1d5ed4476fc16126192fff5",
+      "kind": "fixed-icon"
+    },
+    "layout/ResizeToFit": {
+      "id": "layout/ResizeToFit",
+      "file": "layout-icons/ResizeToFit.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "6e7b0c33fd725e2dc7a9ef7d7f2687b3b2dc767c40d9ab1cb6611abf792a59ea",
+      "kind": "fixed-icon"
+    },
+    "layout/AutoLayoutActive": {
+      "id": "layout/AutoLayoutActive",
+      "file": "layout-icons/AutoLayoutActive.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "2853549599e63b2d2918570b3006cb67f37c69b8d90bdf967b13535f7114fd59",
+      "kind": "fixed-icon"
+    },
+    "layout/Wrap": {
+      "id": "layout/Wrap",
+      "file": "layout-icons/Wrap.svg",
+      "width": 16,
+      "height": 16,
+      "viewBox": "0 0 16 16",
+      "sha256": "ea36df3b3ad410b10d590702a2f642d3bdb218263b8536368d42442ff2add53c",
+      "kind": "fixed-icon"
+    },
+    "layout/GapHorizontal": {
+      "id": "layout/GapHorizontal",
+      "file": "layout-icons/GapHorizontal.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "26dc8c3da4c6a0a66241993965c487d6a8578ce4ec8d4d4649b60d36f9bcb5d4",
+      "kind": "fixed-icon"
+    },
+    "layout/ChevronDown": {
+      "id": "layout/ChevronDown",
+      "file": "layout-icons/ChevronDown.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "e9cf3da30f04a4b153c0548617ca4d1c1d3a625eedecfb05c938b1dca41e8d7c",
+      "kind": "fixed-icon"
+    },
+    "layout/AutoLayoutSettings": {
+      "id": "layout/AutoLayoutSettings",
+      "file": "layout-icons/AutoLayoutSettings.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "9368f95e4ee3f5547a0dfcdfc0d2924d02a904459f47524461982f2cefdec9fb",
+      "kind": "fixed-icon"
+    },
+    "layout/PaddingHorizontal": {
+      "id": "layout/PaddingHorizontal",
+      "file": "layout-icons/PaddingHorizontal.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "c99ef708be93e47f505e237092d40c3e9d04d3588a0beff56514bdd394dbc007",
+      "kind": "fixed-icon"
+    },
+    "layout/PaddingVertical": {
+      "id": "layout/PaddingVertical",
+      "file": "layout-icons/PaddingVertical.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "8370a73f058847ca8745353eac702cb149b1b990ceaf001d2ee745407480abcc",
+      "kind": "fixed-icon"
+    },
+    "layout/PaddingIndividual": {
+      "id": "layout/PaddingIndividual",
+      "file": "layout-icons/PaddingIndividual.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "c1ca05a0bd5bc9bd1d8f137b0e35ac5ddad8f69584a852577f2308eb15e97c97",
+      "kind": "fixed-icon"
+    },
+    "layout/GapVertical": {
+      "id": "layout/GapVertical",
+      "file": "layout-icons/GapVertical.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "439438a16004edd07caab6e870a1a3d83b8d7777e1a0a15f96f9ab9e31e0fefb",
+      "kind": "fixed-icon"
+    },
+    "layout/AspectRatioLocked": {
+      "id": "layout/AspectRatioLocked",
+      "file": "layout-icons/AspectRatioLocked.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "e12e785ed8706b0a9cb3b24f4c78e5823b0751f59025904e75652203b59e0c28",
+      "kind": "fixed-icon"
+    },
+    "layout/PaddingLeft": {
+      "id": "layout/PaddingLeft",
+      "file": "layout-icons/PaddingLeft.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "f68f393c3392bf80f35ad7a3aba7efd70b259820f8d735f0891d8dedd9f077f7",
+      "kind": "fixed-icon"
+    },
+    "layout/PaddingRight": {
+      "id": "layout/PaddingRight",
+      "file": "layout-icons/PaddingRight.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "eb9d6ae101d0cb1e674a140fa5cb00634289ea316aff00651b4bcafe7fb14ab6",
+      "kind": "fixed-icon"
+    },
+    "layout/PaddingTop": {
+      "id": "layout/PaddingTop",
+      "file": "layout-icons/PaddingTop.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "a3b3650c109d8912d60d36fe6c217b0714b8381df5ca8a4f5c2e130fc0b7123d",
+      "kind": "fixed-icon"
+    },
+    "layout/PaddingBottom": {
+      "id": "layout/PaddingBottom",
+      "file": "layout-icons/PaddingBottom.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "aeb4a7f9d041fa7091e7a59ea3d782a71d875e259e4504c95ebe23c4dc4effe7",
+      "kind": "fixed-icon"
+    },
+    "layout/GridAutoPositioning": {
+      "id": "layout/GridAutoPositioning",
+      "file": "layout-icons/GridAutoPositioning.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "9261cc25ca4fa1719b0688023a710e4acfcd3e47ea906ff7104a8c5223604210",
+      "kind": "fixed-icon"
+    },
+    "layout/GridColumns": {
+      "id": "layout/GridColumns",
+      "file": "layout-icons/GridColumns.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "a972e3816fc195c6de78f33942f9fadd422a199c226715995e8d4f60dfffb65d",
+      "kind": "fixed-icon"
+    },
+    "layout/GridRows": {
+      "id": "layout/GridRows",
+      "file": "layout-icons/GridRows.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "b7f2bd2dd900baff6deb290b5f573cbb7beda0e2b50132e19e4219baffc1a967",
+      "kind": "fixed-icon"
+    },
+    "layout/GridColumnSpan": {
+      "id": "layout/GridColumnSpan",
+      "file": "layout-icons/GridColumnSpan.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "fe0b8071695e7c5d505491baefc7538f0790a5da1a456922458f45ff7bcd3079",
+      "kind": "fixed-icon"
+    },
+    "layout/GridRowSpan": {
+      "id": "layout/GridRowSpan",
+      "file": "layout-icons/GridRowSpan.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "99e8383db43e249478fd90c8635a642b11cdc9e4b7e5b2dc8730249fb8515e39",
+      "kind": "fixed-icon"
+    },
+    "layout/WidthLimits": {
+      "id": "layout/WidthLimits",
+      "file": "layout-icons/WidthLimits.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "42c786af24cf498554119d0f57d764340ada0f6d35965ce1b955a3749ccd9719",
+      "kind": "fixed-icon"
+    },
+    "layout/HeightLimits": {
+      "id": "layout/HeightLimits",
+      "file": "layout-icons/HeightLimits.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "4a8c368d7dd7ab533efb52345940e8948a8400337eeaa545a52e37ff30164423",
+      "kind": "fixed-icon"
+    },
+    "layout/AddMinWidth": {
+      "id": "layout/AddMinWidth",
+      "file": "layout-icons/AddMinWidth.svg",
+      "width": 16,
+      "height": 16,
+      "viewBox": "0 0 16 16",
+      "sha256": "98759ea9fc2d940009c9be9f68b30efc1ea0e3f8ec07986e555b73126f765217",
+      "kind": "fixed-icon"
+    },
+    "layout/AddMaxWidth": {
+      "id": "layout/AddMaxWidth",
+      "file": "layout-icons/AddMaxWidth.svg",
+      "width": 16,
+      "height": 16,
+      "viewBox": "0 0 16 16",
+      "sha256": "d5af935f51fa07e5bcebefb22ff646a226ebf731c542d7fff85c1db2e808bec4",
+      "kind": "fixed-icon"
+    },
+    "layout/AddMinHeight": {
+      "id": "layout/AddMinHeight",
+      "file": "layout-icons/AddMinHeight.svg",
+      "width": 16,
+      "height": 16,
+      "viewBox": "0 0 16 16",
+      "sha256": "aa35668132a13ffbeb72d4920a43f7d166fdddd173fd4f7d4f9588d86effc51e",
+      "kind": "fixed-icon"
+    },
+    "layout/AddMaxHeight": {
+      "id": "layout/AddMaxHeight",
+      "file": "layout-icons/AddMaxHeight.svg",
+      "width": 16,
+      "height": 16,
+      "viewBox": "0 0 16 16",
+      "sha256": "9a7e595bd9e6276a89df622383ede1d4eff21523388cbd31cf780fa8cacb014c",
+      "kind": "fixed-icon"
+    },
+    "layout/SmartSpacingHorizontal": {
+      "id": "layout/SmartSpacingHorizontal",
+      "file": "layout-icons/SmartSpacingHorizontal.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "95668f8cce1b6b427e3e3b1f38634a0b1cd9bfb929f2a517f240247a87832b2d",
+      "kind": "fixed-icon"
+    },
+    "layout/SmartSpacingVertical": {
+      "id": "layout/SmartSpacingVertical",
+      "file": "layout-icons/SmartSpacingVertical.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "ba42825c6d208870311ff1bb1e77d77c37d52bcc43aea1dd4e9380203a59bc6d",
+      "kind": "fixed-icon"
+    },
+    "paint/PaintAdd": {
+      "id": "paint/PaintAdd",
+      "file": "paint-icons/PaintAdd.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "46de3a3a138fec233172c8a3ed0b3237eef848c11ed339a414c6b8b86b3dbc8e",
+      "kind": "fixed-icon"
+    },
+    "paint/ApplyStyles": {
+      "id": "paint/ApplyStyles",
+      "file": "paint-icons/ApplyStyles.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "93f543527edd94cd47038f06794e1cbfdae485a66bf21e2f144df11cf6990554",
+      "kind": "fixed-icon"
+    },
+    "paint/PaintVisible": {
+      "id": "paint/PaintVisible",
+      "file": "paint-icons/PaintVisible.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "7cfd6ee9c04436fe74c1f5bf3709294de2382ab9c95546bd6ee5892af0100dc4",
+      "kind": "fixed-icon"
+    },
+    "paint/PaintHidden": {
+      "id": "paint/PaintHidden",
+      "file": "paint-icons/PaintHidden.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "f5099b2fea332d41ee47f95ccef9c17b59105627e40b7e2eae51b7b409c067a7",
+      "kind": "fixed-icon"
+    },
+    "paint/PaintRemove": {
+      "id": "paint/PaintRemove",
+      "file": "paint-icons/PaintRemove.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "2524b7f90e835dbfaf947a9318ef3e22acb8ea9af63ef584cf6cfa86fe645c4e",
+      "kind": "fixed-icon"
+    },
+    "paint/PaintReorder": {
+      "id": "paint/PaintReorder",
+      "file": "paint-icons/PaintReorder.svg",
+      "width": 16,
+      "height": 32,
+      "viewBox": "0 0 16 32",
+      "sha256": "40a24a42b15b056236c762df5e9790e00fd24fc6acd98318a36e8ee01eb93ab1",
+      "kind": "fixed-icon"
+    },
+    "paint/GradientFlip": {
+      "id": "paint/GradientFlip",
+      "file": "paint-icons/GradientFlip.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "e14d07dcc79a51acd702bbe2a0889e37f6a1c750d1a11775eb15c880d7bca37a",
+      "kind": "fixed-icon"
+    },
+    "paint/GradientRotate": {
+      "id": "paint/GradientRotate",
+      "file": "paint-icons/GradientRotate.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "37d7a6fa30a6150630f46557f8521a67ddc6c138ac717ffde120a92cc6b20a9b",
+      "kind": "fixed-icon"
+    },
+    "paint/SelectionUses": {
+      "id": "paint/SelectionUses",
+      "file": "paint-icons/SelectionUses.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "d0457799ac7a4b943cc52cd8091f0c3a1969f13d9d5e9be2fce1b3de8aa88fde",
+      "kind": "fixed-icon"
+    },
+    "paint/DetachStyle": {
+      "id": "paint/DetachStyle",
+      "file": "paint-icons/DetachStyle.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "a1c89b64febdf60d3fcd93991bbcfdf711dfe01495c22e0ae145ba1991ef8460",
+      "kind": "fixed-icon"
+    },
+    "paint/PaintTypeSolid": {
+      "id": "paint/PaintTypeSolid",
+      "file": "paint-icons/PaintTypeSolid.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "50d59b0592a2b151629c17da26d283e9b9131e64fa0d57811d17bd3504d6649d",
+      "kind": "fixed-icon"
+    },
+    "paint/PaintTypeGradient": {
+      "id": "paint/PaintTypeGradient",
+      "file": "paint-icons/PaintTypeGradient.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "a6585009ec95024a8527951d22d6c6e5f4a2800e800bcfdc532832b7635dc4c2",
+      "kind": "fixed-icon"
+    },
+    "paint/PaintTypeImage": {
+      "id": "paint/PaintTypeImage",
+      "file": "paint-icons/PaintTypeImage.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "c106618f3e024324cff8dd3df47bc06c1cc7f02ac20a344935b5c136222e7010",
+      "kind": "fixed-icon"
+    },
+    "paint/EditStyle": {
+      "id": "paint/EditStyle",
+      "file": "paint-icons/EditStyle.svg",
+      "width": 12,
+      "height": 14,
+      "viewBox": "0 0 12 14",
+      "sha256": "65c2369c4da041d252ce3684fcbda727d8867d4e8a6ea6475b9829a9c2db5f0e",
+      "kind": "fixed-icon"
+    },
+    "paint/ReapplyStyle": {
+      "id": "paint/ReapplyStyle",
+      "file": "paint-icons/ReapplyStyle.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "0f7a1e88345dd23c242d55f36ba26f4752b6e40c0c04b30f098ca6fd464ce9b7",
+      "kind": "fixed-icon"
+    },
+    "position/AlignLeft": {
+      "id": "position/AlignLeft",
+      "file": "position-icons/AlignLeft.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "c6f70d619c2ef026702d3dd0c658b325ce460e2079841b0cbc1b3e57b0ffa9e9",
+      "kind": "fixed-icon"
+    },
+    "position/AlignHorizontalCenters": {
+      "id": "position/AlignHorizontalCenters",
+      "file": "position-icons/AlignHorizontalCenters.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "52dbd233421e010be18b87e5dfb6e4935c14c2572e56abf1aa65626800f3cb0c",
+      "kind": "fixed-icon"
+    },
+    "position/AlignRight": {
+      "id": "position/AlignRight",
+      "file": "position-icons/AlignRight.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "747ec84cba2aa9e2fc8ca8dfb21695d5f340b984a3fe9e278c22bcc26f2e254f",
+      "kind": "fixed-icon"
+    },
+    "position/AlignTop": {
+      "id": "position/AlignTop",
+      "file": "position-icons/AlignTop.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "70c415da9dde7d70e8f16f0144db1da8f725fd4ec454b69a8e63599f2aa71b65",
+      "kind": "fixed-icon"
+    },
+    "position/AlignVerticalCenters": {
+      "id": "position/AlignVerticalCenters",
+      "file": "position-icons/AlignVerticalCenters.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "c3a7f483826c34274bc81761a548f8cb3fbb3f2e3ebea6a3ae3f491395ece71b",
+      "kind": "fixed-icon"
+    },
+    "position/AlignBottom": {
+      "id": "position/AlignBottom",
+      "file": "position-icons/AlignBottom.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "39ecc2a34f47674c9e56babd577fc5a2a0ff3f18e8651a88e99b37952f0afca8",
+      "kind": "fixed-icon"
+    },
+    "position/RotateRight90": {
+      "id": "position/RotateRight90",
+      "file": "position-icons/RotateRight90.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "17be7d75b596fe31e0dca44e2343f3f41a95dc730bbc67cf6b8c8f638cd6b66c",
+      "kind": "fixed-icon"
+    },
+    "position/FlipHorizontal": {
+      "id": "position/FlipHorizontal",
+      "file": "position-icons/FlipHorizontal.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "c2139e3fd6a72cd4a26647df490713aeca35cfe157517813a1492dfa4d18fe77",
+      "kind": "fixed-icon"
+    },
+    "position/FlipVertical": {
+      "id": "position/FlipVertical",
+      "file": "position-icons/FlipVertical.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "b8bb492cb25e41057c4a8ba4592a07cad827d31e3a8c11d0a8925b0af200a90b",
+      "kind": "fixed-icon"
+    },
+    "position/PositionMore": {
+      "id": "position/PositionMore",
+      "file": "position-icons/PositionMore.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "a500a3811bfb2319f19e86200096d246052bca4ab6c3f874266efaf2fe111f22",
+      "kind": "fixed-icon"
+    },
+    "position/Rotation": {
+      "id": "position/Rotation",
+      "file": "position-icons/Rotation.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "760f1df6997865db02957eb4c8694d0f2d067c61b7a603b28eb1fe44248581b8",
+      "kind": "fixed-icon"
+    },
+    "position/Constraints": {
+      "id": "position/Constraints",
+      "file": "position-icons/Constraints.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "66839c3950ea8fe140caa9ef246cb5610a0dfda00f79f09e6839880e06e9415d",
+      "kind": "fixed-icon"
+    },
+    "position/ConstraintHorizontal": {
+      "id": "position/ConstraintHorizontal",
+      "file": "position-icons/ConstraintHorizontal.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "8003c0406813417ef91313de9f34f3c24f3f0dd4ac5ef8ecfd1ff45a00131ee7",
+      "kind": "fixed-icon"
+    },
+    "position/ConstraintVertical": {
+      "id": "position/ConstraintVertical",
+      "file": "position-icons/ConstraintVertical.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "415fb82308bcac4171db35bdcba0808417f4bb4ca91eb5a4b01cf3e19a7a8a21",
+      "kind": "fixed-icon"
+    },
+    "position/ConstraintHorizontalLeft": {
+      "id": "position/ConstraintHorizontalLeft",
+      "file": "position-icons/ConstraintHorizontalLeft.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "2e094fbdab481b72f285d07e49783bc84e3b5dbe50758dda4579fbd755b8c351",
+      "kind": "fixed-icon"
+    },
+    "position/ConstraintHorizontalRight": {
+      "id": "position/ConstraintHorizontalRight",
+      "file": "position-icons/ConstraintHorizontalRight.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "6c0fd40373bd79c7e21dd27e46e43c3660db5ee850cec5b2a61c062417df83e9",
+      "kind": "fixed-icon"
+    },
+    "position/ConstraintHorizontalBoth": {
+      "id": "position/ConstraintHorizontalBoth",
+      "file": "position-icons/ConstraintHorizontalBoth.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "4ed8719392f4b96df473d69d4befdf84bd730e341aa04c05442f75a1fba38fd6",
+      "kind": "fixed-icon"
+    },
+    "position/ConstraintHorizontalCenter": {
+      "id": "position/ConstraintHorizontalCenter",
+      "file": "position-icons/ConstraintHorizontalCenter.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "b3046d5b52a709f42cfaa2baa0d358d48b63265014fd6325a4ceb02934cffca3",
+      "kind": "fixed-icon"
+    },
+    "position/ConstraintHorizontalScale": {
+      "id": "position/ConstraintHorizontalScale",
+      "file": "position-icons/ConstraintHorizontalScale.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "84414187a46d89db00c27655928fdeaafc21a5018033e5890131297610555aee",
+      "kind": "fixed-icon"
+    },
+    "position/ConstraintVerticalTop": {
+      "id": "position/ConstraintVerticalTop",
+      "file": "position-icons/ConstraintVerticalTop.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "2aa05e0b68fff84e2f7ddebdf40f15c691d97327508e8dc65f1eea094b8b84c7",
+      "kind": "fixed-icon"
+    },
+    "position/ConstraintVerticalBottom": {
+      "id": "position/ConstraintVerticalBottom",
+      "file": "position-icons/ConstraintVerticalBottom.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "5408c7cbf98fddd25e6bfd094ef7d5869a393e087b4e906c58a7cca0651dd465",
+      "kind": "fixed-icon"
+    },
+    "position/ConstraintVerticalBoth": {
+      "id": "position/ConstraintVerticalBoth",
+      "file": "position-icons/ConstraintVerticalBoth.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "00fa4db3ac51c9b933f780c20e3122fe662e9ace231b37309e34157169003803",
+      "kind": "fixed-icon"
+    },
+    "position/ConstraintVerticalCenter": {
+      "id": "position/ConstraintVerticalCenter",
+      "file": "position-icons/ConstraintVerticalCenter.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "18f722943c84dfd65a66e597d79ae7f4fa72e6fea08e09d7b4bb6f5340d64cfd",
+      "kind": "fixed-icon"
+    },
+    "position/ConstraintVerticalScale": {
+      "id": "position/ConstraintVerticalScale",
+      "file": "position-icons/ConstraintVerticalScale.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "7de7456e8c80379f6c1504a613796b1db5794fec5cf17c98161722e92a7cdd7b",
+      "kind": "fixed-icon"
+    },
+    "position/ScaleFactor": {
+      "id": "position/ScaleFactor",
+      "file": "position-icons/ScaleFactor.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "123054dfe4465493a9b20f4ceb374605d6e9553107407c85c8d47cb3d4e99d9c",
+      "kind": "fixed-icon"
+    },
+    "position/ScaleClose": {
+      "id": "position/ScaleClose",
+      "file": "position-icons/ScaleClose.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "1b1bf3be0c6dac82ffa5f31e3d1d1029969d3992b42c3b1af8bbe26484e21439",
+      "kind": "fixed-icon"
+    },
+    "position/ScaleTool": {
+      "id": "position/ScaleTool",
+      "file": "position-icons/ScaleTool.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "52a0d54c65373506a20506b8f273f1ab13cd9e9f7f814f6a6fbe45ee67aaa4a1",
+      "kind": "fixed-icon"
+    },
+    "position/ConstraintHorizontalMixed": {
+      "id": "position/ConstraintHorizontalMixed",
+      "file": "position-icons/ConstraintHorizontalMixed.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "3cff096cc82e05601fc3a60a5d286cb8141b9b7298030a3ae2afe1585b5ef200",
+      "kind": "fixed-icon"
+    },
+    "position/ConstraintVerticalMixed": {
+      "id": "position/ConstraintVerticalMixed",
+      "file": "position-icons/ConstraintVerticalMixed.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "9dc964d6019b2d7abae20b3140e3cdde214af94ce4063f18949f69d56a654953",
+      "kind": "fixed-icon"
+    },
+    "stroke/StrokeSettings": {
+      "id": "stroke/StrokeSettings",
+      "file": "stroke-icons/StrokeSettings.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "b09037397d3d1007eac612d6828e25471e63411a90a2a0262b69b8add25ffe44",
+      "kind": "fixed-icon"
+    },
+    "stroke/StrokeSides": {
+      "id": "stroke/StrokeSides",
+      "file": "stroke-icons/StrokeSides.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "de920f2279832239910cb57987e95bcda3c67a006c7756697cfe34d045d4cb63",
+      "kind": "fixed-icon"
+    },
+    "stroke/StrokeWeight": {
+      "id": "stroke/StrokeWeight",
+      "file": "stroke-icons/StrokeWeight.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "eafdc25304c4b0134d2447a2adee4be5e89860c5e58e732df1029398090852ff",
+      "kind": "fixed-icon"
+    },
+    "stroke/StrokeSwap": {
+      "id": "stroke/StrokeSwap",
+      "file": "stroke-icons/StrokeSwap.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "559773e55f0471d1502ab1fe54900fa2221fd54d6e9a5867aaa10fa67b4adb6f",
+      "kind": "fixed-icon"
+    },
+    "stroke/StrokeSideLeft": {
+      "id": "stroke/StrokeSideLeft",
+      "file": "stroke-icons/StrokeSideLeft.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "8507930f9d17f54a4aedccaec31d5a6406e399f02df9ad0dc4d6f603cb4ea936",
+      "kind": "fixed-icon"
+    },
+    "stroke/StrokeSideTop": {
+      "id": "stroke/StrokeSideTop",
+      "file": "stroke-icons/StrokeSideTop.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "fc09d652409802eed21a465b30aa3b6f8dcdbf2912b7a207c63d28ad6a480a7d",
+      "kind": "fixed-icon"
+    },
+    "stroke/StrokeSideRight": {
+      "id": "stroke/StrokeSideRight",
+      "file": "stroke-icons/StrokeSideRight.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "93268d486e914629a20cb3f0b988707a0c97be3b2fb0ba1064415b369181f13f",
+      "kind": "fixed-icon"
+    },
+    "stroke/StrokeSideBottom": {
+      "id": "stroke/StrokeSideBottom",
+      "file": "stroke-icons/StrokeSideBottom.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "2c997a9eaafc4b0d4828de8c844c5eb4d3686a65b3f931e9f0d9d013bf983f5b",
+      "kind": "fixed-icon"
+    },
+    "stroke/EndpointNone": {
+      "id": "stroke/EndpointNone",
+      "file": "stroke-icons/EndpointNone.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "ecdc9d532e041aef7216462fb10837895cf55a0f31aaae630bccaa9417ab8296",
+      "kind": "fixed-icon"
+    },
+    "stroke/EndpointPreviewNone": {
+      "id": "stroke/EndpointPreviewNone",
+      "file": "stroke-icons/EndpointPreviewNone.svg",
+      "width": 200,
+      "height": 24,
+      "viewBox": "0 0 200 24",
+      "sha256": "3e502d26808cfa82d6a44684c504f00c945ad1705787b2d81ef7bd4013709a1d",
+      "kind": "fixed-icon"
+    },
+    "stroke/EndpointRound": {
+      "id": "stroke/EndpointRound",
+      "file": "stroke-icons/EndpointRound.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "2ccb3deed9864efa9ff3d38e7607a3e9d5fee5019308f7ce1415e3bd6549a29f",
+      "kind": "fixed-icon"
+    },
+    "stroke/EndpointPreviewRound": {
+      "id": "stroke/EndpointPreviewRound",
+      "file": "stroke-icons/EndpointPreviewRound.svg",
+      "width": 200,
+      "height": 24,
+      "viewBox": "0 0 200 24",
+      "sha256": "217fa1ecaf704c62a46d5a9876a8ba38d319ad9893970808b10b9df8cedfb57f",
+      "kind": "fixed-icon"
+    },
+    "stroke/EndpointSquare": {
+      "id": "stroke/EndpointSquare",
+      "file": "stroke-icons/EndpointSquare.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "80c862d9c713e17f0217972328b795a94cf588f558943ab9a3341cc3e4b500e2",
+      "kind": "fixed-icon"
+    },
+    "stroke/EndpointPreviewSquare": {
+      "id": "stroke/EndpointPreviewSquare",
+      "file": "stroke-icons/EndpointPreviewSquare.svg",
+      "width": 200,
+      "height": 24,
+      "viewBox": "0 0 200 24",
+      "sha256": "7109a99157911402227f5206aa46d891182981f6287fc81750f9202c454ca455",
+      "kind": "fixed-icon"
+    },
+    "stroke/EndpointLineArrow": {
+      "id": "stroke/EndpointLineArrow",
+      "file": "stroke-icons/EndpointLineArrow.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "f81d656c2e7d9268c2fadabc5ae2d35d4f113013b7e16c54505d357736068a63",
+      "kind": "fixed-icon"
+    },
+    "stroke/EndpointPreviewLineArrow": {
+      "id": "stroke/EndpointPreviewLineArrow",
+      "file": "stroke-icons/EndpointPreviewLineArrow.svg",
+      "width": 200,
+      "height": 24,
+      "viewBox": "0 0 200 24",
+      "sha256": "3f0dee0870d576166e7f1353b84e38a1dca6e8819885f718d93dc2fe3c1862b4",
+      "kind": "fixed-icon"
+    },
+    "stroke/EndpointTriangleArrow": {
+      "id": "stroke/EndpointTriangleArrow",
+      "file": "stroke-icons/EndpointTriangleArrow.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "fd7c830cacfe2beb04527791ce89b33441fa7f62f270dbcf75433f61e06b2363",
+      "kind": "fixed-icon"
+    },
+    "stroke/EndpointPreviewTriangleArrow": {
+      "id": "stroke/EndpointPreviewTriangleArrow",
+      "file": "stroke-icons/EndpointPreviewTriangleArrow.svg",
+      "width": 200,
+      "height": 24,
+      "viewBox": "0 0 200 24",
+      "sha256": "e8753cfe989e432db683da1b063960acb6340429f091503cb1b22e966bc110fa",
+      "kind": "fixed-icon"
+    },
+    "stroke/EndpointReversedTriangle": {
+      "id": "stroke/EndpointReversedTriangle",
+      "file": "stroke-icons/EndpointReversedTriangle.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "089697a6db4097febe9756295cefdb6254ab155471c63f0b394b41ceecf6e8fd",
+      "kind": "fixed-icon"
+    },
+    "stroke/EndpointPreviewReversedTriangle": {
+      "id": "stroke/EndpointPreviewReversedTriangle",
+      "file": "stroke-icons/EndpointPreviewReversedTriangle.svg",
+      "width": 200,
+      "height": 24,
+      "viewBox": "0 0 200 24",
+      "sha256": "a88600f82895914a0131cfedb171b5ab2a9802d627337280ff71186c6798316f",
+      "kind": "fixed-icon"
+    },
+    "stroke/EndpointCircleArrow": {
+      "id": "stroke/EndpointCircleArrow",
+      "file": "stroke-icons/EndpointCircleArrow.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "8ed24c594972037965647003b9d8084b1b77e740eb7e880aea6c48193b453ef1",
+      "kind": "fixed-icon"
+    },
+    "stroke/EndpointPreviewCircleArrow": {
+      "id": "stroke/EndpointPreviewCircleArrow",
+      "file": "stroke-icons/EndpointPreviewCircleArrow.svg",
+      "width": 200,
+      "height": 24,
+      "viewBox": "0 0 200 24",
+      "sha256": "6d2d44e49339d22a138a035907e51b33ef0ce678fa4931107c0c10d0ea9a659f",
+      "kind": "fixed-icon"
+    },
+    "stroke/EndpointDiamondArrow": {
+      "id": "stroke/EndpointDiamondArrow",
+      "file": "stroke-icons/EndpointDiamondArrow.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "efb844c0eff2dcd11565c79bb35a035db802bf763ad463091e8dbf3fb67ef271",
+      "kind": "fixed-icon"
+    },
+    "stroke/EndpointPreviewDiamondArrow": {
+      "id": "stroke/EndpointPreviewDiamondArrow",
+      "file": "stroke-icons/EndpointPreviewDiamondArrow.svg",
+      "width": 200,
+      "height": 24,
+      "viewBox": "0 0 200 24",
+      "sha256": "9c7fdf542260af0f0c59f0faebc9f8e45862da1403e768ed7512e635e88b1957",
+      "kind": "fixed-icon"
+    },
+    "stroke/JoinMiter": {
+      "id": "stroke/JoinMiter",
+      "file": "stroke-icons/JoinMiter.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "ed89c25404743cf08ab91b8edf2ce39f56fd72bbd024a3829e07d837839f4df8",
+      "kind": "fixed-icon"
+    },
+    "stroke/JoinBevel": {
+      "id": "stroke/JoinBevel",
+      "file": "stroke-icons/JoinBevel.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "6ee3c29c7977bea3b39c49eab7781d54c28a461803f41ad351303e8532cb056f",
+      "kind": "fixed-icon"
+    },
+    "stroke/JoinRound": {
+      "id": "stroke/JoinRound",
+      "file": "stroke-icons/JoinRound.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "45166b25047e1b70dd98359488eef57a3d21f56dcb7ff66c90a9393221f79b67",
+      "kind": "fixed-icon"
+    },
+    "stroke/StyleSolid": {
+      "id": "stroke/StyleSolid",
+      "file": "stroke-icons/StyleSolid.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "0291471f20fdeddab2c32ee7d7c304f7ed6c89e9314bac87be8e3d9d8e619660",
+      "kind": "fixed-icon"
+    },
+    "stroke/StyleDashed": {
+      "id": "stroke/StyleDashed",
+      "file": "stroke-icons/StyleDashed.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "7bc3d103b5db6de08f35fe3362311e7e9eb5a3b151fd2e4e1ef0e52082cd8018",
+      "kind": "fixed-icon"
+    },
+    "stroke/MiterAngle": {
+      "id": "stroke/MiterAngle",
+      "file": "stroke-icons/MiterAngle.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "760f1df6997865db02957eb4c8694d0f2d067c61b7a603b28eb1fe44248581b8",
+      "kind": "fixed-icon"
+    },
+    "text/TextAutoWidth": {
+      "id": "text/TextAutoWidth",
+      "file": "text-icons/TextAutoWidth.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "203b9d0a480fa6447e24c9fa165d8c4eec8646f3edfbd7c2128c112d939c5eac",
+      "kind": "fixed-icon"
+    },
+    "text/TextAutoHeight": {
+      "id": "text/TextAutoHeight",
+      "file": "text-icons/TextAutoHeight.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "d0f704075dea7689f0d17f7475135212e02caa7aaa38b7118d5e76b425c6d741",
+      "kind": "fixed-icon"
+    },
+    "text/TextFixedSize": {
+      "id": "text/TextFixedSize",
+      "file": "text-icons/TextFixedSize.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "af3fdb21c599465216f59c48ee196cc3a654424cde011e5a9be0eeb06daca470",
+      "kind": "fixed-icon"
+    },
+    "text/TextAlignLeft": {
+      "id": "text/TextAlignLeft",
+      "file": "text-icons/TextAlignLeft.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "4d45afbdb95eeb958aa9faa056e8208b3d3cfffca964a7108b96caa9f73419fe",
+      "kind": "fixed-icon"
+    },
+    "text/TextAlignCenter": {
+      "id": "text/TextAlignCenter",
+      "file": "text-icons/TextAlignCenter.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "29520452ee4b54125a86ea3811aa0262fb3ecc2dbf704ed39ac515c5092837d1",
+      "kind": "fixed-icon"
+    },
+    "text/TextAlignRight": {
+      "id": "text/TextAlignRight",
+      "file": "text-icons/TextAlignRight.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "8ced2ff742c016d7bf76abf33542bab36eedd9e404524a36248d6def8cb2b5c6",
+      "kind": "fixed-icon"
+    },
+    "text/TextAlignTop": {
+      "id": "text/TextAlignTop",
+      "file": "text-icons/TextAlignTop.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "343653414fe83001f1892daed9ae666c27ba6c04b45acc9550e2ab9ef7a05f3b",
+      "kind": "fixed-icon"
+    },
+    "text/TextAlignMiddle": {
+      "id": "text/TextAlignMiddle",
+      "file": "text-icons/TextAlignMiddle.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "28dea009b60c636bb4c405b1def5869dd076069921c415d882667ad981f08d5d",
+      "kind": "fixed-icon"
+    },
+    "text/TextAlignBottom": {
+      "id": "text/TextAlignBottom",
+      "file": "text-icons/TextAlignBottom.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "b76e1a91683abd85b880c26045f5768d32f2a92fb2f7684df84b00e01e7e28a5",
+      "kind": "fixed-icon"
+    },
+    "text/TextLineHeight": {
+      "id": "text/TextLineHeight",
+      "file": "text-icons/TextLineHeight.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "7271dd90549a8de3d53d784c8a5823eb0eb42cdf9c63e74995d813b4b0d8ae97",
+      "kind": "fixed-icon"
+    },
+    "ui/ChevronDown16": {
+      "id": "ui/ChevronDown16",
+      "file": "ui-icons/ChevronDown16.svg",
+      "width": 16,
+      "height": 16,
+      "viewBox": "0 0 16 16",
+      "sha256": "1fe0acb03387a582a3fd8d63ed3dbb7c284247166e088dbaf9bbc31b662f7225",
+      "kind": "fixed-icon"
+    },
+    "ui/ChevronRight16": {
+      "id": "ui/ChevronRight16",
+      "file": "ui-icons/ChevronRight16.svg",
+      "width": 16,
+      "height": 16,
+      "viewBox": "0 0 16 16",
+      "sha256": "8cf8bd7168eaa2a80577999f2c101718afc8565e11a91187c19e11ed81049292",
+      "kind": "fixed-icon"
+    },
+    "ui/SubmenuArrow24": {
+      "id": "ui/SubmenuArrow24",
+      "file": "ui-icons/SubmenuArrow24.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "516482ae780ff4c1ffb83e36b93ce2501715d25dce6a76c5810b604df75b3ee0",
+      "kind": "fixed-icon"
+    },
+    "ui/Clear16": {
+      "id": "ui/Clear16",
+      "file": "ui-icons/Clear16.svg",
+      "width": 16,
+      "height": 16,
+      "viewBox": "0 0 16 16",
+      "sha256": "ef47606ee55cba54f70c9cfc3a5daa478530b30c1e4defbead6128aba8f29c88",
+      "kind": "fixed-icon"
+    },
+    "ui/More24": {
+      "id": "ui/More24",
+      "file": "ui-icons/More24.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "c2233344ec5d0164c6c10387a81a5b5e76847888f97f6481507fb3321c751c6c",
+      "kind": "fixed-icon"
+    },
+    "ui/CollapseLayers24": {
+      "id": "ui/CollapseLayers24",
+      "file": "ui-icons/CollapseLayers24.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "21b1e4ae3b94a2ae2e52dccc9ba7c127d197e3411105674183a3349b12b7cf4e",
+      "kind": "fixed-icon"
+    },
+    "ui/Search24": {
+      "id": "ui/Search24",
+      "file": "ui-icons/Search24.svg",
+      "width": 24,
+      "height": 24,
+      "viewBox": "0 0 24 24",
+      "sha256": "ddf6098f1662fe7574cc4ec67d8c4408357d29f4582d06e58ed972d9871a3097",
+      "kind": "fixed-icon"
+    }
+  },
+  "aliases": {
+    "ui/Add24": "paint/PaintAdd",
+    "ui/Close24": "effects/EffectClose",
+    "ui/Check16": "editor/MenuCheck",
+    "ui/Dropdown24": "layout/ChevronDown"
+  },
+  "role_map": "roles.json"
+}

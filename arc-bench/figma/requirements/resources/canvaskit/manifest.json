@@ -1,0 +1,30 @@
+{
+  "package": "canvaskit-wasm",
+  "version": "0.42.0",
+  "build": "bin/full",
+  "license": "BSD-3-Clause",
+  "source": "https://registry.npmjs.org/canvaskit-wasm/-/canvaskit-wasm-0.42.0.tgz",
+  "integrity": "sha512-N3ikotmzYwDVAcpQKDMptBT2P5pIEWS9ywdmrQA2awwaMF9cxKEFuxZZHv9ay1Em9kDjxDsPtwUzDm1uNj136g==",
+  "files": {
+    "canvaskit.js": {
+      "sha256": "894815b2d39b24de2eacdb01453778d83e0b6c418b034e3b728e80956ac2a9d5",
+      "bytes": 123707,
+      "package_file": "package/bin/full/canvaskit.js"
+    },
+    "canvaskit.wasm": {
+      "sha256": "aca7fa6019f95d3de98d4a49ae60a3d66a09e9d5ca74091fbc369b9be959f959",
+      "bytes": 8242911,
+      "package_file": "package/bin/full/canvaskit.wasm"
+    },
+    "LICENSE.txt": {
+      "sha256": "d27678cba0d529e77201e2d2a053628143e986aad8f1e77f7039ad4366c8f978",
+      "bytes": 1635,
+      "package_file": "package/LICENSE"
+    },
+    "api.d.ts": {
+      "sha256": "a7017a8fd21f27fdd1afe8036841d7ce0979b2410954fcc6d3f80444c171a6c6",
+      "bytes": 174139,
+      "package_file": "package/types/index.d.ts"
+    }
+  }
+}

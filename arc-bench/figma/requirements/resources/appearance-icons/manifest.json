@@ -1,0 +1,62 @@
+{
+  "source": "Figma Design Appearance controls observed 2026-10-31",
+  "normalization": "Page metadata removed and primary color set to currentColor; all geometry and drawing attributes retained.",
+  "icons": [
+    {
+      "id": "LayerOpacity",
+      "file": "LayerOpacity.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "223067008410eececb17536f4d0994361a773539d6b72de6e1e4586f47c6b914",
+      "raw_sha256": "1849bc8835cdcf2f6c8807ad22637148872224715aa61c9a3b1615d888895876"
+    },
+    {
+      "id": "CornerRadius",
+      "file": "CornerRadius.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "00382cc6a221d004fe0a838e4732321e807834fab7f79b30fa081875bfdf3e31",
+      "raw_sha256": "3622a2fe007edc5a473d058257dddb5beba2afd61bb227e4e8020b53ae244de3"
+    },
+    {
+      "id": "CornerSmoothing",
+      "file": "CornerSmoothing.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "b09037397d3d1007eac612d6828e25471e63411a90a2a0262b69b8add25ffe44",
+      "raw_sha256": "110f9cf963714199b8572f6cf5de9ebdbf00905324166f8b6e03a829007ef215"
+    },
+    {
+      "id": "CornerTopLeft",
+      "file": "CornerTopLeft.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "d6fd8b8fa192598a602e7b10aaebe1b7bafe73836a24895a29daf407c8778e3f",
+      "raw_sha256": "9613e1476640c529675daf4eaeb27b1226eabf22e99261bf2ae2f0d4e76cfd74"
+    },
+    {
+      "id": "CornerTopRight",
+      "file": "CornerTopRight.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "2d50b635336a146142503f9dda621df1837cb2a47d7e2f58b4f9d8100748e469",
+      "raw_sha256": "30c785643c435b6acfa8d5a3edf49660dd73e65b199e5d9c0e0e1a298d7636ba"
+    },
+    {
+      "id": "CornerBottomLeft",
+      "file": "CornerBottomLeft.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "085c1df59cec0fafd78451ea7ab87630a46b53c0b849f1cdf40c746409b6ae0b",
+      "raw_sha256": "5367bc8d6fd9a5d6a3d50ddebd7d55bf2f8df4fc2cc7ab3a91f233397ada8571"
+    },
+    {
+      "id": "CornerBottomRight",
+      "file": "CornerBottomRight.svg",
+      "width": 24,
+      "height": 24,
+      "sha256": "0d10a6a88997769e0f0c78cffe4ff74eae1dd409edc5dbdde4e3d9a2ccfbd2b4",
+      "raw_sha256": "3ddbccf278cb22a7a7daf904b1a5a181f446733d7fbbbae3b421528f2385a126"
+    }
+  ]
+}
