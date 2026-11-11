@@ -4,13 +4,13 @@ The first release is a single-user Figma Design editor for website and mobile ap
 
 ## Fidelity
 
-Included features follow the reference Figma layout and common interaction paths. The same focus, tool, selection level, and gesture phase act on the same target. Input, visible changes, and exit behavior follow those conditions.
+The requirement tree defines the included behavior and interaction paths. The same focus, tool, selection level, and gesture phase act on the same target. Input, visible changes, and exit behavior follow those conditions.
 
-The visual target includes composition, proportions, information density, text and icon hierarchy, control shapes, and state feedback. Font rasterization and small drawing differences can vary with the environment while those results remain recognizable.
+Reference images specify composition, proportions, information density, text and icon hierarchy, control shapes, and feedback for the included states. Font rasterization and small drawing differences can vary with the environment while those results remain recognizable.
 
 The editor has adjustable left and right panels, a flexible canvas viewport between them, and a floating bottom toolbar. The page canvas is a free two-dimensional space with pan and zoom.
 
-Frames have explicit dimensions, layout, and clipping. Group bounds follow their members. Sections organize content in named regions. Desktop and mobile compositions use separate page designs. Constraints, nested Auto Layout, Wrap, and size modes reflow content within each design.
+Frames have explicit dimensions, layout, and clipping. Group bounds follow their members. Sections organize content in named regions. Constraints, nested Auto Layout, Wrap, and size modes reflow content within each design.
 
 ## Included features
 

@@ -1,5 +1,5 @@
 version: 1
-specification_version: 0.3.1
+specification_version: 3.0.2
 scenarios:
 - requirement: SAVE-03
   name: Export PNG at two scales and continue text edit

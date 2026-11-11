@@ -1,6 +1,6 @@
 {
   "name": "arc-bench-figma-requirements",
-  "version": "0.3.1",
+  "version": "3.0.2",
   "private": true,
   "type": "module",
   "description": "用于 Figma Design 需求包的 UI 驱动验收测试套件",

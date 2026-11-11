@@ -1,6 +1,6 @@
-# Implementation guidance · 0.3.1
+# Implementation guidance · 3.0.2
 
-This guide describes one way to implement the product behavior in the requirement tree. The evaluator checks the editor's visible behavior, editing results and exported files. It accepts any implementation that produces those results.
+This guide gives the Factory a concrete starting point for implementation. The requirement tree defines product behavior. [Public integration](integration.md) defines the launch and observation interface. The evaluator checks visible behavior, editing results, and exported files. It accepts any implementation that produces those results.
 
 ## Optional resources and runtime
 
@@ -44,7 +44,7 @@ Keep geometry bounds, visual bounds, hit regions and export bounds distinguishab
 
 ## Rendering, text and layout
 
-One option is a CanvasKit surface with Canvas, Paint, Path and Paragraph for the design viewport, alongside HTML controls and native text input. With any renderer, match the reference appearance and keep input, selection, text layout and output aligned. The browser environment may use the supplied Inter and Noto Sans SC fonts to reproduce the reference metrics and Chinese fallback.
+One option is a CanvasKit surface with Canvas, Paint, Path and Paragraph for the design viewport, alongside HTML controls and native text input. CanvasKit draws the resolved scene. The application handles hit testing, input routing, tool state, and edit sessions against the current scene and viewport. With any renderer, keep selection, text layout and output aligned with the visible design. The browser environment may use the supplied Inter and Noto Sans SC fonts to reproduce the reference metrics and Chinese fallback.
 
 If using CanvasKit, release resources when their scene, paragraph or surface owner no longer needs them. See the [bundled API declarations](resources/canvaskit/api.d.ts).
 

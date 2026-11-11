@@ -14,7 +14,7 @@ A user edits and selects objects through the design viewport. Layers and the Des
 
 The application provides one entry URL at its assigned host and port. It accepts `arc_seed=<seed name>` and `arc_workset=<workset identifier>`. The default seed is `blank`.
 
-The first open of a workset creates its selected seed document. Different worksets have separate edits and saved documents. Reopen of the same workset restores its saved state. Continuing layers keep their IDs. Replacement behavior, such as clipboard reconstruction or Detach, follows its product requirement.
+The first open of a workset creates its selected seed document. Different worksets have separate edits and saved documents. Reopen of the same workset restores its saved state. In the read-only observation, continuing layers use the same observed IDs across reopen. Replacement behavior, such as clipboard reconstruction or Detach, follows its product requirement.
 
 Initialization creates pages and the object tree, geometry, text, appearance, layout, Style links, component sources, overrides, and resources. It then clears selection and history and opens the specified page. Within one parent, `objects` array order is back to front; `siblingIndex` starts at zero. Names are public aliases. The application assigns internal IDs.
 

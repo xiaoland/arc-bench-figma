@@ -2,7 +2,7 @@ id: ROOT
 name: Minimal Figma Design
 type: FOLDER
 x_benchmark:
-  specification_version: 0.3.1
+  specification_version: 3.0.2
 children:
 - id: FILE-01
   name: Create a design file
