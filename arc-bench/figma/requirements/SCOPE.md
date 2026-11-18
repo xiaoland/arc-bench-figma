@@ -1,6 +1,6 @@
 # Minimal Figma Design scope
 
-The first release is a single-user Figma Design editor for website and mobile app designs. A user creates content, reuses components and styles, maintains the design, saves it, and exports PNG or SVG files.
+The first release is a single-user Figma Design editor. A user creates content in design files, reuses components and styles, maintains the design, saves it, and exports PNG or SVG files.
 
 ## Fidelity
 

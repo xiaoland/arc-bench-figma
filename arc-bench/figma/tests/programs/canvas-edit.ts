@@ -251,6 +251,29 @@ export const programs: Program[] = [
       expect(layer.text).toBe('Updated body');
       expect(layer.geometry).toEqual(drag.geometry);
     });
+    const section = await create(s, 'Section', [360, 250], [620, 390], 'Text section');
+    expect(section.parentId).toBeNull();
+    expect(section.geometry).toEqual(box(360, 250, 260, 140));
+    sameChildren(await s.obs(), section.id);
+    const sectionText = await createText(s, [390, 285], 'Section text', undefined, 'Section text');
+    expect(sectionText.parentId).toBe(section.id);
+    expect(sectionText.textSizing).toBe('auto-width');
+    await expect(s.layer(section)).toBeVisible();
+    await expect(s.layer(sectionText)).toHaveAttribute('aria-selected', 'true');
+    await s.check((snapshot) => {
+      const text = byId(snapshot, sectionText.id);
+      expect(text).toMatchObject({ type: 'text', parentId: section.id, text: 'Section text' });
+      expect(text.geometry.x).toBeGreaterThanOrEqual(0);
+      expect(text.geometry.y).toBeGreaterThanOrEqual(0);
+      expect(text.geometry.x + text.geometry.width).toBeLessThanOrEqual(section.geometry.width);
+      expect(text.geometry.y + text.geometry.height).toBeLessThanOrEqual(section.geometry.height);
+    });
+    await focus(s);
+    await s.press('Enter');
+    await expect(s.field('Text editor')).toBeVisible();
+    await textboxHasText(s.field('Text editor'), 'Section text');
+    await s.press('Escape');
+    await s.capture('text-created-in-section-open-area');
   }),
 
   program('EDIT-06', 'Move and copy an ordinary subtree', async (s) => {
@@ -271,6 +294,57 @@ export const programs: Program[] = [
     await s.drag(580, 305, 605, 330);
     await s.check((snapshot) =>
       expect(world(snapshot, byId(snapshot, title.id))).toEqual(shifted(world(before, byId(before, title.id)), 25, 25)));
+    const originalTree = await s.obs();
+    const originalIds = new Set(originalTree.objects.map(object => object.id));
+    await s.select(target);
+    await focus(s);
+    await s.press('ControlOrMeta+c');
+    await s.check(snapshot => expect(snapshot.selectionIds).toEqual([target.id]));
+    const pasteTree = async (label: string, parentId: string | null) => {
+      const ids = new Set((await s.obs()).objects.map(object => object.id));
+      await focus(s);
+      await s.press('ControlOrMeta+v');
+      const root = await s.bindSelected(label);
+      await s.check(snapshot => {
+        const added = snapshot.objects.filter(object => !ids.has(object.id));
+        expect(added).toHaveLength(4);
+        expect(added.map(object => object.id)).toContain(root.id);
+        expect(byId(snapshot, root.id)).toMatchObject({ type: 'frame', parentId,
+          pageId: target.pageId, geometry: { width: target.geometry.width, height: target.geometry.height } });
+        const copiedBranch = children(snapshot, root.id);
+        expect(copiedBranch).toHaveLength(1);
+        expect(copiedBranch[0]).toMatchObject({ type: 'frame', geometry: byId(originalTree, branch.id).geometry });
+        const content = children(snapshot, copiedBranch[0]!.id);
+        expect(content).toHaveLength(2);
+        const copiedTitle = content.find(object => object.type === 'text');
+        const copiedRectangle = content.find(object => object.type === 'rectangle');
+        expect(copiedTitle).toMatchObject({ text: 'Original branch', geometry: byId(originalTree, title.id).geometry });
+        expect(copiedRectangle).toMatchObject({ geometry: byId(originalTree, shape.id).geometry });
+        expect(added.every(object => !originalIds.has(object.id))).toBe(true);
+        expect(added.every(object => object.component === undefined)).toBe(true);
+        for (const original of originalTree.objects) {
+          const current = byId(snapshot, original.id);
+          expect(current).toMatchObject({ type: original.type, parentId: original.parentId, geometry: original.geometry });
+          if (original.text !== undefined) expect(current.text).toBe(original.text);
+        }
+      });
+      await expect(s.layer(root)).toHaveAttribute('aria-selected', 'true');
+      await expect(s.field('Width')).toHaveValue(String(target.geometry.width));
+      await expect(s.field('Height')).toHaveValue(String(target.geometry.height));
+      return root;
+    };
+    const pageCopy = await pasteTree('Page sibling copy', null);
+    await s.capture('paste-unchanged-page-frame-selection-creates-sibling');
+    await s.select(source);
+    const containedCopy = await pasteTree('Explicit container copy', source.id);
+    await s.check(snapshot => sameChildren(snapshot, source.id, containedCopy.id));
+    await s.capture('paste-into-a-different-selected-frame');
+    // Remove these placement contrasts before the original independent-edit path.
+    await s.press('Backspace');
+    await s.select(pageCopy);
+    await focus(s);
+    await s.press('Backspace');
+    await s.check(snapshot => expect(snapshot.objects.map(object => object.id).sort()).toEqual([...originalIds].sort()));
     await s.select(branch);
     await focus(s);
     await s.press('ControlOrMeta+d');
@@ -282,9 +356,9 @@ export const programs: Program[] = [
     const copiedShape = children(await s.obs(), duplicate.id).find((object) => object.type === 'rectangle')!;
     expect(copiedShape.id).not.toBe(shape.id);
     const duplicatePosition = duplicate.geometry;
-    const copyWorld = world(await s.obs(), copyText);
-    const copyPoint = screen(await s.obs(), [copyWorld.x + 4, copyWorld.y + 5]);
-    await s.point(...copyPoint, { modifiers: ['ControlOrMeta'] });
+    const expand = s.role('button', /Expand/, s.layer(duplicate));
+    if (await expand.isVisible()) await expand.click();
+    await s.select(copyText);
     expect((await s.selected()).id).toBe(copyText.id);
     await focus(s);
     await s.press('Enter');
@@ -470,6 +544,11 @@ export const programs: Program[] = [
     const frame = await create(s, 'Frame', [420, 140], [535, 250], 'Section card');
     const content = await create(s, 'Rectangle', [445, 165], [482, 207], 'Card content');
     const outer = await create(s, 'Section', [80, 100], [390, 325]);
+    await s.check((snapshot) => {
+      expect(byId(snapshot, frame.id).parentId).toBeNull();
+      expect(byId(snapshot, outer.id).parentId).toBeNull();
+      expect(world(snapshot, byId(snapshot, frame.id))).toEqual(frame.geometry);
+    });
     await tool(s, 'Move');
     const titlePoint: Point = [outer.geometry.x + 30, outer.geometry.y - 9];
     await s.point(...titlePoint, { clickCount: 2 });
@@ -479,8 +558,23 @@ export const programs: Program[] = [
     await expect(s.layer('Region')).toBeVisible();
     await s.drag(...titlePoint, titlePoint[0] + 180, titlePoint[1] + 25);
     await s.check((snapshot) => {
+      expect(byId(snapshot, outer.id).geometry).toEqual(shifted(outer.geometry, 180, 25));
       expect(byId(snapshot, frame.id).parentId).toBe(outer.id);
       expect(byId(snapshot, content.id).parentId).toBe(frame.id);
+      expect(world(snapshot, byId(snapshot, frame.id))).toEqual(frame.geometry);
+      expect(world(snapshot, byId(snapshot, content.id))).toEqual(box(445, 165, 37, 42));
+    });
+    await undo(s);
+    await s.check(snapshot => {
+      expect(byId(snapshot, outer.id).geometry).toEqual(outer.geometry);
+      expect(byId(snapshot, frame.id)).toMatchObject({ parentId: null, geometry: frame.geometry });
+      expect(byId(snapshot, content.id).parentId).toBe(frame.id);
+      expect(world(snapshot, byId(snapshot, content.id))).toEqual(box(445, 165, 37, 42));
+    });
+    await redo(s);
+    await s.check(snapshot => {
+      expect(byId(snapshot, outer.id).geometry).toEqual(shifted(outer.geometry, 180, 25));
+      expect(byId(snapshot, frame.id).parentId).toBe(outer.id);
       expect(world(snapshot, byId(snapshot, frame.id))).toEqual(frame.geometry);
     });
     await s.select('Region');
@@ -521,8 +615,20 @@ export const programs: Program[] = [
   program('FRAME-CONTENT', 'Draw a Frame around existing layers', async (s) => {
     const a = await create(s, 'Rectangle', [75, 100], [145, 155], 'Enclosed A');
     const b = await create(s, 'Ellipse', [190, 115], [270, 175], 'Enclosed B');
-    const frame = await create(s, 'Frame', [40, 65], [320, 220], 'Enclosure');
+    const section = await create(s, 'Section', [100, 190], [200, 210], 'Enclosed section');
+    expect(section.geometry).toEqual(box(100, 190, 100, 20));
+    const keepSection = (snapshot: ObserveSnapshot) => {
+      expect(byId(snapshot, section.id)).toMatchObject({ type: 'section', parentId: null, geometry: section.geometry });
+    };
     await s.check((snapshot) => {
+      keepSection(snapshot);
+      for (const shape of [a, b]) expect(byId(snapshot, shape.id)).toMatchObject({ parentId: null, geometry: shape.geometry });
+    });
+    const frame = await create(s, 'Frame', [40, 65], [320, 220], 'Enclosure');
+    expect(frame.geometry).toEqual(box(40, 65, 280, 155));
+    expect(frame.parentId).toBeNull();
+    await s.check((snapshot) => {
+      keepSection(snapshot);
       sameChildren(snapshot, frame.id, a.id, b.id);
       expect(world(snapshot, byId(snapshot, a.id))).toEqual(a.geometry);
       expect(world(snapshot, byId(snapshot, b.id))).toEqual(b.geometry);
@@ -530,17 +636,44 @@ export const programs: Program[] = [
     });
     await expect(s.layer('Enclosure')).toHaveAttribute('aria-selected', 'true');
     await expect(s.button('Move')).toBeVisible();
-    await s.drag(55, 78, 83, 103);
+    const readyToMove = await s.obs();
+    const titlePoint = screen(readyToMove, [frame.geometry.x + 15, frame.geometry.y - 9]);
+    const zoom = readyToMove.document.view?.zoom ?? 1;
+    await s.drag(...titlePoint, titlePoint[0] + 28 * zoom, titlePoint[1] + 25 * zoom);
     await s.check((snapshot) => {
+      keepSection(snapshot);
+      expect(byId(snapshot, frame.id).geometry).toEqual(shifted(frame.geometry, 28, 25));
+      sameChildren(snapshot, frame.id, a.id, b.id);
       expect(world(snapshot, byId(snapshot, a.id))).toEqual(shifted(a.geometry, 28, 25));
       expect(world(snapshot, byId(snapshot, b.id))).toEqual(shifted(b.geometry, 28, 25));
     });
     await undo(s);
     await s.check((snapshot) => {
+      keepSection(snapshot);
+      expect(byId(snapshot, frame.id).geometry).toEqual(frame.geometry);
       sameChildren(snapshot, frame.id, a.id, b.id);
       expect(world(snapshot, byId(snapshot, a.id))).toEqual(a.geometry);
       expect(world(snapshot, byId(snapshot, b.id))).toEqual(b.geometry);
     });
+    await s.select(frame);
+    const readyToResize = await s.obs();
+    const edgePoint = screen(readyToResize, [frame.geometry.x + frame.geometry.width,
+      frame.geometry.y + frame.geometry.height / 2]);
+    const edgeZoom = readyToResize.document.view?.zoom ?? 1;
+    await s.drag(...edgePoint, edgePoint[0] + 20 * edgeZoom, edgePoint[1]);
+    await s.check((snapshot) => {
+      keepSection(snapshot);
+      sameChildren(snapshot, frame.id, a.id, b.id);
+      expect(byId(snapshot, frame.id).geometry).toEqual({ ...frame.geometry, width: frame.geometry.width + 20 });
+    });
+    await expect(s.field('Width')).toHaveValue(String(frame.geometry.width + 20));
+    await undo(s);
+    await s.check((snapshot) => {
+      keepSection(snapshot);
+      sameChildren(snapshot, frame.id, a.id, b.id);
+      expect(byId(snapshot, frame.id).geometry).toEqual(frame.geometry);
+    });
+    await expect(s.field('Width')).toHaveValue(String(frame.geometry.width));
     await s.select(a);
     await s.set('Width', '76');
     await s.check((snapshot) => expect(byId(snapshot, a.id).geometry.width).toBe(76));
@@ -848,7 +981,6 @@ export const programs: Program[] = [
       await s.point(550, 290);
       await s.point(...point);
       expect((await s.selected()).id).toBe(container.id);
-      await focus(s);
       await s.press('Enter');
       await s.check((snapshot) => expect([...snapshot.selectionIds].sort()).toEqual(members.map((member) => member.id).sort()));
       for (const member of members) await expect(s.layer(member)).toHaveAttribute('aria-selected', 'true');
@@ -858,7 +990,6 @@ export const programs: Program[] = [
     }
     const siblings = [c, d].map((object) => byId(before, object.id)).sort((l, r) => r.siblingIndex - l.siblingIndex);
     await s.select(siblings[0]!);
-    await focus(s);
     await s.press('Tab');
     expect((await s.selected()).id).toBe(siblings[1]!.id);
     await s.press('Shift+Tab');
@@ -959,6 +1090,37 @@ export const programs: Program[] = [
       expect(byId(snapshot, d.id).fill?.color).toBe('247DD4');
       expect(byId(snapshot, d.id).type).toBe('rectangle');
     });
+    await s.select(d);
+    await focus(s);
+    const beforeEarlyRelease = await s.obs();
+    const current = world(beforeEarlyRelease, byId(beforeEarlyRelease, d.id));
+    const [sx, sy] = screen(beforeEarlyRelease, [current.x + current.width / 2, current.y + current.height / 2]);
+    const zoom = beforeEarlyRelease.document.view?.zoom ?? 1;
+    const canvas = await s.canvas().boundingBox();
+    if (!canvas) throw new Error('The copy-release comparison needs a visible canvas');
+    const { mouse, keyboard } = s.page;
+    await keyboard.down('Alt');
+    try {
+      await mouse.move(canvas.x + sx, canvas.y + sy);
+      await mouse.down();
+      try {
+        await mouse.move(canvas.x + sx + 100 * zoom, canvas.y + sy + 80 * zoom, { steps: 12 });
+        await keyboard.up('Alt');
+      } finally {
+        await mouse.up();
+      }
+    } finally {
+      await keyboard.up('Alt');
+    }
+    await s.check(snapshot => {
+      expect(snapshot.objects.map(object => object.id).sort()).toEqual(beforeEarlyRelease.objects.map(object => object.id).sort());
+      for (const layer of [a, b, c]) expect(byId(snapshot, layer.id).geometry).toEqual(layer.geometry);
+      expect(byId(snapshot, d.id)).toMatchObject({ parentId: d.parentId,
+        geometry: shifted(d.geometry, 100, 80), fill: { color: '247DD4' } });
+    });
+    await expect(s.field('X')).toHaveValue(String(d.geometry.x + 100));
+    await expect(s.field('Y')).toHaveValue(String(d.geometry.y + 80));
+    await s.capture('alt-released-before-pointer-up-moves-original');
   }),
 
   program('EDIT-07', 'Reorder overlapping siblings', async (s) => {
@@ -1030,6 +1192,28 @@ export const programs: Program[] = [
       expect(byId(snapshot, frame.id).geometry).toEqual(frame.geometry);
       expect(snapshot.selectionIds).toEqual([frame.id]);
     });
+    await s.button('Zoom options').click();
+    await focusedAndSelected(input);
+    await input.fill('150');
+    expect((await s.obs()).document.view?.zoom).toBe(0.5);
+    await s.press('Escape');
+    await expect(input).toBeHidden();
+    await expect(s.role('menuitem', '50%')).toBeHidden();
+    await s.check(snapshot => {
+      expect(snapshot.document.view?.zoom).toBe(1.5);
+      expect(snapshot.selectionIds).toEqual([frame.id]);
+      for (const object of before.objects) expect(byId(snapshot, object.id).geometry).toEqual(object.geometry);
+    });
+    await expect(s.layer(frame)).toHaveAttribute('aria-selected', 'true');
+    await s.capture('zoom-escape-commits-and-closes-menu');
+    await s.press('Escape');
+    await s.check(snapshot => {
+      expect(snapshot.document.view?.zoom).toBe(1.5);
+      expect(snapshot.selectionIds).toEqual([]);
+      for (const object of before.objects) expect(byId(snapshot, object.id).geometry).toEqual(object.geometry);
+    });
+    await expect(s.layer(frame)).toHaveAttribute('aria-selected', 'false');
+    await s.capture('second-escape-clears-layer-selection');
   }),
 
   program('EDIT-11', 'Pan with the middle mouse button', async (s) => {
@@ -1265,7 +1449,7 @@ export const programs: Program[] = [
     expect(copied.type).toBe('frame');
     expect(copied.parentId).toBeNull();
     expect(copied.id).not.toBe(frame.id);
-    expect(copied.geometry.x).toBeGreaterThan(frame.geometry.x);
+    expect(copied.geometry.x).toBeGreaterThanOrEqual(frame.geometry.x + frame.geometry.width);
     expect(copied.geometry.y).toBe(frame.geometry.y);
     expect(copied.geometry.width).toBe(300);
     expect(copied.geometry.height).toBe(200);

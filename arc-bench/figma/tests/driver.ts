@@ -11,6 +11,8 @@ import {
   assertArtifact,
   assertObserveAssertion,
   assertObservation,
+  assertParentEligibility,
+  assertSelectionTargets,
   requireBaseUrl,
   resolveSelectedNamedObject,
   type AcceptanceAction,
@@ -290,12 +292,22 @@ export async function runAcceptance(page: Page, acceptance: Acceptance, testInfo
   await page.goto(entryURL, { waitUntil: 'domcontentloaded' });
   await assertObserverAvailable(page);
   const expectedEntry = { seed, worksetId };
-  await expect(() => readEntryObservation(page, expectedEntry)).toPass({ timeout: 8_000 });
+  await expect(async () => {
+    const candidate = await readEntryObservation(page, expectedEntry);
+    assertParentEligibility(candidate);
+    assertSelectionTargets(candidate);
+  }).toPass({ timeout: 8_000 });
 
   const artifacts = new Map<string, string>();
   let activePage = await performActions(page, acceptance.setup ?? [], testInfo, artifacts);
   if (acceptance.setup?.length) {
-    const setupSnapshot = await readEntryObservation(activePage, expectedEntry);
+    let setupSnapshot: ObserveSnapshot | undefined;
+    await expect(async () => {
+      const candidate = await readEntryObservation(activePage, expectedEntry);
+      assertParentEligibility(candidate);
+      assertSelectionTargets(candidate);
+      setupSnapshot = candidate;
+    }).toPass({ timeout: 8_000, intervals: [100, 250, 500, 1_000] });
     await testInfo.attach('setup-observation.json', { body: JSON.stringify(setupSnapshot, null, 2), contentType: 'application/json' });
   }
 
@@ -309,6 +321,8 @@ export async function runAcceptance(page: Page, acceptance: Acceptance, testInfo
       await expect(async () => {
         const candidate = await readEntryObservation(activePage, expectedEntry);
         snapshot = candidate;
+        assertParentEligibility(candidate);
+        assertSelectionTargets(candidate);
         for (const assertion of stage.assertions) {
           if (assertion.source === 'observe') assertObserveAssertion(candidate, assertion, priorStages);
         }

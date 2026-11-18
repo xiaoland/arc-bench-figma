@@ -56,7 +56,7 @@ async function item(s: Scenario, name: string) {
   await choices.click();
 }
 
-async function choose(s: Scenario, control: string, value: string) {
+async function choose(s: Scenario, control: string | RegExp, value: string) {
   const locator = s.button(control).or(s.role('combobox', control)).filter({ visible: true });
   if (await locator.evaluate(el => el.tagName === 'SELECT')) {
     await locator.selectOption({ label: value });
@@ -80,7 +80,7 @@ async function editText(s: Scenario, name: LayerReference, value: string) {
   await s.check(o => expect(s.lookup(o, name).text).toBe(value));
 }
 
-async function shape(s: Scenario, tool: 'Rectangle' | 'Frame' | 'Ellipse', name: string,
+async function shape(s: Scenario, tool: 'Rectangle' | 'Frame' | 'Ellipse' | 'Section', name: string,
                      x: number, y: number, w: number, h: number) {
   const control = s.button(tool);
   if (tool === 'Ellipse' && !await control.isVisible()) {
@@ -341,12 +341,81 @@ export const programs: Program[] = [
       await s.button('Create component').click();
       await editText(s, 'Card label', 'After');
       await s.check(o => {
-        expect(s.lookup(o, 'Card source')).toMatchObject({ id: frame.id, type: 'component', geometry: frame.geometry });
+        expect(s.lookup(o, 'Card source')).toMatchObject({ id: frame.id, type: 'component', parentId: null, geometry: frame.geometry });
         expect(s.lookup(o, 'Card label')).toMatchObject({ id: label.id, parentId: frame.id, text: 'After' });
         expect(s.lookup(o, 'Card surface')).toMatchObject({ id: surface.id, parentId: frame.id });
       });
       await s.button('Assets').click();
       await expect(s.asset('Card source')).toBeVisible();
+      await s.button('File').click();
+      await s.layer('Card source').click();
+      await s.press('ControlOrMeta+d');
+      const duplicated = await s.bindSelected('Duplicated card');
+      await s.check(o => expect(s.lookup(o, duplicated)).toMatchObject({ type: 'instance',
+        parentId: null, pageId: frame.pageId, component: { sourceId: frame.id }, geometry: frame.geometry }));
+      await s.capture('main-component-first-duplicate');
+      await s.layer(duplicated).click();
+      await s.press('ControlOrMeta+d');
+      const instanceDuplicate = await s.bindSelected('Duplicated instance');
+      await s.check(o => {
+        for (const instance of [duplicated, instanceDuplicate]) {
+          expect(s.lookup(o, instance)).toMatchObject({ type: 'instance', parentId: null, pageId: frame.pageId,
+            component: { sourceId: frame.id }, geometry: frame.geometry });
+        }
+      });
+      await s.capture('instance-first-duplicate');
+      // Clear the source's Canvas hit area before the later Alt-drag of the main component.
+      await s.set('X', '520');
+      await s.set('Y', '150');
+      await s.select(duplicated);
+      await s.set('X', '520');
+      await s.set('Y', '25');
+      await s.select('Card source');
+      await canvasShortcut(s, 'ControlOrMeta+c');
+      await canvasShortcut(s, 'ControlOrMeta+v');
+      const pasted = await s.bindSelected('Pasted card');
+      await s.set('X', '300');
+      await s.set('Y', '25');
+      await s.select('Card source');
+      await s.button('Move').click();
+      const snapshot = await s.obs();
+      const view = snapshot.document.view;
+      const zoom = view?.zoom ?? 1;
+      const x = (frame.geometry.x + frame.geometry.width - 10) * zoom + (view?.panX ?? 0);
+      const y = (frame.geometry.y + frame.geometry.height - 10) * zoom + (view?.panY ?? 0);
+      // Commit the copy while Alt is still held: mouse-up precedes modifier-up.
+      await s.drag(x, y, x + 260 * zoom, y + 160 * zoom, { modifiers: ['Alt'] });
+      const dragged = await s.bindSelected('Dragged card');
+      const instances = [duplicated, instanceDuplicate, pasted, dragged];
+      expect(new Set([frame.id, ...instances.map(instance => instance.id)]).size).toBe(5);
+      const verifyInstances = (o: ObserveSnapshot, text: string) => {
+        expect(s.lookup(o, 'Card source')).toMatchObject({ id: frame.id, type: 'component', geometry: frame.geometry });
+        for (const instance of instances) {
+          expect(s.lookup(o, instance)).toMatchObject({ type: 'instance', parentId: null, pageId: frame.pageId,
+            component: { sourceId: frame.id }, geometry: { width: 180, height: 100 } });
+          expect(oneChild(o, instance.id, 'text')).toMatchObject({ text,
+            geometry: s.lookup(o, 'Card label').geometry });
+          expect(oneChild(o, instance.id, 'rectangle').geometry).toEqual(surface.geometry);
+        }
+        expect(s.lookup(o, dragged).geometry).toEqual({ ...frame.geometry,
+          x: frame.geometry.x + 260, y: frame.geometry.y + 160 });
+      };
+      await s.check(o => verifyInstances(o, 'After'));
+      await editText(s, 'Card label', 'Linked update');
+      await s.check(o => verifyInstances(o, 'Linked update'));
+      for (const instance of instances) {
+        await s.select(instance);
+        await expect(s.layer(instance)).toHaveAttribute('aria-selected', 'true');
+        await expect(s.field('Width')).toHaveValue('180');
+        await expect(s.field('Height')).toHaveValue('100');
+        const expand = s.role('button', /Expand/, s.layer(instance));
+        if (await expand.isVisible()) await expand.click();
+        await s.select(oneChild(await s.obs(), instance.id, 'text'));
+        await s.press('Enter');
+        await expect(s.field('Text editor')).toHaveValue('Linked update');
+        await s.press('Escape');
+      }
+      await s.capture('main-component-copy-entrypoints');
     },
   },
   {
@@ -488,22 +557,81 @@ export const programs: Program[] = [
         await selectOnCanvas(s, child.id);
         await bindProperty(s, 'Apply text property', 'Label');
       }
+      const freeform = await shape(s, 'Frame', 'Preview Freeform', 24, 200, 180, 100);
+      const section = await shape(s, 'Section', 'Preview Section', 240, 200, 180, 100);
+      const flow = await shape(s, 'Frame', 'Preview Horizontal', 460, 200, 180, 100);
+      const horizontal = s.button('Horizontal').filter({ visible: true });
+      if (await horizontal.count()) await horizontal.click();
+      else await choose(s, /^(Layout direction|Flow)$/, 'Horizontal');
+      const contexts = await s.obs();
+      for (const parent of [freeform, section, flow]) expect(s.lookup(contexts, parent).parentId).toBeNull();
+      const inspectInsertion = async (instance: ObserveObject, source: ObserveObject,
+        variant: string, text: string, context: string) => {
+        await s.check(o => {
+          expect(s.lookup(o, instance)).toMatchObject({ type: 'instance', parentId: null,
+            pageId: o.document.currentPageId, selected: true,
+            component: { sourceId: source.id, variant: { State: variant } } });
+          expect(oneChild(o, instance.id, 'text').text).toBe(text);
+          for (const parent of [freeform, section, flow]) {
+            expect(s.lookup(o, parent)).toMatchObject({ parentId: null,
+              geometry: s.lookup(contexts, parent).geometry });
+            expect(o.objects.filter(node => node.parentId === parent.id)).toEqual([]);
+          }
+        });
+        await expect(s.field('Label')).toHaveValue(text);
+        await expect(s.field('Width')).toHaveValue(String(source.geometry.width));
+        await expect(s.field('Height')).toHaveValue(String(source.geometry.height));
+        const state = await s.obs();
+        const geometry = s.lookup(state, instance).geometry;
+        const view = state.document.view;
+        const zoom = view?.zoom ?? 1;
+        const canvas = await s.canvas().boundingBox();
+        expect(canvas).not.toBeNull();
+        const x = geometry.x * zoom + (view?.panX ?? 0);
+        const y = geometry.y * zoom + (view?.panY ?? 0);
+        expect(x).toBeGreaterThanOrEqual(0);
+        expect(y).toBeGreaterThanOrEqual(0);
+        expect(x + geometry.width * zoom).toBeLessThanOrEqual(canvas!.width);
+        expect(y + geometry.height * zoom).toBeLessThanOrEqual(canvas!.height);
+        await s.capture('details-insert-' + context);
+      };
+      await canvasShortcut(s, 'Escape');
+      await s.check(o => expect(o.selectionIds).toEqual([]));
       await openAsset(s, 'Button states');
       const details = s.role('dialog', 'Details');
       await choose(s, 'State', 'Active');
-      await s.set('Label', 'Preview override');
+      await s.field('Label').fill('Preview override');
       await expect(details.getByText('Preview override', { exact: true })).toBeVisible();
-      await s.button('Insert instance').click();
+      await s.field('Label').press('Enter');
       await expect(details).toBeHidden();
       await s.bindSelected('Preview A');
       const a = await s.object('Preview A');
       await expect(s.field('Label')).toHaveValue('Preview override');
+      await inspectInsertion(a, second, 'Active', 'Preview override', 'no-selection');
+      await s.button('File').click();
+      await s.select('Preview Freeform');
       await openAsset(s, 'Button states');
       await expect(s.field('Label')).toHaveValue('Source label');
       await expect(details.getByText('Default', { exact: true })).toBeVisible();
       await s.button('Insert instance').click();
       await s.bindSelected('Preview B');
       const b = await s.object('Preview B');
+      await inspectInsertion(b, first, 'Default', 'Source label', 'freeform');
+      const extra: ObserveObject[] = [];
+      for (const [parent, context] of [[section, 'section'], [flow, 'horizontal']] as const) {
+        await s.button('File').click();
+        await s.select(parent);
+        await openAsset(s, 'Button states');
+        await expect(s.field('Label')).toHaveValue('Source label');
+        await expect(details.getByText('Default', { exact: true })).toBeVisible();
+        await s.button('Insert instance').click();
+        await expect(details).toBeHidden();
+        const instance = await s.bindSelected('Preview ' + context);
+        await inspectInsertion(instance, first, 'Default', 'Source label', context);
+        extra.push(instance);
+      }
+      expect(new Set([a, b, ...extra].map(instance => instance.id)).size).toBe(4);
+      await s.button('File').click();
       await s.select('Preview A');
       await s.set('X', '440');
       await s.check(o => {
@@ -516,6 +644,7 @@ export const programs: Program[] = [
         expect(oneChild(o, a.id, 'text').text).toBe('Preview override');
         expect(oneChild(o, b.id, 'text').text).toBe('Source label');
         expect(oneChild(o, second.id, 'text').text).toBe('Source label');
+        for (const instance of [a, b, ...extra]) expect(s.lookup(o, instance).parentId).toBeNull();
       });
     },
   },
@@ -591,6 +720,87 @@ export const programs: Program[] = [
     },
   },
   {
+    requirement: 'COMP-CHILDREN', name: 'Receive source reparenting and undo',
+    async run(s) {
+      const source = await shape(s, 'Frame', 'Source', 0, 0, 200, 120);
+      await s.rename('Source');
+      const inner = await shape(s, 'Frame', 'Inner', 30, 20, 100, 80);
+      await s.rename('Inner');
+      // Create outside Inner, then use Position fields so Shape remains a direct child.
+      const child = await shape(s, 'Rectangle', 'Shape', 150, 80, 40, 20);
+      await s.rename('Shape');
+      await s.set('X', '50');
+      await s.set('Y', '40');
+      await s.set('Fill', 'E11D48');
+      await s.select('Source');
+      await s.button('Create component').click();
+      await s.button('Assets').click();
+      await s.asset('Source').dragTo(s.canvas(), { targetPosition: { x: 350, y: 160 } });
+      const instance = await s.bindSelected('Instance A');
+      await s.rename('Instance A');
+      await s.set('X', '300');
+      await s.set('Y', '0');
+      await s.button('File').click();
+      const initial = await s.obs();
+      const instanceInner = oneChild(initial, instance.id, 'frame');
+      const instanceChild = oneChild(initial, instance.id, 'rectangle');
+      const verify = (o: ObserveSnapshot, nested: boolean) => {
+        expect(s.lookup(o, 'Source')).toMatchObject({ id: source.id, type: 'component', parentId: null,
+          geometry: { x: 0, y: 0, width: 200, height: 120 } });
+        expect(s.lookup(o, 'Inner')).toMatchObject({ id: inner.id, parentId: source.id,
+          geometry: { x: 30, y: 20, width: 100, height: 80 } });
+        expect(s.lookup(o, 'Instance A')).toMatchObject({ id: instance.id, type: 'instance', parentId: null,
+          component: { sourceId: source.id }, geometry: { x: 300, y: 0, width: 200, height: 120 } });
+        expect(s.lookup(o, instanceInner)).toMatchObject({ parentId: instance.id,
+          geometry: { x: 30, y: 20, width: 100, height: 80 } });
+        for (const [shape, parent] of [[child, nested ? inner.id : source.id],
+          [instanceChild, nested ? instanceInner.id : instance.id]] as const) {
+          expect(s.lookup(o, shape)).toMatchObject({ parentId: parent,
+            geometry: { x: nested ? 20 : 50, y: nested ? 20 : 40, width: 40, height: 20 } });
+        }
+        for (const [parent, frame, shape] of [[source.id, inner.id, child.id],
+          [instance.id, instanceInner.id, instanceChild.id]] as const) {
+          expect(o.objects.filter(node => node.parentId === parent).map(node => node.id).sort())
+            .toEqual((nested ? [frame] : [frame, shape]).sort());
+          expect(o.objects.filter(node => node.parentId === frame).map(node => node.id))
+            .toEqual(nested ? [shape] : []);
+        }
+      };
+      await s.check(o => verify(o, false));
+      const expand = async (reference: LayerReference) => {
+        const button = s.role('button', /Expand/, s.layer(reference));
+        if (await button.isVisible()) await button.click();
+      };
+      await expand('Source');
+      await s.select('Shape');
+      await s.layer('Shape').dragTo(s.layer('Inner'), { targetPosition: { x: 55, y: 12 } });
+      const inspect = async (nested: boolean, label: string) => {
+        await s.check(o => verify(o, nested));
+        await expect(s.field('X')).toHaveValue(nested ? '20' : '50');
+        await expect(s.field('Y')).toHaveValue(nested ? '20' : '40');
+        // Read-only visible checks must not add a selection/page Undo step.
+        const view = (await s.obs()).document.view;
+        const zoom = view?.zoom ?? 1;
+        for (const x of [70, 370]) {
+          await expect.poll(() => s.pixel(x * zoom + (view?.panX ?? 0),
+            50 * zoom + (view?.panY ?? 0))).toEqual([225, 29, 72, 255]);
+        }
+        await s.capture(label);
+      };
+      await inspect(true, 'source-reparented');
+      await canvasShortcut(s, 'ControlOrMeta+z');
+      await inspect(false, 'source-reparent-undone');
+      await canvasShortcut(s, 'ControlOrMeta+Shift+z');
+      await inspect(true, 'source-reparent-redone');
+      await expand('Instance A');
+      await expand(instanceInner);
+      await s.select(instanceChild);
+      await expect(s.layer(instanceChild)).toHaveAttribute('aria-selected', 'true');
+      await expect(s.field('X')).toHaveValue('20');
+      await expect(s.field('Y')).toHaveValue('20');
+    },
+  },
+  {
     requirement: 'COMP-CHILDREN', name: 'Hide an inherited child and receive source order',
     async run(s) {
       const before = await s.object('Instance A');
@@ -621,6 +831,129 @@ export const programs: Program[] = [
         expect(Math.sign(newLabel.siblingIndex - newIcon.siblingIndex))
           .toBe(Math.sign(sourceLabel.siblingIndex - sourceIcon.siblingIndex));
       });
+    },
+  },
+  {
+    requirement: 'EDIT-03', name: 'Reach nested text and image editors by double-click',
+    async run(s) {
+      const frame = await shape(s, 'Frame', 'Double-click frame', 60, 70, 280, 220);
+      const title = await textLayer(s, 'Title', 'Nested title', 80, 90);
+      await s.rename('Title');
+      await s.set('Font size', '16');
+      const emptyPhotoArea = await s.pixel(140, 190);
+      await s.button('Rectangle menu').click();
+      await s.file(s.role('menuitem', 'Place image').or(s.role('option', 'Place image')), png);
+      await s.canvas().hover({ position: { x: 140, y: 190 } });
+      await expect.poll(() => s.pixel(140, 190)).not.toEqual(emptyPhotoArea);
+      await s.point(140, 190);
+      const photo = await s.bindSelected('Photo');
+      await s.rename('Photo');
+      if ((await s.object(photo)).parentId !== frame.id) {
+        await s.layer(photo).dragTo(s.layer(frame), { targetPosition: { x: 55, y: 12 } });
+      }
+      await s.check(o => expect(s.lookup(o, photo)).toMatchObject({ type: 'rectangle', parentId: frame.id,
+        geometry: { x: 20, y: 80, width: 120, height: 80 }, image: { sourceWidth: 120, sourceHeight: 80 } }));
+      const separate = await shape(s, 'Rectangle', 'Separate rectangle', 380, 110, 60, 40);
+      await s.select(frame);
+      await s.layer(separate).click({ modifiers: ['ControlOrMeta'] });
+      await s.press('ControlOrMeta+g');
+      const group = await s.bindSelected('Double-click group');
+      const baseline = await s.obs();
+      expect(group.type).toBe('group');
+      expect(s.lookup(baseline, frame).parentId).toBe(group.id);
+      expect(s.lookup(baseline, separate).parentId).toBe(group.id);
+      expect(s.lookup(baseline, title).parentId).toBe(frame.id);
+      const editor = s.field('Text editor');
+      const submit = s.button(/^(?:Submit|Submit crop|Apply crop|Apply|Done)$/i).filter({ visible: true });
+      const bounds = (o: ObserveSnapshot, object: ObserveObject) => {
+        const box = { ...s.lookup(o, object).geometry };
+        for (let parentId = s.lookup(o, object).parentId; parentId;) {
+          const parent = o.objects.find(row => row.id === parentId);
+          if (!parent) throw new Error('A nested double-click needs its observed parent chain');
+          box.x += parent.geometry.x; box.y += parent.geometry.y;
+          parentId = parent.parentId;
+        }
+        return box;
+      };
+      const checkSelection = async (object: ObserveObject) => {
+        await s.check(o => {
+          expect(o.selectionIds).toEqual([object.id]);
+          expect(o.objects.map(row => row.id).sort()).toEqual(baseline.objects.map(row => row.id).sort());
+          for (const original of baseline.objects) {
+            expect(s.lookup(o, original)).toMatchObject({ type: original.type, parentId: original.parentId,
+              geometry: original.geometry });
+            if (original.text !== undefined) expect(s.lookup(o, original).text).toBe(original.text);
+          }
+        });
+        await expect(s.layer(object)).toHaveAttribute('aria-selected', 'true');
+      };
+      const doubleClick = async (object: ObserveObject) => {
+        const state = await s.obs(), box = bounds(state, object), view = state.document.view;
+        const x = object.id === title.id ? box.x + Math.min(10, box.width / 2) : box.x + box.width / 2;
+        const y = box.y + box.height / 2;
+        await s.point(x * (view?.zoom ?? 1) + (view?.panX ?? 0),
+          y * (view?.zoom ?? 1) + (view?.panY ?? 0), { clickCount: 2 });
+      };
+      await s.button('Move').click();
+      await s.point(500, 350);
+      await s.check(o => expect(o.selectionIds).toEqual([]));
+      for (const [index, selected] of [frame, title, title].entries()) {
+        await doubleClick(title);
+        await checkSelection(selected);
+        if (index < 2) await expect(editor).toBeHidden();
+        else {
+          await expect(editor).toBeVisible();
+          await expect(editor).toBeFocused();
+        }
+        if (index === 0) {
+          await expect(s.field('Width')).toHaveValue('280');
+          await expect(s.field('Font size')).toBeHidden();
+        } else await expect(s.field('Font size')).toHaveValue('16');
+        await s.capture('nested-text-double-click-' + (index + 1));
+      }
+      await s.press('Escape');
+      await expect(editor).toBeHidden();
+      await s.point(500, 350);
+      await s.check(o => expect(o.selectionIds).toEqual([]));
+      for (const [index, selected] of [frame, photo, photo].entries()) {
+        await doubleClick(photo);
+        await checkSelection(selected);
+        await expect(editor).toBeHidden();
+        if (index < 2) {
+          await expect(s.role('slider', 'Scale image')).toBeHidden();
+          await expect(s.button('Cancel')).toBeHidden();
+          await expect(s.field('Width')).toHaveValue(index === 0 ? '280' : '120');
+        } else {
+          await expect(s.role('slider', 'Scale image')).toBeVisible();
+          await expect(s.button('Cancel')).toBeVisible();
+          await expect(submit).toBeVisible();
+          const state = await s.obs(), box = bounds(state, photo), view = state.document.view;
+          const corners = [[box.x, box.y], [box.x + box.width, box.y],
+            [box.x, box.y + box.height], [box.x + box.width, box.y + box.height]];
+          const side = 21, count = side * side, radius = Math.floor(side / 2);
+          const points = corners.flatMap(([x, y]) => Array.from({ length: count }, (_, i) => [
+            Math.round(x * (view?.zoom ?? 1) + (view?.panX ?? 0)) + i % side - radius,
+            Math.round(y * (view?.zoom ?? 1) + (view?.panY ?? 0)) + Math.floor(i / side) - radius,
+          ] as [number, number]));
+          const pixels = await imageSamples(s.page, await s.canvas().screenshot({ scale: 'css' }), 'image/png', points);
+          for (let corner = 0; corner < 4; corner++) {
+            expect(pixels.slice(corner * count, (corner + 1) * count).some(([r, g, b, a]) =>
+              a > 0 && b - r > 40 && b - g > 20), 'Crop draws a blue handle at each image corner').toBe(true);
+          }
+        }
+        await s.capture('nested-image-double-click-' + (index + 1));
+      }
+      await s.button('Cancel').click();
+      await checkSelection(photo);
+      await expect(s.role('slider', 'Scale image')).toBeHidden();
+      await expect(s.button('Cancel')).toBeHidden();
+      await expect(submit).toBeHidden();
+      await expect(s.field('Width')).toHaveValue('120');
+      await expect(s.field('Height')).toHaveValue('80');
+      await s.check(o => expect(s.lookup(o, photo).image).toMatchObject({
+        mode: s.lookup(baseline, photo).image?.mode, sourceWidth: 120, sourceHeight: 80,
+      }));
+      await s.capture('crop-cancel-returns-to-image-selection');
     },
   },
   {
@@ -805,13 +1138,13 @@ export const programs: Program[] = [
         expect(s.lookup(o, 'B').selected).toBe(true);
         expect(s.lookup(o, 'A').fill?.color).toBe('FF0000');
       });
-      await canvasShortcut(s, 'ControlOrMeta+z');
+      await s.press('ControlOrMeta+z');
       await s.check(o => expect(s.lookup(o, 'A')).toMatchObject({ selected: true, fill: { color: 'FF0000' } }));
       await s.capture('undo-selection');
-      await canvasShortcut(s, 'ControlOrMeta+z');
+      await s.press('ControlOrMeta+z');
       await s.check(o => expect(s.lookup(o, 'A')).toMatchObject({ selected: true, fill: { color: 'D9D9D9' } }));
       await s.capture('undo-document');
-      await canvasShortcut(s, 'ControlOrMeta+Shift+z');
+      await s.press('ControlOrMeta+Shift+z');
       await s.check(o => {
         expect(s.lookup(o, 'A')).toMatchObject({ id: a.id, geometry: a.geometry, fill: { color: 'FF0000' } });
         expect(s.lookup(o, 'B')).toMatchObject({ id: b.id, geometry: b.geometry });
@@ -1413,7 +1746,7 @@ export const programs: Program[] = [
       await s.set('Width', '80');
       await s.check(o => expect(s.lookup(o, 'Select B').geometry.width).toBe(80));
       await s.button('Move').click();
-      await canvasShortcut(s, 'ControlOrMeta+z');
+      await s.press('ControlOrMeta+z');
       await s.check(o => expect(s.lookup(o, 'Select B').geometry.width).toBe(60));
       await s.button('Text').click();
       await s.point(350, 195);
@@ -1432,6 +1765,68 @@ export const programs: Program[] = [
       const draft = await s.selected();
       await expect(s.layer(draft)).toHaveAttribute('aria-selected', 'true');
       await expect(s.field('Font size')).toBeVisible();
+    },
+  },
+  {
+    requirement: 'EDITOR-INPUT', name: 'Route keys between Layers, text, and numeric input',
+    async run(s) {
+      const baseline = await s.obs();
+      const paragraph = s.lookup(baseline, 'Paragraph');
+      const editor = s.field('Text editor');
+      expect(paragraph).toMatchObject({ type: 'text', parentId: null,
+        geometry: { x: 0, y: 0, width: 275 }, font: { size: 12 },
+        text: 'Review a shared workspace and turn feedback into clear next steps.' });
+      await expect(editor).toBeHidden();
+      await selectedControl(s.button('Move'));
+      const inspect = async (x: number) => {
+        await s.check(o => {
+          expect(o.selectionIds).toEqual([paragraph.id]);
+          expect(o.objects.map(object => object.id).sort()).toEqual(baseline.objects.map(object => object.id).sort());
+          expect(s.lookup(o, paragraph)).toMatchObject({ type: paragraph.type, parentId: paragraph.parentId,
+            text: paragraph.text, geometry: { ...paragraph.geometry, x }, font: { size: 12 } });
+          for (const object of baseline.objects.filter(object => object.id !== paragraph.id)) {
+            expect(s.lookup(o, object)).toMatchObject({ type: object.type, parentId: object.parentId,
+              pageId: object.pageId, geometry: object.geometry });
+            if (object.text !== undefined) expect(s.lookup(o, object).text).toBe(object.text);
+          }
+          expect(o.document.pages).toEqual(baseline.document.pages);
+          expect(o.document.currentPageId).toBe(baseline.document.currentPageId);
+          for (const [key, fallback] of [['panX', 0], ['panY', 0], ['zoom', 1]] as const) {
+            expect(o.document.view?.[key] ?? fallback).toBe(baseline.document.view?.[key] ?? fallback);
+          }
+        });
+        await expect(s.layer(paragraph)).toHaveAttribute('aria-selected', 'true');
+        await expect(s.field('X')).toHaveValue(String(x));
+        await expect(s.field('Width')).toHaveValue('275');
+      };
+      await s.layer(paragraph).click();
+      await s.press('Enter');
+      await expect(editor).toBeVisible();
+      await expect(editor).toBeFocused();
+      await s.check(o => {
+        expect(o.selectionIds).toEqual([paragraph.id]);
+        expect(s.lookup(o, paragraph)).toMatchObject({ text: paragraph.text, geometry: paragraph.geometry });
+      });
+      await s.capture('layers-enter-opens-text-edit');
+      await s.press('Escape');
+      await expect(editor).toBeHidden();
+      await inspect(0);
+      await s.press('ArrowRight');
+      await inspect(1);
+      await s.capture('layer-key-moves-selected-text');
+      const x = s.field('X');
+      await x.click();
+      await expect(x).toBeFocused();
+      await s.press('ArrowUp');
+      await inspect(2);
+      await s.capture('numeric-field-receives-arrow');
+      await s.press('Escape');
+      await s.press('ControlOrMeta+z');
+      await inspect(1);
+      await s.capture('document-undo-restores-before-field-nudge');
+      await s.press('ControlOrMeta+z');
+      await inspect(0);
+      await s.capture('document-undo-restores-before-layer-nudge');
     },
   },
   {
@@ -1545,7 +1940,10 @@ export const programs: Program[] = [
       const createList = async (name: string, w: number) => {
         const outer = await shape(s, 'Frame', name + ' page', 20, 20, w + 40, 690);
         const heading = await textLayer(s, name + ' heading', name + ' catalogue', 40, 45);
+        await choose(s, 'Font family', 'Inter');
+        await choose(s, 'Font style', 'Regular');
         await s.set('Font size', '14');
+        await s.set('Line height', '20');
         if (name === 'Desktop') {
           await s.button('Text style picker').click();
           await makeStyle(s, 'Text', 'Type/Card');
@@ -1572,6 +1970,13 @@ export const programs: Program[] = [
         await s.set('Horizontal padding', '10');
         await s.set('Vertical padding', '10');
         await s.set('Gap', '20');
+        await s.set(/^(Between rows|Row gap)$/i, '20');
+        await s.button('Top left').click();
+        await expect(s.field('Width')).toHaveValue(String(w));
+        await expect(s.field('Gap')).toHaveValue('20');
+        await expect(s.field(/^(Between rows|Row gap)$/i)).toHaveValue('20');
+        await expect(s.field('Horizontal padding')).toHaveValue('10');
+        await expect(s.field('Vertical padding')).toHaveValue('10');
         await s.check(o => {
           expect(s.lookup(o, name + ' list')).toMatchObject({ id: list.id, parentId: outer.id, geometry: { width: w } });
           expect(s.lookup(o, name + ' heading')).toMatchObject({
@@ -1592,6 +1997,7 @@ export const programs: Program[] = [
       const source = await component(s, 'Card', 620, 34, 'Explore', 'D9D9D9', 'Card label');
       await applyColorStyle(s, 'Color/Card');
       await flow('Vertical');
+      await s.set('Width', '200');
       await choose(s, 'Vertical sizing', 'Hug contents');
       await s.set('Horizontal padding', '10');
       await s.set('Vertical padding', '10');
@@ -1599,6 +2005,8 @@ export const programs: Program[] = [
       await s.select('Card label');
       await s.button('Text style picker').click();
       await s.role('option', 'Type/Card').click();
+      await choose(s, 'Horizontal sizing', 'Fill container');
+      await choose(s, 'Text resizing', 'Auto height');
       await s.select('Card');
       await defineProperty(s, 'Text', 'Label', 'Explore');
       await s.select('Card label');
@@ -1616,8 +2024,44 @@ export const programs: Program[] = [
         await choose(s, 'Vertical sizing', 'Hug contents');
         await s.check(o => expect(s.lookup(o, alias)).toMatchObject({
           type: 'instance', parentId: listId, component: { sourceId: source.id },
+          layout: { width: 'fill', minWidth: 200, height: 'hug' },
         }));
+        await s.check(o => expect(s.lookup(o, alias).layout?.maxWidth ?? null).toBeNull());
         return await s.object(alias);
+      };
+      // Recompute rows from the published inputs, then judge actual geometry at each stage.
+      const verifyList = (o: ObserveSnapshot, listRef: LayerReference, cards: ObserveObject[], expectedWidth = 500, gap = 20) => {
+        const list = s.lookup(o, listRef);
+        expect(list.geometry.width).toBe(expectedWidth);
+        expect(list.layout?.height).toBe('hug');
+        const available = expectedWidth - 20;
+        const capacity = Math.floor((available + gap) / (200 + gap));
+        let y = 10;
+        for (let start = 0; start < cards.length; start += capacity) {
+          const row = cards.slice(start, start + capacity).map(card => s.lookup(o, card));
+          const width = (available - gap * (row.length - 1)) / row.length;
+          let rowHeight = 0;
+          for (const [column, card] of row.entries()) {
+            const label = oneChild(o, card.id, 'text');
+            expect(card.layout).toMatchObject({ width: 'fill', minWidth: 200, height: 'hug' });
+            expect(card.layout?.maxWidth ?? null).toBeNull();
+            expect(label).toMatchObject({ textSizing: 'auto-height', layout: { width: 'fill' }, font: { lineHeight: 20 } });
+            expect(label.geometry).toMatchObject({ x: 10, y: 10, width: width - 20 });
+            expect(label.geometry.height).toBeGreaterThanOrEqual(20);
+            expect(label.geometry.height % 20).toBe(0);
+            if (label.text !== 'Changed after reopening') {
+              expect(label.geometry.height).toBe((label.text?.split('\n').length ?? 0) * 20);
+            }
+            expect(card.geometry.x).toBeCloseTo(10 + column * (width + gap), 5);
+            expect(card.geometry.y).toBeCloseTo(y, 5);
+            expect(card.geometry.width).toBeCloseTo(width, 5);
+            expect(card.geometry.height).toBeCloseTo(label.geometry.height + 20, 5);
+            rowHeight = Math.max(rowHeight, card.geometry.height);
+          }
+          y += rowHeight + 20;
+        }
+        // y contains the final row's 20 gap; replace that with the 10 bottom padding.
+        expect(list.geometry.height).toBeCloseTo(y - 10, 5);
       };
       const a = await addCard('Desktop card A', desktop.list.id, 80, 253);
       const b = await addCard('Desktop card B', desktop.list.id, 155, 260);
@@ -1626,26 +2070,35 @@ export const programs: Program[] = [
       await s.check(o => {
         expect(s.lookup(o, 'Desktop card A').geometry.y).toBe(s.lookup(o, 'Desktop card B').geometry.y);
         expect(s.lookup(o, 'Desktop card B').geometry.x).toBeGreaterThan(s.lookup(o, 'Desktop card A').geometry.x);
-        expect(oneChild(o, a.id, 'text').text).toBe('Only on Desktop');
+        expect(oneChild(o, a.id, 'text')).toMatchObject({ text: 'Only on Desktop', geometry: { height: 20 } });
+        verifyList(o, desktop.list, [a, b]);
+        expect(s.lookup(o, desktop.list).geometry.height).toBe(60);
       });
-      const rowHeight = (await s.object('Desktop list')).geometry.height;
+      const rowHeight = 60;
       await addPage(s, 'Mobile');
       const mobile = await createList('Mobile', 260);
       const m = await addCard('Mobile card', mobile.list.id, 90, 253);
-      const mobileWidth = (await s.object('Mobile list')).geometry.width;
+      const mobileWidth = 260;
+      await s.check(o => verifyList(o, mobile.list, [m], 260));
       await s.role('tab', 'Desktop').click();
       const c = await addCard('Desktop card C', desktop.list.id, 150, 259);
-      await s.check(o => expect(s.lookup(o, 'Desktop list').geometry.height).toBeGreaterThan(rowHeight));
-      const shorter = s.lookup(await s.obs(), 'Desktop card A').geometry.height;
+      await s.check(o => {
+        expect(s.lookup(o, 'Desktop list').geometry.height).toBeGreaterThan(rowHeight);
+        verifyList(o, desktop.list, [a, b, c]);
+        expect(s.lookup(o, desktop.list).geometry.height).toBe(120);
+      });
+      const shorter = 40;
       const local = oneChild(await s.obs(), a.id, 'text');
       await s.select(local);
       await choose(s, 'Horizontal sizing', 'Fill container');
       await choose(s, 'Text resizing', 'Auto height');
       await s.select('Desktop card A');
-      const longText = 'Only on Desktop. This longer card description continues across several lines and leaves the next row clear.';
+      const longText = 'Only on Desktop\nSecond line\nThird line';
       await s.set('Label', longText);
       await s.check(o => {
-        expect(oneChild(o, a.id, 'text').text).toBe(longText);
+        expect(oneChild(o, a.id, 'text')).toMatchObject({ text: longText, geometry: { height: 60 } });
+        verifyList(o, desktop.list, [a, b, c]);
+        expect(s.lookup(o, desktop.list).geometry.height).toBe(160);
         expect(s.lookup(o, 'Desktop card A').geometry.height).toBeGreaterThan(shorter);
         const cards = [a, b, c].map(card => o.objects.find(item => item.id === card.id)!.geometry);
         const lower = cards.find(card => card.y > cards[0]!.y);
@@ -1654,15 +2107,22 @@ export const programs: Program[] = [
       });
       await s.select('Desktop list');
       await s.set('Width', '260');
+      await expect(s.field('Width')).toHaveValue('260');
       await s.check(o => {
         expect(new Set([a, b, c].map(card => o.objects.find(item => item.id === card.id)!.geometry.y)).size).toBe(3);
         expect(s.lookup(o, 'Mobile list').geometry.width).toBe(mobileWidth);
+        verifyList(o, desktop.list, [a, b, c], 260);
+        verifyList(o, mobile.list, [m], 260);
+        expect(s.lookup(o, desktop.list).geometry.height).toBe(220);
       });
       await canvasShortcut(s, 'ControlOrMeta+z');
+      await expect(s.field('Width')).toHaveValue('500');
       await s.check(o => {
         expect(s.lookup(o, 'Desktop list').geometry.width).toBe(500);
         expect(new Set([a, b, c].map(card => o.objects.find(item => item.id === card.id)!.geometry.y)).size).toBe(2);
         expect(oneChild(o, a.id, 'text').text).toBe(longText);
+        verifyList(o, desktop.list, [a, b, c]);
+        expect(s.lookup(o, desktop.list).geometry.height).toBe(160);
       });
       await s.select('Card');
       await s.set('Opacity', '80');
@@ -1673,7 +2133,12 @@ export const programs: Program[] = [
       await s.button('Text style picker').click();
       await editStyle(s, 'Type/Card', 'Style font size', '16');
       await dismiss(s);
-      const verifyShared = (o: ObserveSnapshot) => {
+      const styled = await s.obs();
+      const fillStyle = s.lookup(styled, source).styles?.fillSourceId;
+      const textStyle = s.lookup(styled, 'Card label').styles?.textSourceId;
+      expect(fillStyle).toBeTruthy();
+      expect(textStyle).toBeTruthy();
+      const verifyShared = (o: ObserveSnapshot, fontSize = 16, opacity = 0.8, gap = 20, bText = 'Explore') => {
         expect(o.document.id).toBe(documentId);
         expect(o.document.pages.map(page => page.name)).toEqual(['Desktop', 'Mobile']);
         expect(s.lookup(o, 'Desktop list').geometry.width).toBe(500);
@@ -1684,36 +2149,55 @@ export const programs: Program[] = [
           const icon = s.lookup(o, page + ' icon');
           expect([icon, ...descendants(o, icon.id)].some(node => node.type === 'vector')).toBe(true);
         }
-        const fillStyle = s.lookup(o, 'Card').styles?.fillSourceId;
-        const textStyle = s.lookup(o, 'Card label').styles?.textSourceId;
-        expect(fillStyle).toBeTruthy();
-        expect(textStyle).toBeTruthy();
+        expect(s.lookup(o, source)).toMatchObject({
+          opacity, fill: { color: 'E6F0FF' }, styles: { fillSourceId: fillStyle },
+          layout: { height: 'hug' }, geometry: { width: 200, height: 40 },
+        });
+        expect(oneChild(o, source.id, 'text')).toMatchObject({
+          text: 'Explore', textSizing: 'auto-height', layout: { width: 'fill' },
+          geometry: { x: 10, y: 10, width: 180, height: 20 },
+          font: { family: 'Inter', style: 'Regular', size: fontSize, lineHeight: 20 },
+          styles: { textSourceId: textStyle },
+        });
         expect(s.lookup(o, 'Desktop surface')).toMatchObject({ styles: { fillSourceId: fillStyle }, fill: { color: 'E6F0FF' } });
-        expect(s.lookup(o, 'Desktop heading')).toMatchObject({ styles: { textSourceId: textStyle }, font: { size: 16 } });
+        expect(s.lookup(o, 'Desktop heading')).toMatchObject({ styles: { textSourceId: textStyle }, font: { family: 'Inter', style: 'Regular', size: fontSize, lineHeight: 20 } });
         for (const instance of [a, b, c, m]) {
           expect(o.objects.find(node => node.id === instance.id)).toMatchObject({
-            component: { sourceId: source.id }, opacity: 0.8, fill: { color: 'E6F0FF' },
+            component: { sourceId: source.id }, opacity, fill: { color: 'E6F0FF' },
           });
-          expect(oneChild(o, instance.id, 'text')).toMatchObject({ font: { size: 16 }, styles: { textSourceId: textStyle } });
+          expect(oneChild(o, instance.id, 'text')).toMatchObject({ font: { family: 'Inter', style: 'Regular', size: fontSize, lineHeight: 20 }, styles: { textSourceId: textStyle } });
         }
-        expect(oneChild(o, a.id, 'text').text).toBe(longText);
+        expect(oneChild(o, source.id, 'text').text).toBe('Explore');
+        expect(oneChild(o, a.id, 'text')).toMatchObject({ text: longText, geometry: { height: 60 } });
+        expect(oneChild(o, b.id, 'text').text).toBe(bText);
+        expect(oneChild(o, c.id, 'text').text).toBe('Explore');
         expect(oneChild(o, m.id, 'text').text).toBe('Explore');
+        verifyList(o, desktop.list, [a, b, c], 500, gap);
+        expect(s.lookup(o, desktop.list).geometry.height).toBe(160);
+        verifyList(o, mobile.list, [m], 260);
+        expect(s.lookup(o, mobile.list).geometry.height).toBe(60);
       };
-      await s.check(verifyShared);
+      await s.check(o => verifyShared(o));
       await expect(s.role('status', 'Save status')).toHaveText('Saved');
       await s.capture('before-close');
       await s.reopen();
-      await s.check(verifyShared);
+      await s.check(o => verifyShared(o));
       await s.role('tab', 'Desktop').click();
       await s.select('Card');
       await s.set('Opacity', '90');
       await s.select('Desktop card B');
       await s.set('Label', 'Changed after reopening');
-      const gapBefore = (await s.object('Desktop card B')).geometry.x
-        - (await s.object('Desktop card A')).geometry.x - (await s.object('Desktop card A')).geometry.width;
+      await s.select('Card label');
+      await s.button('Text style picker').click();
+      await editStyle(s, 'Type/Card', 'Style font size', '18');
+      await dismiss(s);
+      const gapBefore = 20;
       await s.select('Desktop list');
       await s.set('Gap', '28');
+      await expect(s.field('Gap')).toHaveValue('28');
+      await expect(s.field(/^(Between rows|Row gap)$/i)).toHaveValue('20');
       await s.check(o => {
+        verifyShared(o, 18, 0.9, 28, 'Changed after reopening');
         for (const instance of [a, b, c, m]) expect(o.objects.find(item => item.id === instance.id)?.opacity).toBe(0.9);
         expect(oneChild(o, b.id, 'text').text).toBe('Changed after reopening');
         expect(oneChild(o, source.id, 'text').text).toBe('Explore');
@@ -1725,12 +2209,16 @@ export const programs: Program[] = [
 
       await s.select('Desktop page');
       await s.button('Add export').click();
-      const output = await exportPng(s, 'Desktop page', 'desktop-page.png', desktop.outer.geometry.width, desktop.outer.geometry.height);
-      const sampled = await imageSamples(s.page, output, 'image/png', [[5, 5], [42, 88], [185, 68], [258, 127]]);
+      await choose(s, 'Export format', 'PNG');
+      await s.set('Export scale', '2x');
+      await expect(s.field('Export scale')).toHaveValue('2x');
+      const exportFrame = (await s.object('Desktop page')).geometry;
+      const output = await exportPng(s, 'Desktop page', 'desktop-page.png', exportFrame.width * 2, exportFrame.height * 2);
+      const sampled = await imageSamples(s.page, output, 'image/png', [[10, 10], [84, 176], [370, 136], [516, 254]]);
       expect(sampled[0]).toEqual([255, 255, 255, 255]);
       expect(sampled[1]).toEqual([230, 240, 255, 255]);
       expect(sampled[2]).not.toEqual(sampled[3]);
-      expect(await darkPixels(s.page, output, { x: 18, y: 22, width: 230, height: 31 })).toBeGreaterThan(10);
+      expect(await darkPixels(s.page, output, { x: 36, y: 44, width: 460, height: 62 })).toBeGreaterThan(10);
       const layers = await s.obs();
       const iconRoot = s.lookup(layers, 'Desktop icon');
       const icon = [iconRoot, ...descendants(layers, iconRoot.id)].find(node => node.type === 'vector')!;

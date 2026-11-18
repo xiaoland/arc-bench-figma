@@ -10,7 +10,7 @@ type Tool = 'Frame' | 'Rectangle' | 'Section' | 'Text';
 const program = (requirement: string, name: string, run: Program['run']): Program => ({ requirement, name, run });
 const dimensions = ([x, y, width, height]: Rect) => ({ x, y, width, height });
 
-function pagePosition(s: Scenario, state: ObserveSnapshot, name: string): Point {
+function pagePosition(s: Scenario, state: ObserveSnapshot, name: string | ObserveObject): Point {
   const object = s.lookup(state, name);
   let { x, y } = object.geometry;
   let parentId = object.parentId;
@@ -188,6 +188,427 @@ async function reopenSaved(s: Scenario) {
 }
 
 export const programs: Program[] = [
+  program('CANVAS-HIERARCHY', "Reject an ancestor as a descendant's child", async s => {
+    await draw(s, 'Frame', 'Ancestor A', [40, 60, 250, 120]);
+    await draw(s, 'Frame', 'Descendant B', [90, 90, 80, 70]);
+    await position(s, 'Ancestor A', [40, 60, 250, 120], null);
+    await position(s, 'Descendant B', [50, 30, 80, 70], 'Ancestor A');
+    await expect(s.layer('Ancestor A')).toBeVisible();
+    await expect(s.layer('Descendant B')).toBeVisible();
+    await s.select('Ancestor A');
+    const before = await s.obs();
+    await dragBetween(s, s.layer('Ancestor A'), s.layer('Descendant B'), true);
+    await s.check(state => {
+      expect(state.objects.map(object => object.id).sort()).toEqual(before.objects.map(object => object.id).sort());
+      for (const name of ['Ancestor A', 'Descendant B']) {
+        const { id, type, parentId, geometry } = s.lookup(before, name);
+        expect(s.lookup(state, name)).toMatchObject({ id, type, parentId, geometry });
+      }
+    });
+    await s.capture('ancestor-move-into-descendant-rejected');
+    await s.select('Ancestor A');
+    await expect(s.field('Width')).toHaveValue('250');
+    await expect(s.field('Height')).toHaveValue('120');
+    await s.canvas().focus();
+    await s.press('ControlOrMeta+c');
+    await s.select('Descendant B');
+    await s.canvas().focus();
+    await s.press('ControlOrMeta+v');
+    let copiedA: ObserveObject | undefined;
+    let copiedB: ObserveObject | undefined;
+    await s.check(state => {
+      const ids = new Set(before.objects.map(object => object.id));
+      const added = state.objects.filter(object => !ids.has(object.id));
+      expect(added).toHaveLength(2);
+      const roots = added.filter(object => object.parentId === s.lookup(state, 'Descendant B').id);
+      expect(roots).toHaveLength(1);
+      copiedA = roots[0]!;
+      expect(copiedA).toMatchObject({ type: 'frame', geometry: { width: 250, height: 120 } });
+      const children = added.filter(object => object.parentId === copiedA!.id);
+      expect(children).toHaveLength(1);
+      copiedB = children[0]!;
+      expect(copiedB).toMatchObject({ type: 'frame', geometry: s.lookup(before, 'Descendant B').geometry });
+      for (const name of ['Ancestor A', 'Descendant B']) {
+        const { parentId, geometry } = s.lookup(before, name);
+        expect(s.lookup(state, name)).toMatchObject({ parentId, geometry });
+      }
+    });
+    if (!copiedA || !copiedB) throw new Error('Paste must create an independent A/B subtree');
+    await s.select(copiedA);
+    await expect(s.layer(copiedA)).toHaveAttribute('aria-selected', 'true');
+    await expect(s.field('Width')).toHaveValue('250');
+    await expect(s.field('Height')).toHaveValue('120');
+    const expand = s.role('button', /Expand/, s.layer(copiedA));
+    if (await expand.isVisible()) await expand.click();
+    await s.select(copiedB);
+    await expect(s.layer(copiedB)).toHaveAttribute('aria-selected', 'true');
+    await expect(s.field('X')).toHaveValue('50');
+    await expect(s.field('Y')).toHaveValue('30');
+    await expect(s.field('Width')).toHaveValue('80');
+    await expect(s.field('Height')).toHaveValue('70');
+    await s.capture('copied-ancestor-subtree-is-acyclic');
+  }),
+
+  program('CANVAS-HIERARCHY', 'Paste a Section with an incompatible Frame selected', async s => {
+    await draw(s, 'Section', 'Hierarchy source', [30, 70, 180, 110]);
+    await s.set('Fill', 'F8D57E');
+    await draw(s, 'Frame', 'Hierarchy source content', [55, 100, 80, 40]);
+    await s.set('Fill', '2266AA');
+    await draw(s, 'Frame', 'Hierarchy page target', [300, 70, 200, 150]);
+    await draw(s, 'Section', 'Hierarchy destination', [540, 270, 300, 240]);
+    await draw(s, 'Frame', 'Hierarchy nested target', [580, 310, 200, 150]);
+    await draw(s, 'Rectangle', 'Hierarchy mixed root', [250, 235, 40, 30]);
+    await s.set('Fill', '66AA33');
+    await position(s, 'Hierarchy source', [30, 70, 180, 110], null);
+    await position(s, 'Hierarchy source content', [25, 30, 80, 40], 'Hierarchy source');
+    await position(s, 'Hierarchy page target', [300, 70, 200, 150], null);
+    await position(s, 'Hierarchy nested target', [40, 40, 200, 150], 'Hierarchy destination');
+    await position(s, 'Hierarchy mixed root', [250, 235, 40, 30], null);
+    const source = await s.obs();
+    const labelX = async (reference: string | ObserveObject) => {
+      const label = s.layerLabel(reference);
+      await label.scrollIntoViewIfNeeded();
+      const bounds = await label.boundingBox();
+      if (!bounds) throw new Error('The copied layer needs a visible Layers label');
+      return bounds.x;
+    };
+    const inspectContour = async (object: ObserveObject, size: Point) => {
+      await s.select(object);
+      await expect(s.layer(object)).toHaveAttribute('aria-selected', 'true');
+      await expect(s.field('Width')).toHaveValue(String(size[0]));
+      await expect(s.field('Height')).toHaveValue(String(size[1]));
+      await s.canvas().focus();
+      await s.press('Shift+2');
+      await expect(async () => {
+        const state = await s.obs();
+        const [x, y] = pagePosition(s, state, object);
+        const { width, height } = s.lookup(state, object).geometry;
+        for (const point of [[x + width / 2, y], [x + width, y + height / 2],
+          [x + width / 2, y + height], [x, y + height / 2]] as Point[]) {
+          const [sx, sy] = inCanvas(state, ...point);
+          const pixels = await canvasPixels(s, [Math.floor(sx) - 2, Math.floor(sy) - 2, 5, 5]);
+          expect(pixels.some(([r, g, b, a]) => a > 0 && b - r > 40 && b - g > 20),
+            'the selected layer contour follows the pasted bounds').toBe(true);
+        }
+      }).toPass({ timeout: 8_000, intervals: [100, 250, 500] });
+    };
+    const paste = async (target: string, parent: string | null, mixed = false) => {
+      await s.canvas().focus();
+      await s.press('Shift+1');
+      await s.check(async state => {
+        const viewport = await s.canvas().boundingBox();
+        if (!viewport) throw new Error('Paste requires a visible Design canvas');
+        const zoom = state.document.view?.zoom ?? 1;
+        for (const name of ['Hierarchy source', target]) {
+          const object = s.lookup(state, name);
+          const [x, y] = inCanvas(state, ...pagePosition(s, state, name));
+          expect(x).toBeGreaterThanOrEqual(0);
+          expect(y).toBeGreaterThanOrEqual(0);
+          expect(x + object.geometry.width * zoom).toBeLessThanOrEqual(viewport.width);
+          expect(y + object.geometry.height * zoom).toBeLessThanOrEqual(viewport.height);
+        }
+      });
+      await choose(s, 'Hierarchy source', ...(mixed ? ['Hierarchy mixed root'] : []));
+      await s.canvas().focus();
+      await s.press('ControlOrMeta+c');
+      await s.select(target);
+      await s.canvas().focus();
+      const before = new Set((await s.obs()).objects.map(object => object.id));
+      await s.press('ControlOrMeta+v');
+      let pasted: ObserveObject | undefined;
+      let rectangle: ObserveObject | undefined;
+      await s.check(state => {
+        const added = state.objects.filter(object => !before.has(object.id));
+        expect(added).toHaveLength(mixed ? 3 : 2);
+        const sections = added.filter(object => object.type === 'section');
+        expect(sections).toHaveLength(1);
+        pasted = sections[0]!;
+        expect(pasted.parentId).toBe(parent === null ? null : s.lookup(state, parent).id);
+        expect(pasted.id).not.toBe(s.lookup(source, 'Hierarchy source').id);
+        expect(pasted.geometry).toMatchObject({ width: 180, height: 110 });
+        const content = added.filter(object => object.parentId === pasted!.id);
+        expect(content).toHaveLength(1);
+        expect(content[0]).toMatchObject({ type: 'frame', geometry: s.lookup(source, 'Hierarchy source content').geometry,
+          fill: { color: '2266AA' } });
+        expect(content[0]!.id).not.toBe(s.lookup(source, 'Hierarchy source content').id);
+        expect(s.lookup(state, target).parentId).toBe(parent === null ? null : s.lookup(state, parent).id);
+        for (const name of ['Hierarchy source', 'Hierarchy source content', 'Hierarchy mixed root']) {
+          const { id, type, parentId, geometry } = s.lookup(source, name);
+          expect(s.lookup(state, name)).toMatchObject({ id, type, parentId, geometry });
+        }
+        if (mixed) {
+          const rectangles = added.filter(object => object.type === 'rectangle');
+          expect(rectangles).toHaveLength(1);
+          rectangle = rectangles[0]!;
+          expect(rectangle).toMatchObject({ parentId: null, geometry: { width: 40, height: 30 }, fill: { color: '66AA33' } });
+        }
+      });
+      if (!pasted) throw new Error('Paste did not produce a Section');
+      await s.select(pasted);
+      await expect(s.layer(pasted)).toBeVisible();
+      await expect.poll(async () => Math.abs(await labelX(pasted!) - await labelX(target))).toBeLessThan(2);
+      await inspectContour(pasted, [180, 110]);
+      await s.capture(mixed ? 'mixed-roots-bypass-incompatible-frame' : parent ? 'section-paste-beside-nested-frame' : 'section-paste-beside-page-frame');
+      if (rectangle) {
+        await inspectContour(rectangle, [40, 30]);
+        await expect(s.field('Fill')).toHaveValue('66AA33');
+        await s.capture('mixed-root-rectangle-remains-page-level');
+      }
+    };
+    await paste('Hierarchy page target', null);
+    await paste('Hierarchy nested target', 'Hierarchy destination');
+    await paste('Hierarchy page target', null, true);
+  }),
+
+  program('EDIT-06', 'Paste a child into a smaller Freeform Frame', async s => {
+    await draw(s, 'Frame', 'Source', [100, 80, 400, 200]);
+    await draw(s, 'Rectangle', 'Source rectangle', [340, 110, 60, 40]);
+    await s.set('Fill', '224466');
+    await draw(s, 'Frame', 'Target', [600, 80, 200, 160]);
+    await position(s, 'Source rectangle', [240, 30, 60, 40], 'Source');
+    const setup = await s.obs();
+    const viewport = await s.canvas().boundingBox();
+    if (!viewport) throw new Error('Paste requires a visible Design canvas');
+    const zoom = setup.document.view?.zoom ?? 1;
+    for (const name of ['Source', 'Target']) {
+      const frame = s.lookup(setup, name);
+      const [x, y] = inCanvas(setup, ...pagePosition(s, setup, name));
+      expect(x, `${name} is fully visible horizontally`).toBeGreaterThanOrEqual(0);
+      expect(y, `${name} is fully visible vertically`).toBeGreaterThanOrEqual(0);
+      expect(x + frame.geometry.width * zoom).toBeLessThanOrEqual(viewport.width);
+      expect(y + frame.geometry.height * zoom).toBeLessThanOrEqual(viewport.height);
+    }
+    const original = await s.object('Source rectangle');
+    await s.select('Source rectangle');
+    await s.canvas().focus();
+    await s.press('ControlOrMeta+c');
+    await s.select('Target');
+    await s.canvas().focus();
+    await s.press('ControlOrMeta+v');
+    const copy = await s.bindSelected('Pasted rectangle');
+    expect(copy.type).toBe('rectangle');
+    expect(copy.id).not.toBe(original.id);
+    await position(s, 'Pasted rectangle', [70, 30, 60, 40], 'Target');
+    await absolute(s, 'Pasted rectangle', 670, 110);
+    await selected(s, 'Pasted rectangle');
+    await expect(s.field('X')).toHaveValue('70');
+    await expect(s.field('Y')).toHaveValue('30');
+    await expect(s.field('Width')).toHaveValue('60');
+    await expect(s.field('Height')).toHaveValue('40');
+    await visibleColor(s, 700, 130, '224466');
+    await position(s, 'Source rectangle', [240, 30, 60, 40], 'Source');
+    await position(s, 'Target', [600, 80, 200, 160], null);
+
+    await draw(s, 'Section', 'Section paste source', [0, 350, 300, 100]);
+    await position(s, 'Section paste source', [0, 350, 300, 100], null);
+    await draw(s, 'Frame', 'Section paste original', [200, 350, 80, 40]);
+    await s.set('Fill', '335588');
+    await position(s, 'Section paste original', [200, 0, 80, 40], 'Section paste source');
+    await draw(s, 'Section', 'Section paste target', [400, 350, 100, 80]);
+    await s.set('Fill', 'FFFFFF');
+    await position(s, 'Section paste target', [400, 350, 100, 80], null);
+    const sectionSetup = await s.obs();
+    const sectionViewport = await s.canvas().boundingBox();
+    if (!sectionViewport) throw new Error('Section paste requires a visible Design canvas');
+    const sectionZoom = sectionSetup.document.view?.zoom ?? 1;
+    for (const name of ['Section paste source', 'Section paste target']) {
+      const section = s.lookup(sectionSetup, name);
+      const [x, y] = inCanvas(sectionSetup, ...pagePosition(s, sectionSetup, name));
+      expect(x).toBeGreaterThanOrEqual(0);
+      expect(y).toBeGreaterThanOrEqual(0);
+      expect(x + section.geometry.width * sectionZoom).toBeLessThanOrEqual(sectionViewport.width);
+      expect(y + section.geometry.height * sectionZoom).toBeLessThanOrEqual(sectionViewport.height);
+    }
+    const sectionOriginal = await s.object('Section paste original');
+    await s.select('Section paste original');
+    await s.canvas().focus();
+    await s.press('ControlOrMeta+c');
+    await s.select('Section paste target');
+    await s.canvas().focus();
+    await s.press('ControlOrMeta+v');
+    const sectionCopy = await s.bindSelected('Section paste copy');
+    expect(sectionCopy.id).not.toBe(sectionOriginal.id);
+    expect(sectionCopy.type).toBe('frame');
+    await position(s, 'Section paste copy', [10, 0, 80, 40], 'Section paste target');
+    await absolute(s, 'Section paste copy', 410, 350);
+    await expect(s.field('X')).toHaveValue('10');
+    await expect(s.field('Y')).toHaveValue('0');
+    await expect(s.field('Width')).toHaveValue('80');
+    await expect(s.field('Height')).toHaveValue('40');
+    await position(s, 'Section paste original', [200, 0, 80, 40], 'Section paste source');
+    await position(s, 'Section paste target', [400, 350, 100, 80], null);
+    await s.select('Section paste target');
+    await expect(s.field('Width')).toHaveValue('100');
+    await expect(s.field('Height')).toHaveValue('80');
+    await visibleColor(s, 450, 370, '335588');
+    await visibleColor(s, 407, 370, 'FFFFFF');
+    await visibleColor(s, 493, 370, 'FFFFFF');
+    await s.capture('paste-frame-into-smaller-section');
+  }),
+
+  program('EDIT-06', 'Paste with a selected Frame outside or larger than the viewport', async s => {
+    const viewport = await s.canvas().boundingBox();
+    if (!viewport) throw new Error('Paste requires a visible Design canvas');
+    const width = Math.floor(viewport.width), height = Math.floor(viewport.height);
+    const screenBox = (state: ObserveSnapshot, object: ObserveObject): Rect => {
+      const [x, y] = inCanvas(state, ...pagePosition(s, state, object));
+      const zoom = state.document.view?.zoom ?? 1;
+      return [x, y, object.geometry.width * zoom, object.geometry.height * zoom];
+    };
+    const center = (state: ObserveSnapshot): Point => {
+      const view = state.document.view;
+      return [(viewport.width / 2 - (view?.panX ?? 0)) / (view?.zoom ?? 1),
+        (viewport.height / 2 - (view?.panY ?? 0)) / (view?.zoom ?? 1)];
+    };
+    const drawVisible = async (tool: 'Frame' | 'Rectangle', name: string, x: number, y: number, w: number, h: number) => {
+      const state = await s.obs();
+      const view = state.document.view;
+      const zoom = view?.zoom ?? 1;
+      await draw(s, tool, name, [(x - (view?.panX ?? 0)) / zoom, (y - (view?.panY ?? 0)) / zoom, w, h]);
+    };
+    const emptyFrame = async (name: string) => {
+      const state = await s.obs();
+      const frames = state.objects.filter(object => object.pageId === state.document.currentPageId && object.type === 'frame')
+        .map(object => screenBox(state, object));
+      for (let y = height - 120; y >= 20; y -= 120) {
+        for (let x = 20; x + 100 < width; x += 120) {
+          if (frames.some(([fx, fy, fw, fh]) => x < fx + fw && x + 100 > fx && y < fy + fh && y + 100 > fy)) continue;
+          await drawVisible('Frame', name, x, y, 100, 100);
+          await s.check(current => expect(s.lookup(current, name)).toMatchObject({
+            type: 'frame', parentId: null, geometry: { width: 100, height: 100 },
+          }));
+          return;
+        }
+      }
+      throw new Error('The viewport needs an empty area for the independent Frame fixture');
+    };
+    const panBy = async (dx: number, dy = 0) => {
+      const steps = Math.max(1, Math.ceil(Math.max(Math.abs(dx) / (width / 2), Math.abs(dy) / (height / 2))));
+      for (let i = 0; i < steps; i++) await pan(s, dx / steps, dy / steps);
+    };
+    const visible = async (reference: ObserveObject) => {
+      await s.check(state => {
+        const [x, y, w, h] = screenBox(state, s.lookup(state, reference));
+        expect(x).toBeGreaterThanOrEqual(-1);
+        expect(y).toBeGreaterThanOrEqual(-1);
+        expect(x + w).toBeLessThanOrEqual(viewport.width + 1);
+        expect(y + h).toBeLessThanOrEqual(viewport.height + 1);
+      });
+    };
+    const paste = async (label: string, parent: string | null, expectedSize: Point) => {
+      const before = new Set((await s.obs()).objects.map(object => object.id));
+      await s.canvas().focus();
+      await s.press('ControlOrMeta+v');
+      const copy = await s.bindSelected(label);
+      await s.check(state => {
+        const added = state.objects.filter(object => !before.has(object.id));
+        expect(added).toHaveLength(1);
+        expect(added[0]).toMatchObject({ id: copy.id, type: 'rectangle',
+          parentId: parent === null ? null : s.lookup(state, parent).id,
+          geometry: { width: expectedSize[0], height: expectedSize[1] } });
+      });
+      await expect(s.layer(copy)).toHaveAttribute('aria-selected', 'true');
+      await expect(s.field('Width')).toHaveValue(String(expectedSize[0]));
+      await expect(s.field('Height')).toHaveValue(String(expectedSize[1]));
+      return copy;
+    };
+    await draw(s, 'Rectangle', 'Large clipboard', [60, 70, 80, 60]);
+    await s.set('Fill', 'F43F5E');
+    await s.set('Width', String(width * 2));
+    await s.set('Height', String(height * 2));
+    await position(s, 'Large clipboard', [60, 70, width * 2, height * 2], null);
+    await draw(s, 'Frame', 'Far target', [300, 100, 120, 100]);
+    await position(s, 'Far target', [300, 100, 120, 100], null);
+    await s.select('Large clipboard');
+    await s.canvas().focus();
+    await s.press('ControlOrMeta+c');
+    await s.select('Far target');
+    await panBy(-width * 4);
+    await s.check(state => {
+      const [x, , w] = screenBox(state, s.lookup(state, 'Far target'));
+      expect(x + w).toBeLessThan(-width * 2);
+    });
+    const farView = await s.obs();
+    const farCenter = center(farView);
+    const farCopy = await paste('Far viewport copy', null, [width * 2, height * 2]);
+    await s.check(state => {
+      const copy = s.lookup(state, farCopy);
+      const [x, y] = pagePosition(s, state, copy);
+      expect(Math.abs(x + copy.geometry.width / 2 - farCenter[0])).toBeLessThanOrEqual(2);
+      expect(Math.abs(y + copy.geometry.height / 2 - farCenter[1])).toBeLessThanOrEqual(2);
+      expect(state.document.view?.zoom).toBeLessThan(farView.document.view?.zoom ?? 1);
+    });
+    await visible(farCopy);
+    await visibleColor(s, farCenter[0], farCenter[1], 'F43F5E');
+    await s.capture('paste-far-frame-and-fit-large-object');
+
+    await zoom(s, 100);
+    await s.select(farCopy);
+    await emptyFrame('Small source');
+    const smallSource = await s.object('Small source');
+    const [smallX, smallY] = pagePosition(s, await s.obs(), 'Small source');
+    await draw(s, 'Rectangle', 'Small clipboard', [smallX + 10, smallY + 10, 60, 40]);
+    await s.set('Fill', '224466');
+    await position(s, 'Small clipboard', [10, 10, 60, 40], 'Small source');
+    await emptyFrame('Near target');
+    await s.select('Small clipboard');
+    await s.canvas().focus();
+    await s.press('ControlOrMeta+c');
+    await s.select('Near target');
+    const nearTarget = await s.object('Near target');
+    const [nearX] = screenBox(await s.obs(), nearTarget);
+    await panBy(width + 5 - nearX);
+    await s.check(state => {
+      const [x] = screenBox(state, s.lookup(state, nearTarget));
+      expect(x).toBeGreaterThanOrEqual(width + 2);
+      expect(x).toBeLessThanOrEqual(width + 8);
+    });
+    const nearView = (await s.obs()).document.view;
+    const nearCopy = await paste('Near viewport copy', 'Near target', [60, 40]);
+    await position(s, 'Near viewport copy', [10, 10, 60, 40], 'Near target');
+    await s.check(state => expect(state.document.view).not.toEqual(nearView));
+    await visible(nearCopy);
+    const nearPage = pagePosition(s, await s.obs(), nearCopy);
+    await visibleColor(s, nearPage[0] + 30, nearPage[1] + 20, '224466');
+    await s.capture('paste-into-nearby-offscreen-frame');
+
+    await s.select('Small clipboard');
+    await s.canvas().focus();
+    await s.press('ControlOrMeta+c');
+    const beforeLarge = await s.obs();
+    const viewRight = (viewport.width - (beforeLarge.document.view?.panX ?? 0)) / (beforeLarge.document.view?.zoom ?? 1);
+    await emptyFrame('Large target');
+    await s.set('X', String(viewRight + width * 2));
+    await s.set('Y', '0');
+    await s.set('Width', String(width * 3));
+    await s.set('Height', String(height * 3));
+    await s.canvas().focus();
+    await s.press('Shift+2');
+    await zoom(s, 100);
+    await s.select('Large target');
+    await panBy(width * 0.4, height * 0.3);
+    await s.check(state => {
+      const [x, y, w, h] = screenBox(state, s.lookup(state, 'Large target'));
+      expect(x).toBeLessThan(0);
+      expect(y).toBeLessThan(0);
+      expect(x + w).toBeGreaterThan(viewport.width);
+      expect(y + h).toBeGreaterThan(viewport.height);
+      expect(Math.abs(x + w / 2 - viewport.width / 2)).toBeGreaterThan(width * 0.2);
+    });
+    const largeCenter = center(await s.obs());
+    const largeCopy = await paste('Large-frame viewport copy', 'Large target', [60, 40]);
+    await s.check(state => {
+      const copy = s.lookup(state, largeCopy);
+      const [x, y] = pagePosition(s, state, copy);
+      expect(Math.abs(x + copy.geometry.width / 2 - largeCenter[0])).toBeLessThanOrEqual(2);
+      expect(Math.abs(y + copy.geometry.height / 2 - largeCenter[1])).toBeLessThanOrEqual(2);
+      expect(s.lookup(state, 'Small clipboard').parentId).toBe(smallSource.id);
+    });
+    await visible(largeCopy);
+    await visibleColor(s, largeCenter[0], largeCenter[1], '224466');
+    await s.capture('paste-into-visible-interior-of-large-frame');
+  }),
+
   program('GROUP-BOUNDS', 'Undo and redo a Group bounds change', async s => {
     await draw(s, 'Rectangle', 'A', [20, 20, 40, 20]);
     await draw(s, 'Rectangle', 'B', [100, 20, 40, 20]);
@@ -254,6 +675,24 @@ export const programs: Program[] = [
     await draw(s, 'Section', 'B', [65, 110, 245, 185]);
     await draw(s, 'Frame', 'C', [475, 140, 80, 60]);
     await draw(s, 'Rectangle', 'Inside C', [485, 150, 25, 20]);
+    await s.select('A');
+    await s.button('Move').click();
+    const beforePass = await s.obs();
+    const [ax, ay] = pagePosition(s, beforePass, 'A');
+    const [sx, sy] = inCanvas(beforePass, ax + 12, ay - 10);
+    const passZoom = beforePass.document.view?.zoom ?? 1;
+    await s.drag(sx, sy, sx + 570 * passZoom, sy, { via: [{ x: sx + 170 * passZoom, y: sy }] });
+    await position(s, 'A', [600, 55, 390, 300], null);
+    await position(s, 'C', [475, 140, 80, 60], null);
+    await absolute(s, 'Inside C', 485, 150);
+    await s.capture('section-passes-over-frame-without-carrying-it');
+    await s.canvas().focus();
+    await s.press('ControlOrMeta+z');
+    await position(s, 'A', [30, 55, 390, 300], null);
+    await position(s, 'B', [35, 55, 245, 185], 'A');
+    await position(s, 'C', [475, 140, 80, 60], null);
+    await absolute(s, 'Inside C', 485, 150);
+    await s.capture('one-undo-restores-the-completed-section-drag');
     await move(s, 'C', -355, 0);
     await position(s, 'C', [55, 30, 80, 60], 'B');
     await move(s, 'A', 24, 18, true);
@@ -296,20 +735,41 @@ export const programs: Program[] = [
     await draw(s, 'Frame', 'F', [430, 0, 50, 40]);
     await s.set('X', '300');
     await position(s, 'F', [300, 0, 50, 40], null);
+    await s.canvas().focus();
     await s.press('ArrowLeft');
     await position(s, 'F', [399, 100, 50, 40], 'S');
     await absolute(s, 'F', 299, 0);
     await s.set('X', '600');
     await position(s, 'F', [600, 100, 50, 40], 'S');
     await absolute(s, 'F', 500, 0);
+    await s.canvas().focus();
     await s.press('ArrowRight');
     await position(s, 'F', [501, 0, 50, 40], null);
   }),
 
   program('SECTION-BOUNDS', 'Resize a Section boundary', async s => {
-    await pan(s, 170, 170);
+    await zoom(s, 50);
+    const view = (await s.obs()).document.view;
+    await pan(s, 170 - (view?.panX ?? 0), 170 - (view?.panY ?? 0));
     await draw(s, 'Section', 'S', [-100, -100, 500, 280]);
     await draw(s, 'Frame', 'F', [0, 0, 100, 80]);
+    await s.set('Fill', '335588');
+    await draw(s, 'Section', 'Boundary outer', [450, -100, 400, 300]);
+    await draw(s, 'Section', 'Boundary inner', [480, -70, 250, 220]);
+    await draw(s, 'Rectangle', 'Boundary member', [600, 0, 60, 30]);
+    await s.set('Fill', 'AA6633');
+    await position(s, 'Boundary outer', [450, -100, 400, 300], null);
+    await position(s, 'Boundary inner', [30, 30, 250, 220], 'Boundary outer');
+    await position(s, 'Boundary member', [120, 70, 60, 30], 'Boundary inner');
+    const labelX = async (name: string) => {
+      const box = await s.layerLabel(name).boundingBox();
+      if (!box) throw new Error('The boundary result needs visible Layers rows');
+      return box.x;
+    };
+    const paint = async () => {
+      await visibleColor(s, 20, 20, '335588');
+      await visibleColor(s, 630, 15, 'AA6633');
+    };
     await resize(s, 'S', 'start', -30, -30);
     await position(s, 'S', [-130, -130, 530, 310], null);
     await position(s, 'F', [130, 130, 100, 80], 'S');
@@ -317,6 +777,58 @@ export const programs: Program[] = [
     await s.select('F');
     await expect(s.field('X')).toHaveValue('130');
     await expect(s.field('Y')).toHaveValue('130');
+    await s.select('S');
+    await s.set('Width', '80'); await s.set('Height', '80');
+    await position(s, 'S', [-130, -130, 80, 80], null);
+    await position(s, 'F', [130, 130, 100, 80], 'S');
+    await absolute(s, 'F', 0, 0);
+    await paint();
+    await s.capture('section-field-shrink-keeps-members');
+    await s.set('Width', '530'); await s.set('Height', '310');
+    await resize(s, 'S', 'end', -350, -130);
+    await position(s, 'S', [-130, -130, 180, 180], null);
+    await position(s, 'F', [130, 130, 100, 80], 'S');
+    await absolute(s, 'F', 0, 0);
+    await expect(s.field('Width')).toHaveValue('180');
+    await paint();
+    await s.capture('partially-overlapping-member-stays-in-section');
+    await resize(s, 'S', 'end', -100, -100);
+    await position(s, 'S', [-130, -130, 80, 80], null);
+    await position(s, 'F', [0, 0, 100, 80], null);
+    expect(Math.abs(await labelX('F') - await labelX('S'))).toBeLessThan(2);
+    await expect(s.field('Width')).toHaveValue('80');
+    await paint();
+    await s.capture('fully-excluded-member-returns-to-page');
+    // Selection has its own history: do not select F before undoing this drag.
+    await s.canvas().focus(); await s.press('ControlOrMeta+z');
+    await position(s, 'S', [-130, -130, 180, 180], null);
+    await position(s, 'F', [130, 130, 100, 80], 'S');
+    expect(await labelX('F')).toBeGreaterThan(await labelX('S'));
+    await expect(s.field('Width')).toHaveValue('180');
+    await paint();
+    await s.capture('one-undo-restores-boundary-and-page-member');
+
+    await s.select('Boundary inner');
+    await s.set('Width', '80'); await s.set('Height', '80');
+    await position(s, 'Boundary member', [120, 70, 60, 30], 'Boundary inner');
+    await absolute(s, 'Boundary member', 600, 0);
+    await s.set('Width', '250'); await s.set('Height', '220');
+    await resize(s, 'Boundary inner', 'end', -170, -140);
+    await position(s, 'Boundary inner', [30, 30, 80, 80], 'Boundary outer');
+    await position(s, 'Boundary member', [150, 100, 60, 30], 'Boundary outer');
+    expect(Math.abs(await labelX('Boundary member') - await labelX('Boundary inner'))).toBeLessThan(2);
+    await expect(s.field('Width')).toHaveValue('80');
+    await paint();
+    await s.capture('excluded-nested-member-returns-to-outer-section');
+    await s.canvas().focus(); await s.press('ControlOrMeta+z');
+    await position(s, 'Boundary inner', [30, 30, 250, 220], 'Boundary outer');
+    await position(s, 'Boundary member', [120, 70, 60, 30], 'Boundary inner');
+    await absolute(s, 'Boundary member', 600, 0);
+    expect(await labelX('Boundary member')).toBeGreaterThan(await labelX('Boundary inner'));
+    await expect(s.field('Width')).toHaveValue('250');
+    await expect(s.field('Height')).toHaveValue('220');
+    await paint();
+    await s.capture('one-undo-restores-nested-boundary-and-membership');
   }),
 
   program('SECTION-BOUNDS', 'Fit populated and empty Sections', async s => {
@@ -341,25 +853,74 @@ export const programs: Program[] = [
   }),
 
   program('SECTION-BOUNDS', 'Expand a Section for a copied Frame', async s => {
+    const inspect = async (name: string, rect: Rect) => {
+      await s.select(name);
+      for (const [field, value] of [['X', rect[0]], ['Y', rect[1]], ['Width', rect[2]], ['Height', rect[3]]] as const) {
+        await expect(s.field(field)).toHaveValue(String(value));
+      }
+    };
     await pan(s, 60, 65);
     await draw(s, 'Section', 'S', [0, 0, 280, 40]);
+    await s.set('Fill', 'FFFFFF');
     await draw(s, 'Rectangle', 'R', [0, 0, 80, 40]);
     await draw(s, 'Frame', 'F', [200, 0, 80, 40]);
+    await s.set('Fill', '224466');
     const before = await s.obs();
+    await s.canvas().focus();
     await s.press('ControlOrMeta+d');
-    await s.select('S');
+    const copy80 = await s.bindSelected('Copy 80');
+    await position(s, 'Copy 80', [320, 0, 80, 40], 'S');
+    await absolute(s, 'Copy 80', 320, 0);
+    await inspect('Copy 80', [320, 0, 80, 40]);
     await position(s, 'S', [0, 0, 448, 40], null);
     await s.check(state => {
       const parentId = s.lookup(state, 'S').id;
       const ids = new Set(before.objects.map(object => object.id));
-      const newFrames = state.objects.filter(object => !ids.has(object.id) && object.type === 'frame');
-      expect(newFrames).toHaveLength(1);
-      expect(newFrames[0]).toMatchObject({ parentId, geometry: dimensions([320, 0, 80, 40]) });
+      const added = state.objects.filter(object => !ids.has(object.id));
+      expect(added).toHaveLength(1);
+      expect(added[0]).toMatchObject({ id: copy80.id, type: 'frame', parentId, geometry: dimensions([320, 0, 80, 40]) });
       for (const name of ['F', 'R']) {
         const { id, parentId, geometry } = s.lookup(before, name);
         expect(s.lookup(state, name)).toMatchObject({ id, parentId, geometry });
       }
     });
+    await inspect('S', [0, 0, 448, 40]);
+    for (const x of [322, 398]) await visibleColor(s, x, 20, '224466');
+    for (const x of [318, 402, 444]) await visibleColor(s, x, 20, 'FFFFFF');
+    await visibleColor(s, 452, 20, 'F5F5F5');
+    await visibleColor(s, 360, 44, 'F5F5F5');
+    await s.capture('copied-frame-expands-section');
+
+    await draw(s, 'Section', 'T', [0, 200, 450, 40]);
+    await s.set('Fill', 'FFFFFF');
+    // This source is a new Frame-tool creation; it has no prior duplicate displacement.
+    await draw(s, 'Frame', 'Fresh 100', [200, 200, 100, 40]);
+    await s.set('Fill', '668822');
+    await position(s, 'Fresh 100', [200, 0, 100, 40], 'T');
+    const before100 = await s.obs();
+    await s.canvas().focus();
+    await s.press('ControlOrMeta+d');
+    const copy100 = await s.bindSelected('Copy 100');
+    await position(s, 'Copy 100', [340, 0, 100, 40], 'T');
+    await absolute(s, 'Copy 100', 340, 200);
+    await inspect('Copy 100', [340, 0, 100, 40]);
+    await position(s, 'T', [0, 200, 450, 40], null);
+    await s.check(state => {
+      const ids = new Set(before100.objects.map(object => object.id));
+      const added = state.objects.filter(object => !ids.has(object.id));
+      expect(added).toHaveLength(1);
+      expect(added[0]).toMatchObject({ id: copy100.id, type: 'frame', parentId: s.lookup(state, 'T').id });
+      const { id, parentId, geometry } = s.lookup(before100, 'Fresh 100');
+      expect(s.lookup(state, 'Fresh 100')).toMatchObject({ id, parentId, geometry });
+    });
+    await inspect('T', [0, 200, 450, 40]);
+    for (const x of [342, 438]) await visibleColor(s, x, 220, '668822');
+    for (const x of [338, 442, 446]) await visibleColor(s, x, 220, 'FFFFFF');
+    await visibleColor(s, 454, 220, 'F5F5F5');
+    await visibleColor(s, 390, 244, 'F5F5F5');
+    await position(s, 'S', [0, 0, 448, 40], null);
+    await position(s, 'Copy 80', [320, 0, 80, 40], 'S');
+    await s.capture('copied-frame-fits-existing-section');
   }),
 
   program('SECTION-CONVERT', 'Convert a Group to a Section', async s => {
@@ -631,6 +1192,7 @@ export const programs: Program[] = [
   }),
 
   program('VIEW-LAYERS', 'Select a range and individual rows', async s => {
+    const baseline = await s.obs();
     await s.select('Title');
     await selected(s, 'Title');
     await s.layer('Red').click({ modifiers: ['Shift'] });
@@ -639,6 +1201,37 @@ export const programs: Program[] = [
     await selected(s, 'Title', 'Red');
     await expect(s.layer('Blue')).toHaveAttribute('aria-selected', 'false');
     await expect(s.role('status', 'Selection count')).toContainText('2');
+    const parentTarget = async (label: string) => {
+      await selected(s, 'Nested');
+      await s.check(state => {
+        for (const original of baseline.objects) {
+          expect(s.lookup(state, original)).toMatchObject({ id: original.id, type: original.type,
+            parentId: original.parentId, geometry: original.geometry });
+        }
+      });
+      await expect(s.role('status', 'Selection count')).toHaveText(/\b1\b/);
+      await expect(s.field('Width')).toHaveValue('300');
+      await expect(s.field('Height')).toHaveValue('220');
+      await expect(s.field('Font size')).toBeHidden();
+      const state = await s.obs(), nested = s.lookup(state, 'Nested');
+      const [x, y] = pagePosition(s, state, nested);
+      for (const point of [[x + nested.geometry.width / 2, y],
+        [x + nested.geometry.width, y + nested.geometry.height / 2]] as Point[]) {
+        const [sx, sy] = inCanvas(state, ...point);
+        await expect(async () => {
+          const pixels = await canvasPixels(s, [Math.round(sx) - 2, Math.round(sy) - 2, 5, 5]);
+          expect(pixels.some(([r, g, b, a]) => a > 0 && b - r > 40 && b - g > 20),
+            'The independent Frame target has a visible outline').toBe(true);
+        }).toPass({ timeout: 8_000, intervals: [100, 250, 500] });
+      }
+      await s.capture(label);
+    };
+    await s.select('Nested');
+    await parentTarget('parent-is-the-independent-layers-target');
+    await s.layer('Title').click({ modifiers: ['Shift'] });
+    await parentTarget('shift-descendant-keeps-parent-target');
+    await s.layer('Title').click({ modifiers: ['ControlOrMeta'] });
+    await parentTarget('modifier-descendant-keeps-parent-target');
   }),
 
   program('VIEW-ASSETS', 'Find a component and drag an instance', async s => {
@@ -655,6 +1248,9 @@ export const programs: Program[] = [
     expect(tile.name).toBeTruthy();
     expect(other.name).toBeTruthy();
     expect(tile.name).not.toBe(other.name);
+    await draw(s, 'Section', 'Asset section', [540, 320, 320, 260]);
+    await position(s, 'Asset section', [540, 320, 320, 260], null);
+    await s.check(state => expect(state.objects.filter(object => object.parentId === s.lookup(state, 'Asset section').id)).toHaveLength(0));
     const before = await s.obs();
     await s.button('Assets').click();
     await s.role('textbox', /Search/).fill(tile.name!);
@@ -666,25 +1262,55 @@ export const programs: Program[] = [
     if (!preview) throw new Error('Asset preview has no visible bounds');
     const pixels = await imagePixels(s, card, [0, 0, Math.floor(preview.width), Math.floor(preview.height / 2)]);
     expect(pixels.some(([r, g, b]) => g - r > 48 && g - b > 18), 'the card previews the green tile content').toBe(true);
-    await card.dragTo(s.canvas(), { targetPosition: { x: 425, y: 270 } });
+    const [pageX, pageY] = inCanvas(await s.obs(), 370, 260);
+    await card.dragTo(s.canvas(), { targetPosition: { x: pageX, y: pageY } });
     await s.check(state => {
       const source = s.lookup(state, 'Tile component');
       const instances = state.objects.filter(object => object.type === 'instance' && object.component?.sourceId === source.id);
       expect(instances).toHaveLength(1);
-      expect(instances[0]).toMatchObject({ pageId: before.document.currentPageId, selected: true });
+      expect(instances[0]).toMatchObject({ parentId: null, pageId: before.document.currentPageId, selected: true });
       expect(instances[0].geometry).toMatchObject({ width: 140, height: 120 });
     });
-    const instance = await s.selected();
+    const instance = await s.bindSelected('Page tile');
     expect(instance.name).toBeTruthy();
+    const pageInstancePosition = pagePosition(s, await s.obs(), 'Page tile');
+    await visibleColor(s, pageInstancePosition[0] + 42, pageInstancePosition[1] + 41, '118855');
+    await expect(card).toBeVisible();
+    const [sectionX, sectionY] = inCanvas(await s.obs(), 690, 450);
+    await card.dragTo(s.canvas(), { targetPosition: { x: sectionX, y: sectionY } });
+    const nested = await s.bindSelected('Section tile');
+    expect(nested.id).not.toBe(instance.id);
+    await s.check(state => {
+      const source = s.lookup(state, 'Tile component');
+      const section = s.lookup(state, 'Asset section');
+      const instances = state.objects.filter(object => object.type === 'instance' && object.component?.sourceId === source.id);
+      expect(instances).toHaveLength(2);
+      expect(s.lookup(state, 'Page tile').parentId).toBeNull();
+      const child = s.lookup(state, 'Section tile');
+      expect(child).toMatchObject({ parentId: section.id, pageId: before.document.currentPageId, selected: true });
+      expect(child.geometry).toMatchObject({ width: 140, height: 120 });
+      expect(child.geometry.x).toBeGreaterThanOrEqual(0);
+      expect(child.geometry.y).toBeGreaterThanOrEqual(0);
+      expect(child.geometry.x + child.geometry.width).toBeLessThanOrEqual(section.geometry.width);
+      expect(child.geometry.y + child.geometry.height).toBeLessThanOrEqual(section.geometry.height);
+    });
+    const nestedPosition = pagePosition(s, await s.obs(), 'Section tile');
+    await visibleColor(s, nestedPosition[0] + 42, nestedPosition[1] + 41, '118855');
     await s.button('File').click();
     await expect(s.layer(instance)).toBeVisible();
+    await expect(s.layer(nested)).toBeVisible();
+    await expect(s.layer('Asset section')).toBeVisible();
     await expect(s.button('Instance actions')).toBeVisible();
+    await expect(s.field('Width')).toHaveValue('140');
+    await expect(s.field('Height')).toHaveValue('120');
+    await s.capture('page-and-section-assets-instances');
     await s.button('Assets').click();
     await s.role('textbox', /Search/).fill(tile.name!);
     await expect(card).toBeVisible();
     await s.check(state => {
       expect(state.document.currentPageId).toBe(before.document.currentPageId);
       expect(state.objects.some(object => object.id === instance.id)).toBe(true);
+      expect(s.lookup(state, 'Section tile').parentId).toBe(s.lookup(state, 'Asset section').id);
     });
   }),
 
@@ -863,6 +1489,92 @@ export const programs: Program[] = [
     await menu(s, 'Red', /Unlock|Lock\/Unlock/);
     await s.check(state => expect(s.lookup(state, 'Red').locked).toBe(false));
     await selected(s, 'Red');
+  }),
+
+  program('EDITOR-LAYER-MENU', 'Check Section eligibility before wrapping a mixed selection', async s => {
+    await draw(s, 'Section', 'Eligibility section', [120, 150, 180, 120]);
+    await draw(s, 'Frame', 'Eligibility frame', [400, 170, 100, 80]);
+    await draw(s, 'Rectangle', 'Eligibility frame child', [410, 180, 30, 20]);
+    await draw(s, 'Rectangle', 'Eligibility group child A', [650, 150, 30, 20]);
+    await draw(s, 'Rectangle', 'Eligibility group child B', [710, 150, 30, 20]);
+    await group(s, 'Eligibility group', 'Eligibility group child A', 'Eligibility group child B');
+    await position(s, 'Eligibility section', [120, 150, 180, 120], null);
+    await position(s, 'Eligibility frame', [400, 170, 100, 80], null);
+    const original = await s.obs();
+    const originalIds = original.objects.map(object => object.id).sort();
+    const unchanged = async () => {
+      await s.check(state => {
+        expect(state.objects.map(object => object.id).sort()).toEqual(originalIds);
+        for (const before of original.objects) {
+          const after = s.lookup(state, before);
+          expect(after.type).toBe(before.type);
+          expect(after.parentId).toBe(before.parentId);
+          expect(after.geometry).toEqual(before.geometry);
+          expect(after.layout?.direction ?? 'freeform').toBe(before.layout?.direction ?? 'freeform');
+          expect(after.layout?.ignore ?? false).toBe(before.layout?.ignore ?? false);
+          for (const axis of ['width', 'height']) expect(after.layout?.[axis] ?? 'fixed').toBe(before.layout?.[axis] ?? 'fixed');
+          expect(after.component?.sourceId).toBe(before.component?.sourceId);
+        }
+      });
+    };
+    const unavailable = async (name: string) => {
+      const item = s.role('menuitem', name);
+      if (await item.isVisible()) await expect(item).toBeDisabled();
+      else await expect(item).toBeHidden();
+    };
+    const commands = ['Frame selection', 'Group selection', 'Add auto layout', 'Create component'];
+    const isMac = await s.page.evaluate(() => /Mac/.test(navigator.platform));
+    const shortcuts = [isMac ? 'Alt+Meta+g' : 'Control+Alt+g', 'ControlOrMeta+g', 'Shift+a'];
+    for (const child of ['Eligibility frame child', 'Eligibility group child A']) {
+      await s.select(child);
+      await s.layer(child).click({ button: 'right' });
+      await expect(s.role('menuitem', 'Copy')).toBeVisible();
+      await unavailable('Wrap in new section');
+      await s.capture(child === 'Eligibility frame child' ? 'frame-child-section-wrap-unavailable' : 'group-child-section-wrap-unavailable');
+      await s.press('Escape');
+      await unchanged();
+    }
+    const checkSelection = async (mixed: boolean) => {
+      const names = mixed ? ['Eligibility section', 'Eligibility frame'] : ['Eligibility section'];
+      await choose(s, ...names);
+      await s.layer('Eligibility section').click({ button: 'right' });
+      await expect(s.role('menuitem', 'Copy')).toBeVisible();
+      await selected(s, ...names);
+      for (const name of commands) await unavailable(name);
+      if (mixed) {
+        await expect(s.role('menuitem', 'Wrap in new section')).toBeVisible();
+        await expect(s.role('menuitem', 'Wrap in new section')).toBeEnabled();
+      } else await unavailable('Wrap in new section');
+      await s.capture(mixed ? 'mixed-section-command-availability' : 'single-section-command-availability');
+      await s.press('Escape');
+      for (const shortcut of shortcuts) {
+        await s.canvas().focus();
+        await s.press(shortcut);
+        await unchanged();
+        await selected(s, ...names);
+      }
+    };
+    await checkSelection(false);
+    await checkSelection(true);
+    await menu(s, 'Eligibility section', 'Wrap in new section');
+    const wrapper = await s.bindSelected('Mixed wrapper');
+    expect(wrapper.type).toBe('section');
+    await position(s, 'Mixed wrapper', [20, 50, 580, 320], null);
+    await position(s, 'Eligibility section', [100, 100, 180, 120], 'Mixed wrapper');
+    await position(s, 'Eligibility frame', [380, 120, 100, 80], 'Mixed wrapper');
+    await absolute(s, 'Eligibility section', 120, 150);
+    await absolute(s, 'Eligibility frame', 400, 170);
+    await s.check(state => {
+      const added = state.objects.filter(object => !originalIds.includes(object.id));
+      expect(added.map(object => object.id)).toEqual([wrapper.id]);
+      expect(state.objects.filter(object => object.parentId === wrapper.id).map(object => object.id).sort())
+        .toEqual(['Eligibility section', 'Eligibility frame'].map(name => s.lookup(original, name).id).sort());
+    });
+    await expect(s.field('Width')).toHaveValue('580');
+    await expect(s.field('Height')).toHaveValue('320');
+    await s.canvas().focus();
+    await s.press('ControlOrMeta+z');
+    await unchanged();
   }),
 
   program('EDITOR-LAYER-MENU', 'Rename one layer from its context menu', async s => {

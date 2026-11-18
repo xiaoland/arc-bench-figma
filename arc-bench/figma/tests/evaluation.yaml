@@ -1,5 +1,5 @@
 version: 1
-specification_version: 3.0.2
+specification_version: 3.0.3
 scenarios:
 - requirement: SAVE-03
   name: Export PNG at two scales and continue text edit
@@ -1028,6 +1028,10 @@ scenarios:
       actions: 拖画另一文本框输入正文，退出并重命名图层。
       expected: 初始Fixed size框保留，名称与正文分别存储和显示。
       evidence: 框几何、模式、正文和名称对照。
+    - name: Section开放区域创建文字
+      actions: 用Section工具独立建立空区域(360,250,260,140)，在其开放区域用Text工具点击(390,285)，键入Section text并结束编辑，再进入文字编辑读回正文。
+      expected: 新文字为Section直接子层，Auto width，全部几何在区域内；Layers选中该文字，重新进入可见编辑器时正文一致。
+      evidence: 真实Section/Text工具、点击与键入，Layers父级/选择、正文和边界观察及Canvas截图；目标应用尚未执行。
 - requirement: EDIT-12
   name: Drag and resize a rectangle
   acceptance:
@@ -2604,10 +2608,16 @@ scenarios:
       actions: 通过工具栏在空白页面建立两个Frame及带文字/图形的子Frame；在Layers将子Frame拖入另一个Frame。
       expected: 真实父子树更新，内容仍可编辑；移动目标Frame时子树随父移动，原Frame不再拥有该子树。
       evidence: 前后层树/文档关系和移动父Frame后的画布记录。
+    - name: 保留原选择与另选容器的Paste对照
+      actions: Copy移动后的Page-root Target Frame，保留同一选择直接Paste；再明确选择另一个Page-root Source Frame，以同一clipboard Paste。保存结果后用UI删除这两个测试副本。
+      expected: 第一次是Page sibling，未成为原Target自身的child；第二次成为另选Source的direct child。两者均克隆完整普通Frame子树，新ID、相对几何与文字保持，原树不变。不固定root
+        Page位置或duplicate gap。
+      evidence: 真实CmdC/CmdV与selection上下文；新增4-node子树的type/Parent/geometry/text、普通非component状态、选中Layers和Width/Height UI及两次截图。
     - name: 复制、独立修改与历史
-      actions: 正常复制粘贴或重复子Frame，改副本文字；删除副本，离开输入焦点后Undo。
+      actions: 对原子Frame执行CmdD，由Layers选中副本文字进入Text editor并独立修改；删除副本，离开输入焦点后Undo。
       expected: 副本与原子树身份不同，修改副本不改原对象；Undo恢复副本子树及相应布局，不建立组件关联。
-      evidence: 复制前后对象身份/内容、修改对照、删除与Undo后的层树及画布记录。
+      evidence: 复制前后对象身份/内容、真实Layers/Text editor编辑、修改对照、删除与Undo后的层树和画布记录；候选应用未执行。
+
 - requirement: EDIT-05
   name: Hide and show a container
   acceptance:
@@ -2810,20 +2820,20 @@ scenarios:
       expected: 起点无设计对象；终点两页各有可辨识的列表界面，标题、卡片正文、图片和图标均为对应可编辑对象且父子关系正确。不是预载文档、扁平图片或仅改图层名。
       evidence: 起点及两页成稿截图、图层树/只读对象快照、文字再次编辑前后记录。
     - name: 建立布局与复用关系
-      actions: 在同文件创建Card源与文字Style、颜色Style；卡片内使用纵向布局，列表使用横向Wrap。通过Assets放入至少两个桌面实例与一个移动实例；为其中一个实例设置不同正文覆盖。为独立标题和卡片正文绑定文字Style，为独立对象和源绑定颜色Style。
-      expected: 实例仍引用同一源，独立对象与复用对象均可通过Style维护；标签与图像不靠预计算坐标伪装布局。桌面列表宽度可容纳两列，移动宽度仅容纳一列；宽度、子项min宽、padding和gap由操作者记录并满足该条件，不固定字体度量或断行临界值。
+      actions: 在同文件创建Card源与文字Style、颜色Style；Card源Width200、纵向布局、Hug高度、padding10、gap10；Label为Fill宽和Auto height。Type/Card为Inter Regular14、Line height20，Color/Card为D9D9D9。Desktop列表Width500、Mobile列表Width260，均为横向Wrap、Hug高度、padding10、水平gap20、行gap20和Top left对齐。通过Assets放入Desktop A/B和Mobile M；所有实例Fill宽、minWidth200、无maxWidth、Hug高度。给A设置Label覆盖Only on Desktop。为独立标题和卡片正文绑定文字Style，为独立对象和源绑定颜色Style。
+      expected: 实例仍引用同一源，独立对象与复用对象均可通过Style维护；标签与图像不靠预计算坐标伪装布局。Desktop A/B同处一行，各宽230；Mobile M宽240。卡片高度为Label实测高度加20，Label初始一行高20。列表高度为各行最高卡片之和、20行gap及上下各10padding；每行从左上对齐，不依赖自然软换行临界值。
       evidence: 对象/来源/Style关系表、布局参数及两种宽度下画布截图。
     - name: 改变内容与宽度并维护
-      actions: 增加一个列表实例，延长其中正文并使用Auto height/Hug；收窄桌面列表使两列变一列，再撤销恢复两列。修改源的未覆盖外观、文字Style和颜色Style。
-      expected: 增删及正文增高触发父布局重算，相邻卡片不遮挡；收窄按公开布局规则换行，Undo恢复刚才宽度及布局，早先正文覆盖保留。共享更新传播到应关联的两页对象，局部覆盖仍在；移动页不跟随桌面Frame宽度变化。响应式不要求自动断点切换组件。
+      actions: 在Desktop增加C；把A的Label改为Only on Desktop、Second line、Third line三行，以两个明确换行分隔。将Desktop列表Width从500改260，再Undo恢复500。源Opacity改80，Color/Card改E6F0FF，Type/Card字号改16，Line height保持20。
+      expected: 新增C形成两行；A的Label高60、卡片高80。收窄后A/B/C形成三行、各宽240；Undo恢复两行和Width500，A覆盖保留。按Fill分配每行宽度，按最高卡片、20行gap和padding计算行位置及Hug高度；相邻卡片不遮挡。共享更新传播到应关联的两页对象，局部覆盖仍在；移动页不跟随桌面Frame宽度变化。响应式不要求自动断点切换组件。
       evidence: 每次修改前后宽度、层级、布局、覆盖和Style快照；两页截图并记录与规则计算的对应关系。
     - name: 保存重开后继续编辑
-      actions: 等待正常保存就绪，关闭旧标签，从同一文档入口新开；记录恢复后再改源外观、一个实例正文和列表间距。
-      expected: 页面、对象、布局、源与Style关系及覆盖仍在；重开后的源修改继续传播、实例编辑不破坏源、列表重排仍有效。保存提示或静态恢复画面不能单独通过。
+      actions: 等待正常保存就绪，关闭旧标签，从同一文档入口新开；记录恢复后把源Opacity改90、B.Label改Changed after reopening、Type/Card字号改18、Desktop水平gap改28，行gap仍20。
+      expected: 页面、对象、布局、源与Style关系及覆盖仍在；重开后源Opacity90传播至A/B/C/M，Type/Card字号18传播至Desktop标题及源与全部实例正文，Line height仍20。源Label、C/M仍为Explore，A三行覆盖保留，B局部覆盖不改变源。Desktop首行两卡各宽226、水平gap28，后行按20行gap排列；根据实测Label高度核验卡片和列表Hug高度。保存提示或静态恢复画面不能单独通过。
       evidence: 原文档身份、关闭/新开记录、重开前后关系快照及重开后编辑的可见结果。
     - name: 导出可用交付物
-      actions: 从所选桌面或移动Frame的Export面板导出PNG，并从图标导出SVG，打开实际下载文件与当前设计对照。
-      expected: PNG像素尺寸等于Frame尺寸乘选定倍率且包含所选Frame当前内容；SVG保留可渲染矢量路径与当前颜色/描边，范围正确。不接受空白、旧图、错误Frame或仅文件头有效。导出后文档仍可编辑；PNG/SVG不承担恢复设计文件职责。
+      actions: 选择Desktop page Frame，从Export面板以PNG 2x导出；将导入图标的可编辑vector Fill改E11D48，再导出SVG。打开实际下载文件与当前设计对照。
+      expected: PNG像素尺寸等于所选Frame当前实际尺寸乘2且包含所选Frame当前内容；SVG保留可渲染矢量路径与当前颜色/描边，范围正确。不接受空白、旧图、错误Frame或仅文件头有效。导出后文档仍可编辑；PNG/SVG不承担恢复设计文件职责。
         解码/渲染真实PNG和SVG，比较导出时的图形、文字、颜色与层次；重开后的图片/向量无需再次导入，且可继续修改。
       evidence: 实际下载文件、导出对象与倍率记录、PNG解码/SVG渲染预览及与画布的内容对照。
 - requirement: FLOW-01
@@ -3593,6 +3603,13 @@ scenarios:
       actions: 从空白创建含文字/图形的Frame，执行Create component后修改源正文，检查Assets。
       expected: 普通对象成为可编辑主组件，内容结构保持，定义可供后续插入。
       evidence: 转换前后对象类型、结构、内容及Assets入口记录。
+    - name: main component的复制入口
+      actions: 在未建立复制位移前，通过Layers点击Page main后直接首次CmdD，再通过Layers点击新instance后直接首次CmdD；两次均不补Canvas.focus。保存重叠结果后用字段移开两个副本。再选main Copy/Paste与Alt-drag(260,160)，最后改源文字Linked
+        update。
+      expected: main与instance首次D都产生同Page linked instance，首次结果各与source完全重叠。Copy/Paste和Alt-drag也各产生linked instance，四实例身份独立、sourceId相同；Alt结果是(290,185,180,100)，结构与文字继承来源。源再次修改后四实例都更新。
+      evidence: Layers点击后直接CmdD的输入路径、两个first-D独立capture、真实clipboard/Alt入口、Parent与完整geometry、source link/子树内容，以及四实例Layers/Width/Height/Text editor
+        UI和截图；候选应用尚未运行。
+
 - requirement: COMP-05
   name: Insert two instances from Assets
   acceptance:
@@ -6359,11 +6376,19 @@ scenarios:
           testId: layer:Flow spare
       - type: press
         key: ControlOrMeta+x
+        target:
+          role: region
+          name: Design canvas
+          exact: true
       - type: click
         target:
           testId: layer:Limit Frame
       - type: press
         key: ControlOrMeta+v
+        target:
+          role: region
+          name: Design canvas
+          exact: true
       - type: click
         target:
           testId: layer:Limit Frame
@@ -6392,6 +6417,7 @@ scenarios:
         state: value
         equals: '40'
     scope: declared_automated_steps_only
+
 - requirement: LAY-08
   name: Recalculate a nested row width
   acceptance:
@@ -7004,6 +7030,7 @@ scenarios:
       actions: 选择B将Width改80并Enter，离开字段后Undo；Text工具在空白创建文本，输入Draft及尾随空格，Escape后回Move。
       expected: B宽度80后恢复60，A位置保持；正文为Draft加空格，正文空格不触发导航；画布、Layers与Design对应当前对象。
       evidence: 字段提交及Undo、正文输入/退出画面与焦点记录、A/B几何和文本内容。
+
 - requirement: EDIT-08
   name: Commit and cancel Chinese text composition
   acceptance:
@@ -7082,8 +7109,9 @@ scenarios:
     seed: blank
     protocol:
     - name: 对象组织与继续编辑
-      actions: 从blank创建有内容的Frame；从Region组Section拖画并双击标题命名，移动区域收纳Frame，扩大边界并在空白部分创建嵌套Section，拖标题移动外层。分别点击内部Frame、标题及Layers，最后将Frame移出到空白画布并Undo。
-      expected: 区域标题与树归属一致；调整边界不缩放Frame，整体移动带动子树和嵌套Section；内容保持可编辑，Section不截获内部Frame的普通命中。移出解除对应归属，Undo恢复；Section不成为Frame或Group的子层。
+      actions: 从blank创建有内容的Frame；从Region组Section拖画并双击标题命名，移动区域收纳Frame，只读检查后立即Undo再Redo该drag，扩大边界并在空白部分创建嵌套Section，拖标题移动外层。分别点击内部Frame、标题及Layers，最后将Frame移出到空白画布并Undo。
+      expected: 移动Section自身完整覆盖原Page层Frame后，Frame成为Section直接子层且原画布几何保持；之后整体移动带动已有子树和嵌套Section。区域标题与树归属一致，调整边界不缩放Frame，内容保持可编辑，Section不截获内部Frame的普通命中。移出解除对应归属，Undo恢复；Section不成为Frame或Group的子层。
+        这一次Undo同时恢复Section原位置与Frame页级Parent，Redo同时恢复收纳；Undo前不插入其他Selection/Page动作。
       evidence: 操作前后画布、Layers、Design与必要文档几何/身份记录；历史或重开结果分别记录。
 - requirement: SECTION-REMOVE
   name: Delete content or keep it after Section removal
@@ -7158,13 +7186,17 @@ scenarios:
     seed: blank
     protocol:
     - name: 包围已有对象
-      actions: 通过正常Shape工具在空白页创建两个分离图形，记录身份和世界几何。以Frame工具从它们外部拖画并完整包围。
-      expected: 二者成为新Frame子层，原对象身份及世界几何保持；Layers缩进与画布一致，新Frame选中且工具回Move。
+      actions: 通过正常Shape工具在空白页创建两个分离图形，在它们下方创建不包含形状的页级Section；记录三者身份和世界几何。以Frame工具从空白处拖画并完整包围三者。
+      expected: 两形状成为新Frame仅有的直接子层，原对象身份及世界几何保持；Section仍为页级兄弟层，类型和几何保持。Layers缩进与画布一致，新Frame选中且工具回Move。
       evidence: 创建前后截图、对象身份/父级及世界几何、工具状态。
     - name: 直接继续操纵
-      actions: 不另切工具，从新Frame边界拖动，再执行Undo。
-      expected: 两子项随父移动；撤销后恢复移动前几何，归属仍在新Frame，仍可编辑。
+      actions: 不另切工具，从新Frame标题拖动，再执行Undo。
+      expected: Frame只平移而不改尺寸，两子项随父移动；Section保持页级父级与原几何。撤销后Frame与两子项恢复移动前几何，归属仍在新Frame，仍可编辑，Section继续保持原状。
       evidence: 输入与画面序列、移动和撤销后的对象/父级及几何。
+    - name: 已选边缘的相邻回归
+      actions: 保持Move，选中新Frame后从右边中点向右拖20文档单位，再Undo。
+      expected: 已选Frame的普通边缘执行Resize，宽度增加20，X/Y与高度保持；Section不被收纳或带动。Undo恢复Frame边界，两形状归属保持，Section仍在原页级位置。
+      evidence: 实际命中右边中点的手势及Frame前后几何与Design读数；此回归消费EDIT-12的边缘规则。
 - requirement: CREATE-02
   name: Click-create and move a rectangle and ellipse
   acceptance:
@@ -7240,9 +7272,9 @@ scenarios:
     mode: scripted
     protocol:
     - name: 实际输入与可见结果
-      actions: 准备：文件经正常操作建立两个内容与名称可辨认的主组件。 操作：打开Assets，按其中一个组件名搜索，查看预览，将结果拖入当前页；切回File再返回Assets。
-      expected: 结果和预览对应搜索的来源，放置后画布、Layers和Design对应新实例；导航切换保留当前页及其设计内容，仍可找到该来源。
-      evidence: 记录实际UI操作、目标对象/上下文及前后画面；结合只读文档观察核对几何、身份和关系。
+      actions: 文件经正常操作建立两个名称和内容可辨认的主组件，以及空Section(540,320,320,260)。打开Assets，搜索带绿色内容的组件并检查预览。将同一卡片先拖到容器外空白画布，再拖一份到Section内部且完整容纳。切回File检查两实例，再返回Assets。
+      expected: 搜索结果与预览对应来源；两实例均链接同一来源，第一份属于Page，第二份直接属于Section且完整在其开放区域内。Canvas绿色内容、Layers父级/选择与Design尺寸对应实例；切换保留当前页、两实例和来源搜索。
+      evidence: 真实卡片两次拖动、预览像素、两处实例内容像素、Layers与Design读数，以及Parent/local/page观察和截图；目标应用尚未执行。
 - requirement: VIEW-DESIGN
   name: Show properties for each selection context
   acceptance:
@@ -7284,9 +7316,9 @@ scenarios:
     mode: scripted
     protocol:
     - name: 实际输入与可见结果
-      actions: 准备：空白页通过正常工具建立Section A和嵌套Section B，区域外有独立Frame C及其子内容。 操作：把C完整移入B，移动A，再调整A区域边界，最后把C完整移到页面空白处。
-      expected: C先成为B的成员，移动A时后代一起移动；调整区域保持Frame尺寸、子内容与自身布局；C移到空白处后归页面，仍可选择编辑，B保持在A内的区域层级。
-      evidence: 记录实际UI操作、目标对象/上下文及前后画面；结合只读文档观察核对几何、身份和关系。
+      actions: 用正常工具建立A包含B，独立C及内容在外。选A做同一次标题拖动，经完整覆盖C的waypoint继续到C之外再释放；只读检查并立即一次Undo复位。随后按原流程将C拖入B、移动A、调整A边界，最后把C移到所有容器外。
+      expected: 经过后离开的完整drag不带走C，C和内容仍在原画布位置且C属于Page；一次Undo恢复A与B的原位置。C随后成为B成员、随A及其子树移动，区域Resize保持Frame尺寸和内容；最终C回Page。只判完成后的可见结果，不规定中途Parent何时写入。
+      evidence: 一条mouse-down至mouse-up路径、完成及一次Undo的Parent/geometry和截图，后续原嵌套路径；不以多次完成drag代替一次经过手势。
 - requirement: VIEW-PAGES
   name: Restore each page view and selection
   acceptance:
@@ -7346,15 +7378,19 @@ scenarios:
     mode: scripted
     seed: blank
     protocol:
-    - name: 配置预览
-      actions: UI建立两变体组件集，第一变体放左上角，各变体的子文字绑定同一Text属性Label，默认Source label；Assets沿本地来源及页面打开Details，选第二变体、Label填Preview
-        override并插入。
-      expected: 预览随属性更新，插入的新实例引用该集、采用第二变体及Preview override覆盖，Design显示一致值。
-      evidence: 来源目录、Details内容、插入按钮、实际实例/来源身份及属性。
-    - name: 独立实例与来源
-      actions: 确认第一次插入后Details已关闭。重新打开该卡片的Details，检查恢复为左上角变体和Source label，再插入另一实例；分别查看源及两实例，移动第一实例。
-      expected: 源默认文字和第二实例为Source label，第二实例采用左上角变体；第一实例仍为第二变体及Preview override且可独立移动，引用关系保持。
-      evidence: 源与两个实例的属性和画布、预览配置及移动记录。
+    - name: 复用Details配置
+      actions: 建立原两变体组件集及Label属性，并准备普通Freeform Frame、Section、Horizontal AutoLayout Frame。清除选择后打开Details，选Active并填Preview
+        override，在Label字段按Enter插入并关闭Details。
+      expected: Details按配置预览；第一个linked instance属于Page并采用Active及文字override，完整在viewport内。
+      evidence: 真实预览配置与Text字段Enter提交、Details关闭、Page Parent、variant/property及details-insert-no-selection截图。
+    - name: 选择容器仍插入页级
+      actions: 分别选择Freeform Frame、Section和Horizontal父级，重开同一Details，以恢复的Default/Source label各Insert一次；不重建来源或重复完整配置流程。
+      expected: 三个新实例均为Page roots，身份独立、完整位于viewport内；所选三个容器仍为空且几何保持。它们使用Default source和默认文字，来源未变。
+      evidence: 三个真实selected-parent上下文、Details/Insert、Parent与配置、Width/Height/Label及details-insert-freeform/section/horizontal截图。
+    - name: 实例独立编辑
+      actions: 将第一实例X改为440，读回两个配置组、来源及其他实例。
+      expected: 第一实例保持Active及Preview override，其他实例和source仍Source label，引用关系与原位置保持。
+      evidence: 实际字段编辑、独立实例与source结果及final截图；目标应用尚未执行。
 - requirement: VIEW-DESIGN
   name: Show mixed values and mode-dependent fields
   acceptance:
@@ -7494,13 +7530,14 @@ scenarios:
     seed: blank
     protocol:
     - name: 父子选择
-      actions: 正常UI建立互相分离的Frame与Group，各含两个可见未锁定形状；在空白处清除选择，普通点击Frame内一个子形状以选择Frame，Enter后记录选择集，再Shift+Enter。对Group重复。
+      actions: 正常UI建立互相分离的Frame与Group，各含两个可见未锁定形状；在空白处清除选择，普通点击Frame内一个子形状以选择Frame，直接发送Enter后记录选择集，再Shift+Enter。对Group重复；点击与按键之间不主动转移焦点。
       expected: 普通点击选择对应Frame或Group；Enter选择其两个直接子层，画布有两子层选框，Layers高亮两行，Design为多选；Shift+Enter重新选择父容器，对象几何和关系保持。
       evidence: 每次按键前后画布、Layers、Design及只读选择ID记录。
     - name: 兄弟选择
-      actions: 从Layers单选Group中排在前面的成员，按Tab再Shift+Tab。
+      actions: 从Layers单选Group中排在前面的成员，直接发送Tab再Shift+Tab，不先focus Canvas。
       expected: 先选择下一兄弟，再返回原成员，身份、几何和父级保持。
       evidence: 两次选择状态和对应Layers高亮。
+
 - requirement: PAGE-BACKGROUND
   name: Set separate page backgrounds
   acceptance:
@@ -7635,6 +7672,10 @@ scenarios:
       actions: 空白页上有一个自由定位的普通矩形A，选择A且焦点位于画布。Cmd/Ctrl+D生成B，立即用方向键向右移动B一次并Undo；再Option/Alt拖动B到右侧空白位置生成C，Cmd/Ctrl+D生成D，修改D的Fill。
       expected: B初始与A重叠且具有独立身份；方向键移动及Undo只改变B的位置，Undo后B仍存在。C位于拖动释放处，D沿用B到C的位移；四个对象均可编辑，D的新Fill独立，A/B/C的Fill保持原值。
       evidence: 操作前后画面、选择目标、Design读数及撤销后结果。
+    - name: 先释放Alt的对照
+      actions: 在原A/B/C/D判据后选D，按Alt开始拖动(100,80)，保持鼠标按下时先释放Alt，再释放鼠标。
+      expected: 不新增副本，仍只有原四个对象；同一D移动(100,80)，A/B/C保持，D保已设置的Fill与Parent。
+      evidence: 真实按键/鼠标释放顺序、对象ID集合及移动前后几何、当前X/Y与截图；不观察或约束内部copy-preview状态。
 - requirement: COLOR-VALUE
   name: Change color continuously and switch formats
   acceptance:
@@ -7690,6 +7731,12 @@ scenarios:
       actions: 在Title、Blue、Red连续可见时点击Title，Shift点击Red，再Command/Control点击Blue。
       expected: 依次选择Title、三层、Title和Red；比较行高亮、画布轮廓与Design目标。
       evidence: 实际操作截图、选中对象与相关属性。未执行时保留未执行状态。
+    - name: 祖先与后代只形成一个独立目标
+      actions: 保留原Title/Blue/Red range与modifier去Blue检查后，选Nested；Shift-click Title，再Cmd/Ctrl-click Title，每步读取独立selection及UI。
+      expected: 这三步均只有Nested一个独立target，Selection count为1；Design显示Width300/Height220的Frame属性而不是Text属性，Canvas有Nested轮廓。对象几何/Parent保持；后代的AX视觉高亮不被当成额外observer
+        target。
+      evidence: 真实Layers选择与modifier点击、selectionIds/selection count、Layers父行、Frame Design字段、两个边的蓝色轮廓像素和各阶段截图。
+
 - requirement: EDIT-07
   name: Reorder overlapping siblings
   acceptance:
@@ -7778,6 +7825,11 @@ scenarios:
       actions: 选Nested，在100%打开Zoom，输入150%并Enter，再选50%预设。
       expected: 输入聚焦全选；输入中视图保持，Enter提交且菜单保持打开；预设执行后关闭。图层选择和文档几何保持。
       evidence: 输入中、提交后、选择预设后的画面和对象几何。
+    - name: Zoom草稿的连续Escape
+      actions: 保留原Enter提交与50%预设段后，再打开Zoom，原始输入150但不Enter，直接发送Escape；观察后再直接Escape。
+      expected: 输入时仍50%。第一次Escape提交150%、关闭菜单并保留Nested选择；第二次Escape清除图层选择，zoom仍150%。文档所有图层几何保持，不要求菜单继续打开或DOM焦点为Canvas。
+      evidence: 真实Zoom字段输入与两次global Escape，菜单/输入消失、selection及Layers aria-selected、view.zoom和geometry、两阶段截图；候选未执行。
+
 - requirement: EDIT-11
   name: Pan with the middle mouse button
   acceptance:
@@ -8091,11 +8143,13 @@ scenarios:
     seed: flow
     protocol:
     - name: Type and nudge a Layout value
-      actions: A horizontal Auto Layout Frame has two children and numeric Gap 12. Small nudge is 1 and big nudge
-        is 10. Type 24 in Gap. Press Escape. Focus Gap again, press Up, then Shift+Up. Press Tab.
-      expected: Typing leaves the applied gap at 12. Escape applies 24 and returns focus to the canvas. Up applies
-        25 and Shift+Up applies 35. Tab moves to the next field. The children follow each applied gap.
+      actions: A horizontal Auto Layout Frame has two children and numeric Gap 12. Small nudge is 1 and big nudge is 10. Type
+        24 in Gap. Press Escape. Click Gap again, press Up, then Shift+Up. Press Tab.
+      expected: Typing leaves the applied gap at 12. Escape applies 24 and leaves numeric editing. Up applies 25 and Shift+Up
+        applies 35. Tab moves to the next field. The children follow each applied gap. Document-command routing after a numeric
+        exit is checked by EDITOR-INPUT without requiring a particular DOM focus host.
       evidence: 字段状态、实际操作与目标变化。
+
 - requirement: EDITOR-FIELD-NUMBER
   name: Scrub a numeric property
   acceptance:
@@ -8227,6 +8281,21 @@ scenarios:
       expected: Typography first shows each weight, then Mixed. Committing one weight applies it to the selected
         range.
       evidence: 对应控件、画布结果及重新选择后的值。
+- requirement: DESIGN-TYPOGRAPHY-VALUES
+  name: Cancel a font preview when selecting another text layer
+  acceptance:
+    version: 1
+    mode: scripted
+    seed: text
+    protocol:
+    - name: 未确认的字体预览随换选取消
+      actions: 将Paragraph A通过X/Y字段移到(60,80)，用Text工具在(60,200)创建文本B。确认两者已应用Inter Regular 12。选A打开Fonts，悬停Noto Sans；直接点击Layers的B关闭弹窗。重新选A检查。再以Search fonts输入Noto Sans触发预览，重复直接选B及重选A；两次关键换选均不插入Escape或Canvas.focus。
+      expected: 搜索与悬停均在A显示临时Noto Sans字形；换选关闭Fonts并恢复A的Inter，B保持Inter。重选A仍显示Inter Regular 12，两层正文和身份保持。
+      evidence: 预览与取消截图、文字A内部同一区域的字形像素变化及恢复、两层已应用font和selection读回、弹窗关闭以及A/B Typography控件值。预览不要求写入已提交的observer文档。
+    - name: 明确应用的字体在换选后保持
+      actions: 对A重新打开Fonts并明确点击Noto Sans应用，再直接点击Layers的B，最后重新选择A。
+      expected: A保持Noto Sans Regular 12及对应字形，B仍是Inter Regular 12；两层正文和身份保持。
+      evidence: 应用后及换选后的font读回、重新选择A的Typography和字形截图，与未确认预览取消作对照。
 - requirement: DESIGN-TYPOGRAPHY-ALIGN
   name: Show alignment for fixed text
   acceptance:
@@ -8545,16 +8614,16 @@ scenarios:
     seed: blank
     protocol:
     - name: Baseline
-      actions: Create Desktop rectangles A and B; set A to gray D9D9D9, select A and record both IDs and geometry.
-        Commit red FF0000, then select B in Layers.
+      actions: Create Desktop rectangles A and B; set A to gray D9D9D9, select A and record both IDs and geometry. Commit
+        red FF0000, then select B in Layers.
       expected: B is selected; A is red. Record this state before Undo.
       evidence: Before/after selection, Fill, IDs and geometry.
     - name: Separate history steps
-      actions: Use the application Undo command twice, capturing each result. Use Redo once. Avoid a text field
-        local Undo.
-      expected: First A is selected and red; second A is gray; Redo makes A red. The same two rectangles retain
-        their geometry.
+      actions: After selecting B in Layers, send global Cmd/Ctrl+Z twice, capturing each result. Send global Redo once. Do
+        not focus Canvas or a value input between the Layers click and these commands.
+      expected: First A is selected and red; second A is gray; Redo makes A red. The same two rectangles retain their geometry.
       evidence: Three ordered UI and document observations, with actual focus and command path.
+
 - requirement: SAVE-01
   name: Undo a page switch before a document edit
   acceptance:
@@ -8844,11 +8913,19 @@ scenarios:
     mode: scripted
     seed: blank
     protocol:
-    - name: Boundary-only edit
-      actions: Prepare S(-100,-100,500,280) with Frame100×80 at canvas0,0. Drag S top-left30 left/30 up; inspect
-        Frame.
-      expected: S(-130,-130,530,310); Frame canvas0,0,size100×80, local130,130.
-      evidence: Pointer gesture and both geometry bases, parent IDs; reject unintended content translation/scaling.
+    - name: 原边界Resize与字段缩小对照
+      actions: 建立原S及Frame，并在外Section A中建立B和B的rectangle C。真实拖S左上角(-30,-30)，选Frame读X/Y；再将S字段缩至80×80，恢复530×310。
+      expected: 原S到(-130,-130,530,310)，Frame保canvas(0,0)，local130,130。字段缩小虽排除Frame仍保Parent和Page几何；恢复字段不凭空间包含另换Parent。
+      evidence: 真实工具夹具、边界拖动与字段操作；Page/local geometry、X/Y UI及Canvas像素和截图。
+    - name: 部分越界保留与完全排除
+      actions: 将S右下corner真实拖至180×180，后拖至80×80；读取当前S字段、Layers和Canvas，不先选择Frame。立即Undo最后一次drag。
+      expected: 部分相交时Frame仍S成员；完全排除后Frame回Page并保(0,0,100,80)。一次Undo恢复S180×180及Frame归属/geometry，不回滚到最早530×310。
+      evidence: 两个真实boundary drag、Layer缩进/Parent、当前S Width、成员实色位置及截图，Undo前不插入Selection或Page动作。
+    - name: 嵌套Section回到直接外层
+      actions: B原canvas(480,-70,250,220)，C(600,0,60,30)。字段B80×80后恢复250×220；真实拖B右下corner至80×80，立即Undo。
+      expected: 字段缩小不改C Parent。边界完全排除后C成为A直接child、local150,100，canvas不变；Undo恢复B250×220及C为B direct child local120,70。
+      evidence: 真实field与boundary入口、A/B/C Parent和geometry、Layers缩进、B Width/Height UI及Canvas像素截图；候选应用尚未执行。
+
 - requirement: SECTION-BOUNDS
   name: Fit populated and empty Sections
   acceptance:
@@ -8869,10 +8946,13 @@ scenarios:
     seed: blank
     protocol:
     - name: Duplicate expansion
-      actions: Prepare S(0,0,280,40), rectangle80×40 local0,0 and Frame80×40 local200,0. Duplicate Frame with canvas
-        focus; inspect S.
-      expected: Copy direct child local320,0 with new ID. S width448,height40,x/y0. Originals retain IDs/geometry.
-      evidence: Child order/types/identities, original and copy geometry, Section bounds.
+      actions: 用正常工具建立S(0,0,280,40)、local(0,0,80,40)矩形和独立新建Frame F(200,0,80,40)。将S设为白色、F设Fill224466以便观察边界。给Canvas焦点，首次Duplicate F，再分别检查副本和S。
+      expected: 只新增一个Frame，直接属于S，local(320,0,80,40)，与原Frame间隔40。S保持X/Y0和Height40，Width变448；原件父级及几何保持。Design与实际画布的副本及Section边界相符。
+      evidence: 正常工具创建和首次复制输入、Layers父级、对象身份与原件/副本几何；Design X/Y/Width/Height，以及副本左右边界、Section内外像素和截图。
+    - name: 副本仍在现有边界内
+      actions: 另用Section工具建立独立T(0,200,450,40)，设白色；用Frame工具新建100×40的Frame，直接属于T且local(200,0)，设Fill668822。不得用Duplicate构造此源Frame。给Canvas焦点并首次Duplicate，再检查副本和T。
+      expected: 只新增一个Frame，直接属于T，local(340,0,100,40)，间隔仍40；副本右边界440留在T原边界内，T保持(0,200,450,40)，不为了补48余量而扩容。原Frame及先前S分支保持。
+      evidence: 独立Frame工具创建、首次复制输入，副本及T的Design读数、Parent/local/page几何、实际副本左右边界及T内外像素。目标应用尚未执行。
 - requirement: GROUP-BOUNDS
   name: Recalculate bounds after membership changes
   acceptance:
@@ -9242,3 +9322,204 @@ scenarios:
         Instance A 的 Button icon，按 Delete。在 Button 主组件中将 Button label 移到 Button icon 前。
       expected: Instance A 保留隐藏的图标行，Hug 布局按可见的标签收缩。主组件图标仍可见。Instance A 的子层行遵循新的源顺序。
       evidence: 记录删除前后两端的可见性、实例布局与行顺序，以及源重排后的实例 Layers。
+- requirement: EDIT-06
+  name: Paste a child into a smaller Freeform Frame
+  acceptance:
+    version: 1
+    mode: scripted
+    seed: blank
+    protocol:
+    - name: 目标容器逐轴放置
+      actions: 从blank建立Source Frame(100,80,400,200)、其矩形子层local(240,30,60,40)并设Fill为224466，及Target Frame(600,80,200,160)。确认两个Frame完整可见于Canvas视口。选择矩形并给Canvas焦点，复制；选择Target并给Canvas焦点，粘贴。
+      expected: 新矩形直接属于Target，local(70,30,60,40)，canvas(670,110)。只将无法容纳的X轴居中，Y保持源相对值；源子层及目标Frame边界保持。
+      evidence: 正常复制粘贴输入、Layers父级与当前选择，Design X/Y及尺寸，以及只读文档的源/副本身份和双坐标结果。此规程尚未在目标应用执行。
+    - name: 小Section目标逐轴放置对照
+      actions: 另用正常工具建立Source Section U(0,350,300,100)，及其独立新建Frame子层local(200,0,80,40)，设Fill335588。建立空白Target Section V(400,350,100,80)，确认两Section完整可见。选择源Frame给Canvas焦点后复制，再选V给Canvas焦点后粘贴。
+      expected: 新Frame直接属于V，local(10,0,80,40)、page(410,350)；仅X轴居中，Y保持0。V仍100×80，源Frame父级与几何保持。Design和实际画布的显色副本及两侧白色余量对应此结果。
+      evidence: 真实复制/选择Section/粘贴输入，源/副本身份及父级、双坐标、目标边界、字段和像素。此对照仅使用源Section内部Frame，不推断源外对象政策；目标应用尚未执行。
+- requirement: EDITOR-LAYER-MENU
+  name: Check Section eligibility before wrapping a mixed selection
+  acceptance:
+    version: 1
+    mode: scripted
+    seed: blank
+    protocol:
+    - name: 内层选择的wrapper Parent资格
+      actions: 除原S/F外，F包含普通矩形；另建Page Group G及其矩形成员，G放在最终S/F wrapper区域外。分别选F内矩形及G内矩形右键检查Wrap in new section。
+      expected: 两种内层选择的Wrap均隐藏或禁用，因为新Section wrapper的共同Parent不能是Frame或Group；检查后原对象集合、父级及几何保持。
+      evidence: 真实两种内层选择、实际菜单可用性、原层级和几何及截图；不通过全局合法树扫描代替菜单入口。
+    - name: Section单选资格
+      actions: 从blank建立页级Section S(120,150,180,120)和普通Frame F(400,170,100,80)。只选S，从其Layers行右键打开菜单，逐项检查Frame selection、Group
+        selection、Add auto layout、Create component和Wrap in new section不可用。关闭菜单，给Canvas焦点，依次尝试已定义的Frame selection、Group和Add
+        auto layout快捷键。
+      expected: 五项菜单命令均隐藏或禁用；每次快捷键后S和F的身份集合、类型、父级、几何、布局及组件关系保持。此处通过菜单检查不可用反馈，不要求不可用项必须渲染为disabled行。
+      evidence: 实际单选菜单截图、选择集合、三个快捷键输入及逐步文档结果；不以仅尝试热键替代菜单可用性检查。
+    - name: Section混选资格
+      actions: 同时选S和F，右键已选S行。检查前四项命令不可用、Wrap in new section可见且启用。关闭菜单，再给Canvas焦点，依次尝试相同三个快捷键。
+      expected: 菜单保留S和F混选；前四项隐藏或禁用，Wrap可用；快捷键不产生包装、类型转换、布局变化或新的组件关系。
+      evidence: 实际混选菜单及选择行态、输入和前后文档状态。Create component由菜单资格检查覆盖，不添加未规定的快捷键或Actions Search入口。
+    - name: 混选包装与撤销
+      actions: 从已选S行菜单实际执行Wrap in new section；检查新Section及两成员，再立即Undo。
+      expected: 只新增一个页级Section，边界为(20,50,580,320)，S和F成为直接子层，local分别为(100,100)和(380,120)，尺寸及原画布位置保持。Undo移除新Section，恢复S/F的页级父级和原几何。
+      evidence: 实际Wrap点击、Layers直接父级、Design边界、成员local/page几何及Undo结果；目标应用尚未执行。
+- requirement: CANVAS-HIERARCHY
+  name: Paste a Section with an incompatible Frame selected
+  acceptance:
+    version: 1
+    mode: scripted
+    seed: blank
+    protocol:
+    - name: 页级Frame不接收Section
+      actions: 用正常工具建立页级Section及其中独立Frame子层、分离的页级普通Freeform Frame、另一个Section中的普通Freeform Frame，以及分离的页级矩形。通过Fit all保证源Section与本次目标Frame完整可见，选源Section并复制，再选页级Frame粘贴。
+      expected: 新对象保持Section类型并保有独立复制的Frame子层；Section根属于Page，与所选Frame同级，所选Frame不成为父级。源Section及内容保留。副本位置按产品放置规则确定，不对X/Y硬编码。
+      evidence: 实际工具/复制/选择/粘贴，新增对象与父级、类型、复制子树，Layers同级缩进及选择、Design尺寸、Fit selection后实际选框四边像素与截图。
+    - name: Section内Frame的外层成为目标
+      actions: 再Fit all并复制原Section，选另一Section中的普通Freeform Frame，粘贴。
+      expected: 新Section直接属于目标Frame的外Section，与目标Frame同级；其子Frame保留类型、局部几何与内容。Section根不进入Frame；不规定其paste X/Y或要求外Section边界不变。
+      evidence: 实际输入、合法父级及独立子树、Layers同级缩进与选择、Design和实际Section选框；目标应用尚未执行。
+    - name: 整个混合剪贴板共同回退
+      actions: Fit all，实际多选原Section和分离页级矩形并一起复制，选页级Freeform Frame后粘贴。
+      expected: 新Section和新矩形两个根都属于Page，所选Frame不接收其中任一个；Section仍含复制子Frame。不能逐根将Section放Page却将矩形放Frame。
+      evidence: 新增三对象的类型和两根父级、源对象保留、Section实际选框，以及选中矩形的Layers/Design、Fill和实际选框四边像素。所有阶段同时执行共享父级产品oracle，目标应用尚未执行。
+- requirement: CANVAS-HIERARCHY
+  name: Reject an ancestor as a descendant's child
+  acceptance:
+    version: 1
+    mode: scripted
+    seed: blank
+    protocol:
+    - name: 真实祖先移动拒绝
+      actions: 用Frame工具建立页级A(250×120)，及其local(50,30,80,70)的Freeform子Frame B，保证两行可见。从Layers把A行真实拖到B行并释放。
+      expected: A仍在Page，B仍直接属于A；原对象集合、类型、父级和几何保持，没有形成循环或额外包装。
+      evidence: 按住时目标截图、完整Layers拖拽与释放、原层级和几何、Canvas及现A的Design尺寸。
+    - name: 副本使用新的层身份
+      actions: 选择A实际Copy，再选原B并Paste；按新增ID识别新A及其新B，检查Layers和Design。
+      expected: 仅新增两个普通Frame，新A直接属于原B，并含自己的新B。新B保原B的局部几何。原A/B关系和几何保留；复制结果是新的无环子树，不因原件祖先关系被拒绝。不固定新A的粘贴X/Y。
+      evidence: 实际复制粘贴、原件/副本ID分离和Parent链、重复名称下的实际Layers行态及Design局部字段；目标应用尚未执行。
+- requirement: COMP-CHILDREN
+  name: Receive source reparenting and undo
+  acceptance:
+    version: 1
+    mode: scripted
+    seed: blank
+    protocol:
+    - name: 源重归属传播
+      actions: 通过UI建立Freeform Source(0,0,200,120)，Inner直属local(30,20,100,80)，在Inner外新建Shape再用X/Y字段放到Source直属(50,40,40,20)，Fill E11D48。将Source转main component，从Assets插linked instance并字段定位Page(300,0)。预先选择源Shape，Layers拖入源Inner。
+      expected: 源与实例都形成Inner→Shape；Shape local(20,20)，源canvas(50,40)，实例canvas(350,40)，内容像素仍E11D48；source链接、父容器与成员保持。
+      evidence: 实际UI建立/转换/Assets插入、Layers完成拖动、当前源Shape字段、两棵树Parent及两处像素、source-reparented截图和观察。
+    - name: 一个文档拖动的历史
+      actions: 拖动后只读取observer、当前选择字段和截图，不选择其他层或切页；立即Undo，再同样只读检查，随后Redo。
+      expected: 一次Undo同时恢复源与实例的Shape直属关系及local(50,40)，一次Redo同时恢复Inner子层与local(20,20)；两处画布位置及内容不变。
+      evidence: source-reparent-undone与source-reparent-redone截图和观察；不插入独立Selection/Page Undo步骤。
+    - name: 派生树的实际界面
+      actions: 完成Redo后，展开实例Inner并选择实例Shape核对Layers与Design。
+      expected: 实例Shape可见且位于实例Inner下，字段与派生结构对应，仍链接同一source。
+      evidence: 实际层树展开/选择、当前字段及final截图；目标应用尚未执行。
+- requirement: EDIT-06
+  name: Paste with a selected Frame outside or larger than the viewport
+  acceptance:
+    version: 1
+    mode: scripted
+    seed: blank
+    protocol:
+    - name: 远处Frame与超大复制对象
+      actions: 用正常工具创建页级矩形并设Fill F43F5E，将其尺寸设为当前Canvas viewport文档尺寸的两倍。复制它，选一个普通Freeform Frame，保持选择并用真实中键Pan将Frame移到离视口数倍宽的远处，再Paste。
+      expected: 副本属于Page，中心在粘贴前当前视图中心，不进入远处所选Frame；副本比原视口大，应用降低zoom使全部副本可见。尺寸、选择、实际色块与文档结果一致。
+      evidence: 当前viewport和远距强对比、实际复制/选择/Pan/Paste输入，新增对象Parent/尺寸/中心、view变化、完整可见边界与像素；不测试未公布的精确near/far切点。
+    - name: 紧邻视口外的Frame
+      actions: 恢复100%并在独立Freeform source里用工具建local(10,10,60,40)矩形，Fill224466。建可容纳它的另一个Frame，复制矩形并选择目标，以中键Pan将目标放到视口右边刚外侧，再Paste。
+      expected: 新矩形直接属于该Frame，保local(10,10,60,40)；应用调整view使副本可见，而不是回退到Page当前视图中心。
+      evidence: 真实输入、粘贴前刚在视口外的目标、Parent/local几何、view改变、最终完整可见边界和内容像素。
+    - name: 大Frame的可见内部
+      actions: 再复制同一小矩形，用工具独立新建普通Frame并通过字段设为viewport的三倍宽高。选中该大Frame，将100%视图放在其内部，偏离Frame的完整边界中心，再Paste。
+      expected: 副本进入大Frame并在当前可见内部居中，不能放到该Frame远处的整体中心或沿用Source位置；副本全部可见，Source子层保持。
+      evidence: 真实工具/字段/选择/Pan/Paste，selectedFrame覆盖整个viewport但几何中心偏离视图中心的前提、Parent及当前可见中心、Design尺寸与像素；目标应用尚未执行。
+- requirement: FLOW-03
+  name: Move a child through Freeform and Auto Layout parents
+  acceptance:
+    version: 1
+    mode: scripted
+    seed: blank
+    protocol:
+    - name: 不同入口进入和退出流
+      actions: 用真实工具建立Freeform P、Horizontal H、Vertical V与Section S；H宽250、V宽240，padding10及gap10。把P内100×70的Fixed Frame从Canvas拖入H，再Canvas移至空Page并返回H，Layers移入V，Cut/Paste回P。
+      expected: Canvas与Layers进入空flow均local(10,10)、Fixed100×70、Ignore=false。Canvas退出Page按释放位置得到(50,385,100,70)，Cut/Paste回P则保source
+        local(10,10)。父级、字段、流内禁用X/Y与绿色Canvas结果相符。
+      evidence: 三种真实操作入口、Parent/geometry/modes、Ignore与Width/Height UI、Canvas像素及对应截图。
+    - name: 布局间保留Fill并按目标重算
+      actions: Layers移回H，设Fill width得到230×70。用工具在V建立Fixed60×40 sibling；Layers将Fill Frame移入V。
+      expected: Frame仍Fill width且Ignore=false，按V内容宽重算为220×70、X10；两flow children按padding10与gap10排列，sibling仍60×40。不把研究中的极小结果当通用minimum或强制本场景容器drop的先后顺序。
+      evidence: 真实Sizing和Layers操作、适用Fill mode、目标resolved宽度、非重叠flow位置、Width/Height与Canvas像素截图。
+    - name: Fill退出自由定位父级
+      actions: 将V内Fill Frame由Layers移入S，再由Layers移回H。
+      expected: 移入S保canvas位置并将Fill宽转Fixed220，退出流不改变resolved尺寸；返回H以Fixed220×70参加flow，local(10,10)。不要求普通Fixed层出现可选layout元字段。
+      evidence: 真实Layers操作、迁移前后canvas geometry、模式及Width/Height、像素结果和截图。
+    - name: Ignore在三种布局间入口保留
+      actions: 将H中Frame设Ignore并用X20/Y30放置，Layers移入V；在V用字段恢复可见local20,30，Canvas拖回H local13,17。Copy/Paste至V，核对独立副本。
+      expected: Canvas、Layers和Paste在AutoLayout之间保Ignore=true及220×70；Canvas结果对应释放位置13,17。不固定Ignored Paste副本坐标，原件与副本身份独立。
+      evidence: 实际Ignore字段、Layers、Canvas和clipboard操作；Parent、尺寸、独立ID与选中Layers/Design状态及截图。Ignored层可能位于clipping Frame外，不用被裁剪的实色像素代替模式判据。
+    - name: 退出再进入结束Ignore
+      actions: 把原件Layers移至S，再Layers移入H。
+      expected: 原件退出到S保canvas位置并结束Ignore；返回H以Fixed220×70参加flow，local(10,10)。V中的独立副本仍Ignore且父级不变。
+      evidence: 真实Layers往返、Page geometry、Parent、Ignore UI、尺寸和Canvas像素及截图；目标候选尚未执行。
+    - name: Paste流内副本与Ignored兄弟的Hug对照
+      actions: 复用V中的60×40 flow sibling与220×70 ignored副本，设V Height为Hug。Copy H中Fixed220×70的原件，明确选择V Paste。
+      expected: Paste前V Hug Height60。新增普通Frame在V local(10,60,220,70)、Ignore=false且尺寸Fixed，UI的Ignore未选及Width220/Height70与文档几何一致。Hug变140，只计算两个flow
+        children及gap/padding，既有ignored副本仍为V child且Ignore=true。H中的原件不变。
+      evidence: 真实Sizing、Copy/Paste、选择上下文；incoming Parent/geometry/模式与Ignore/Width/Height UI、Hug前后Height UI及Canvas像素截图。此处集中承接新增flow子层政策检查；原LAY06保持原3stage谓词归属，候选应用尚未执行。
+- requirement: EDITOR-INPUT
+  name: Route keys between Layers, text, and numeric input
+  acceptance:
+    version: 1
+    mode: scripted
+    seed: text
+    protocol:
+    - name: Layers选择直接进入和退出正文
+      actions: 使用text seed，在Move且无active input时，从Layers选择Paragraph并直接Enter；观察Text editor后直接Escape。过程中不点击Move、不focus Canvas、不用自动editText
+        helper。
+      expected: Paragraph初始X0/Y0/Width275、font12及原文字保持。Enter打开并聚焦Text editor；Escape关闭编辑器，Paragraph仍是选中target。
+      evidence: 真实Layers行点击和global Enter/Escape，Text editor可见/受输入时焦点、selection/Layer高亮、原文字和几何及截图。
+    - name: 图层按键与数值字段按键分流
+      actions: 退出正文后直接Right；点击X字段，确认字段正在接收输入，再直接Up。
+      expected: Right只把Paragraph X改1；数值字段Up再改为2。X字段和Layers对应Paragraph，Width275、Y、尺寸、font12及原文字保持，其他对象与页面状态不变。
+      evidence: global键盘、X字段真实点击和受输入时焦点、X/Width UI与文档geometry及selection、截图；不要求DOM聚焦Canvas。
+    - name: 退出字段后路由文档历史
+      actions: 直接Escape退出X字段，再连续两次直接Cmd/Ctrl+Z，每次之间只读观察。
+      expected: 第一次Undo只恢复X1，第二次恢复X0，均保Paragraph选择。无额外focus/Move/Enter/Tab辅助，文字、其他对象、Page与view保持。
+      evidence: 真实Escape与文档Undo，逐步X UI/geometry/selection和页面对象对照及截图；目标候选未运行。
+- requirement: EDIT-03
+  name: Reach nested text and image editors by double-click
+  acceptance:
+    version: 1
+    mode: scripted
+    seed: blank
+    protocol:
+    - name: 准备嵌套内容
+      actions: 通过工具建立Frame及互不相交的Title文字和Photo图像；Photo经既有Place image文件选择加载quadrants，另建Page rectangle并将Frame和它Group。准备完成后回Move并点击空白清selection。
+      expected: Group包含Frame与独立rectangle；Frame含Title和120×80 image-filled Photo。真实Canvas测量开始时无selection，不靠Layers深选、Enter或Image
+        mode→Crop进入。
+      evidence: 工具、文件选择、Group入口和Parent/geometry/image source核对；准备操作不算双击入口证据。
+    - name: 三次双击进入嵌套文字
+      actions: 在Title的Canvas命中点分别发送三次double-click，每次后读结果；之后Escape退出正文并点空白清selection。
+      expected: 第1次只有Frame独立selected，第2次只有Title且Text editor未开，第3次Title仍selected并打开聚焦Text editor。Frame/Text对应Design字段、原文字与所有几何/Parent保持。
+      evidence: 原始Canvas double-click输入、逐步selectionIds、Layers与Design、Text editor可见及受输入焦点、三次截图。
+    - name: 三次双击进入嵌套Crop并取消
+      actions: 从空selection在Photo同一Canvas命中点分别double-click三次，读取每次结果；真实点击Crop Cancel。
+      expected: 第1次Frame、第2次Photo为独立selection且Crop未开；第3次出现Scale image、Crop Cancel及Submit/Apply和蓝色角点反馈。Cancel后这些Crop专属控件关闭并回Photo选择，尺寸/image
+        source/mode及文档内容保持。
+      evidence: Canvas三次double-click、selectionIds与Layers/Width，Crop专属可见控件和四角蓝色像素、截图及Cancel后结果；不要求具体SVG库或DOM手柄实现。
+- requirement: EDITOR-FIELD-NUMBER
+  name: Commit a numeric draft before changing selection
+  acceptance:
+    version: 1
+    mode: scripted
+    seed: blank
+    protocol:
+    - name: 有效草稿属于旧目标
+      actions: 工具建立Page Frame A为(50,70,100,80)，独立Page rectangle B为(350,70,41,80)，设不同可见Fill。Layers选A，在Width原始输入200，不按Enter/Tab直接点击B行。
+      expected: 输入完成前A实际Width仍100，UI显示draft200且有焦点，扩展区域仍为空。点击B后A Width200，B Width41且为新target，Width UI显示41；Canvas A扩展为其颜色，B尺寸/颜色保持。
+      evidence: 真实field fill→直接Layers click链、输入中与退出后的semantic geometry、Width UI、selection和两个Canvas采样区域及截图。此期望是规范的一致性修复，不宣称复现参考Figma误写新目标的异常。
+    - name: 无效输入不修改旧目标或新目标
+      actions: 重新选择A并读回Width200，点击Width并select-all，用真实键盘输入abc，不Enter/Tab，再直接点击B；分别重新选择两者读回数值。
+      expected: A保持Width200、B保持Width41，两个Page Parent/位置/Height/Fill保持，最终B selected及Width41。允许数字字段过滤字母，不要求显示abc草稿；判据针对applied结果和新target字段。
+      evidence: 真实pressSequentially及直接Layers click、两层Width UI、文档结果、Canvas像素和截图；目标候选尚未执行。

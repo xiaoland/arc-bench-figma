@@ -314,6 +314,57 @@ export function assertObservation(value: unknown): asserts value is ObserveSnaps
   require([...selectionIds].every((id) => objectIds.has(id)), 'observe snapshot selectionIds must refer to observed objects.');
 }
 
+// Product relationships are judged after a stable UI edit, independently of the observer's schema.
+export function assertParentEligibility(snapshot: ObserveSnapshot): void {
+  const objects = new Map(snapshot.objects.map(object => [object.id, object]));
+  const pages = new Set(snapshot.document.pages.map(page => page.id));
+  const kind = (object: ObserveObject) => object.type.toLowerCase().replace(/[_\s-]/g, '');
+  for (const object of snapshot.objects) {
+    const parent = object.parentId === null ? undefined : objects.get(object.parentId);
+    if (kind(object) === 'section') {
+      require(pages.has(object.pageId), `CANVAS-HIERARCHY: Section ${object.id} must belong to a document Page.`);
+      if (object.parentId !== null) {
+        require(parent && kind(parent) === 'section',
+          `CANVAS-HIERARCHY: Section ${object.id} requires a Page or Section parent; got ${parent?.type ?? object.parentId}.`);
+        require(parent.pageId === object.pageId,
+          `CANVAS-HIERARCHY: Section ${object.id} and parent ${parent.id} must belong to the same Page.`);
+      }
+    }
+    if (parent && kind(parent) === 'componentset') {
+      require(kind(object) === 'component',
+        `CANVAS-HIERARCHY: Component set ${parent.id} accepts only main components; child ${object.id} is ${object.type}.`);
+    }
+  }
+  const visits = new Map<string, 'visiting' | 'done'>();
+  for (const object of snapshot.objects) {
+    const path: string[] = [];
+    let current: ObserveObject | undefined = object;
+    while (current && visits.get(current.id) !== 'done') {
+      require(visits.get(current.id) !== 'visiting',
+        `CANVAS-HIERARCHY: Observed parent cycle reaches ${current.id}.`);
+      visits.set(current.id, 'visiting');
+      path.push(current.id);
+      current = current.parentId === null ? undefined : objects.get(current.parentId);
+    }
+    for (const id of path) visits.set(id, 'done');
+  }
+}
+
+// Selection IDs are independent edit targets, not every layer highlighted inside a container.
+export function assertSelectionTargets(snapshot: ObserveSnapshot): void {
+  const objects = new Map(snapshot.objects.map(object => [object.id, object]));
+  const selected = new Set(snapshot.selectionIds);
+  for (const id of selected) {
+    let parentId = objects.get(id)?.parentId;
+    // Parent eligibility owns malformed hierarchy; bound traversal without judging it here.
+    for (let depth = 0; parentId && depth < objects.size; depth++) {
+      require(!selected.has(parentId),
+        `EDIT-03: Independent selection targets cannot include ancestor ${parentId} and descendant ${id}.`);
+      parentId = objects.get(parentId)?.parentId;
+    }
+  }
+}
+
 const PNG_SIGNATURE = [137, 80, 78, 71, 13, 10, 26, 10];
 
 function crc32(bytes: Uint8Array): number {

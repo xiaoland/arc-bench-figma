@@ -2,7 +2,7 @@ id: ROOT
 name: Minimal Figma Design
 type: FOLDER
 x_benchmark:
-  specification_version: 3.0.2
+  specification_version: 3.0.3
 children:
 - id: FILE-01
   name: Create a design file
@@ -77,6 +77,8 @@ children:
   scenarios:
   - name: Cut and paste text across pages
   - name: Move and copy an ordinary subtree
+  - name: Paste a child into a smaller Freeform Frame
+  - name: Paste with a selected Frame outside or larger than the viewport
   - name: Duplicate ordinary layers and repeat a displacement
   - name: Duplicate a top-level Frame and keep its subtree
 - id: EDIT-07
@@ -97,6 +99,7 @@ children:
   - name: Keep or replace the selection before a menu command
   - name: Rename one layer from its context menu
   - name: Apply state commands to the selected layers
+  - name: Check Section eligibility before wrapping a mixed selection
 - id: VIEW-ASSETS
   name: Find and insert components
   type: ATOMIC
@@ -206,6 +209,7 @@ children:
   type: ATOMIC
   scenarios:
   - name: Inspect formatting for a character range
+  - name: Cancel a font preview when selecting another text layer
 - id: DESIGN-TYPOGRAPHY-LINE-HEIGHT
   name: Line height
   type: ATOMIC
@@ -368,6 +372,7 @@ children:
   type: ATOMIC
   scenarios:
   - name: Type and nudge a Layout value
+  - name: Commit a numeric draft before changing selection
   - name: Scrub a numeric property
 - id: EDITOR-FIELD-CHOICE
   name: Choose an option in a property field
@@ -409,12 +414,23 @@ children:
   type: ATOMIC
   scenarios:
   - name: Return from a nested stop Color popup
+- id: EDITOR-INPUT
+  name: Route input to the active editing target
+  type: ATOMIC
+  scenarios:
+  - name: Route keys between Layers, text, and numeric input
 - id: EDIT-08
   name: Move focus between text, names, and properties
   type: ATOMIC
   scenarios:
   - name: Edit text, rename its layer, and set its width
   - name: Commit and cancel Chinese text composition
+- id: CANVAS-HIERARCHY
+  name: Layer parent relationships
+  type: ATOMIC
+  scenarios:
+  - name: Paste a Section with an incompatible Frame selected
+  - name: Reject an ancestor as a descendant's child
 - id: EDIT-11
   name: Zoom, pan, and fit the canvas
   type: ATOMIC
@@ -431,6 +447,7 @@ children:
   scenarios:
   - name: Deep-select and add or remove layers
   - name: Use keyboard selection through Frame and Group levels
+  - name: Reach nested text and image editors by double-click
 - id: EDIT-10
   name: Select layers with a marquee
   type: ATOMIC
@@ -748,6 +765,7 @@ children:
   type: ATOMIC
   scenarios:
   - name: Hide an inherited child and receive source order
+  - name: Receive source reparenting and undo
 - id: COMP-04
   name: Detach an outer instance and keep nested links
   type: ATOMIC
@@ -800,3 +818,4 @@ children:
   - name: Pan, drag, edit a property, and undo
   - name: Switch between temporary Hand, object drag, and text input
   - name: Continue edits after panel scroll and page changes
+  - name: Move a child through Freeform and Auto Layout parents

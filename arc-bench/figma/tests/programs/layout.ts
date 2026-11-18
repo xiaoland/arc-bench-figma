@@ -229,6 +229,207 @@ async function scaleText(s: Scenario, value: string) {
 }
 
 export const programs: Program[] = [
+  program('FLOW-03', 'Move a child through Freeform and Auto Layout parents', async s => {
+    const world = (state: ObserveSnapshot, object: ObserveObject): Geometry => {
+      const box = { ...object.geometry };
+      for (let parentId = object.parentId; parentId;) {
+        const parent = state.objects.find(row => row.id === parentId);
+        if (!parent) throw new Error('The moved child needs its observed ancestors');
+        box.x += parent.geometry.x; box.y += parent.geometry.y;
+        parentId = parent.parentId;
+      }
+      return box;
+    };
+    const screen = (state: ObserveSnapshot, x: number, y: number) => {
+      const view = state.document.view;
+      return { x: x * (view?.zoom ?? 1) + (view?.panX ?? 0),
+        y: y * (view?.zoom ?? 1) + (view?.panY ?? 0) };
+    };
+    const create = async (tool: 'Frame' | 'Rectangle' | 'Section', name: string, box: Geometry) => {
+      const state = await s.obs();
+      const a = screen(state, box.x, box.y), b = screen(state, box.x + box.width, box.y + box.height);
+      await s.button(tool).click();
+      await s.drag(a.x, a.y, b.x, b.y);
+      return s.bindSelected(name);
+    };
+    const layers = async (child: ObserveObject, parent: string) => {
+      await s.select(child);
+      await s.layer(child).dragTo(s.layer(parent), { targetPosition: { x: 55, y: 12 } });
+    };
+    const canvasTo = async (child: ObserveObject, x: number, y: number) => {
+      await s.select(child); await s.button('Move').click();
+      const state = await s.obs(), box = world(state, s.lookup(state, child));
+      const from = screen(state, box.x + box.width / 2, box.y + box.height / 2);
+      const to = screen(state, x, y);
+      await s.drag(from.x, from.y, to.x, to.y);
+    };
+    const pixels = async (child: ObserveObject) => {
+      const state = await s.obs(), box = world(state, s.lookup(state, child));
+      const point = screen(state, box.x + box.width / 2, box.y + box.height / 2);
+      await expect.poll(() => s.pixel(point.x, point.y)).toEqual([34, 170, 102, 255]);
+    };
+    const inspect = async (child: ObserveObject, parent: string | null, width: number,
+      options: { flow?: boolean; ignore?: boolean; fill?: boolean; box?: Geometry } = {}) => {
+      await s.check(state => {
+        const object = s.lookup(state, child);
+        expect(object).toMatchObject({ type: 'frame', parentId: parent === null ? null : s.lookup(state, parent).id,
+          geometry: { width, height: 70 } });
+        if (options.box) expect(object.geometry).toEqual(options.box);
+        expect(object.layout?.ignore ?? false).toBe(options.ignore ?? false);
+        if (options.fill) expect(object.layout?.width).toBe('fill');
+        else if (object.layout?.width !== undefined) expect(object.layout.width).toBe('fixed');
+        if (object.layout?.height !== undefined) expect(object.layout.height).toBe('fixed');
+      });
+      await expect(s.layer(child)).toHaveAttribute('aria-selected', 'true');
+      await expect(s.field('Width')).toHaveValue(String(width));
+      await expect(s.field('Height')).toHaveValue('70');
+      if (options.flow || options.ignore) {
+        await expect(s.role('checkbox', 'Ignore auto layout')).toBeChecked({ checked: options.ignore ?? false });
+        if (options.flow) {
+          await expect(s.field('X')).toBeDisabled();
+          await expect(s.field('Y')).toBeDisabled();
+        }
+      }
+      // An ignored child can remain outside a clipping Frame; its selected Layers
+      // row, dimensions and Ignore control remain the visible mode oracle.
+      if (!options.ignore) await pixels(child);
+    };
+    await s.button('Zoom options').click();
+    await s.set('Zoom', '50');
+    await create('Frame', 'Migration freeform', g(30, 50, 240, 200));
+    await create('Frame', 'Migration horizontal', g(320, 50, 250, 160));
+    await pickFlow(s, 'Horizontal');
+    await padding(s, 10); await s.set('Gap', '10');
+    await s.set('Width', '250'); await s.set('Height', '160');
+    await create('Frame', 'Migration vertical', g(620, 50, 240, 220));
+    await pickFlow(s, 'Vertical');
+    await padding(s, 10); await s.set('Gap', '10');
+    await s.set('Width', '240'); await s.set('Height', '220');
+    await create('Section', 'Migration section', g(300, 340, 620, 220));
+    let child = await create('Frame', 'Migration child', g(50, 70, 100, 70));
+    await s.set('Fill', '22AA66');
+    await s.check(state => {
+      for (const [name, box] of [
+        ['Migration freeform', g(30, 50, 240, 200)], ['Migration horizontal', g(320, 50, 250, 160)],
+        ['Migration vertical', g(620, 50, 240, 220)], ['Migration section', g(300, 340, 620, 220)],
+      ] as const) expect(s.lookup(state, name)).toMatchObject({ parentId: null, geometry: box });
+      expect(s.lookup(state, 'Migration horizontal').layout?.direction).toBe('horizontal');
+      expect(s.lookup(state, 'Migration vertical').layout?.direction).toBe('vertical');
+      expect(s.lookup(state, child)).toMatchObject({
+        parentId: s.lookup(state, 'Migration freeform').id, geometry: g(20, 20, 100, 70),
+      });
+    });
+    await s.canvas().focus(); await s.press('Shift+1');
+    await canvasTo(child, 380, 110);
+    await inspect(child, 'Migration horizontal', 100, { flow: true, box: g(10, 10, 100, 70) });
+    await s.capture('canvas-enters-horizontal-flow');
+    await canvasTo(child, 100, 420);
+    await inspect(child, null, 100, { box: g(50, 385, 100, 70) });
+    await s.capture('canvas-exits-flow-at-the-release-position');
+    await canvasTo(child, 380, 110);
+    await inspect(child, 'Migration horizontal', 100, { flow: true, box: g(10, 10, 100, 70) });
+    await layers(child, 'Migration vertical');
+    await inspect(child, 'Migration vertical', 100, { flow: true, box: g(10, 10, 100, 70) });
+    await s.capture('layers-enters-vertical-flow');
+    const cutState = await s.obs();
+    await s.canvas().focus(); await s.press('ControlOrMeta+x');
+    await s.check(state => {
+      expect(state.objects.some(object => object.id === child.id)).toBe(false);
+      expect(state.objects.filter(object => object.parentId === s.lookup(state, 'Migration vertical').id)).toEqual([]);
+    });
+    await s.select('Migration freeform');
+    await s.canvas().focus(); await s.press('ControlOrMeta+v');
+    child = await s.bindSelected('Migration child');
+    await inspect(child, 'Migration freeform', 100, { box: g(10, 10, 100, 70) });
+    await s.check(state => {
+      expect(state.objects).toHaveLength(cutState.objects.length);
+      expect(state.objects.filter(object => object.parentId === s.lookup(state, 'Migration vertical').id)).toEqual([]);
+    });
+    await s.capture('cut-paste-restores-freeform-coordinates');
+
+    await layers(child, 'Migration horizontal');
+    await sizing(s, 'Horizontal', 'Fill container');
+    await inspect(child, 'Migration horizontal', 230, { flow: true, fill: true, box: g(10, 10, 230, 70) });
+    const sibling = await create('Rectangle', 'Migration flow sibling', g(630, 60, 60, 40));
+    await s.set('Width', '60'); await s.set('Height', '40');
+    await layers(child, 'Migration vertical');
+    await inspect(child, 'Migration vertical', 220, { flow: true, fill: true });
+    await s.check(state => {
+      const object = s.lookup(state, child), other = s.lookup(state, sibling);
+      expect(state.objects.filter(row => row.parentId === s.lookup(state, 'Migration vertical').id)
+        .map(row => row.id).sort()).toEqual([object.id, other.id].sort());
+      expect(object.geometry.x).toBe(10);
+      expect(other).toMatchObject({ parentId: s.lookup(state, 'Migration vertical').id,
+        geometry: { x: 10, width: 60, height: 40 } });
+      const [first, second] = [object, other].sort((a, b) => a.geometry.y - b.geometry.y);
+      expect(first!.geometry.y).toBe(10);
+      expect(second!.geometry.y).toBe(first!.geometry.y + first!.geometry.height + 10);
+    });
+    await s.capture('fill-recalculates-in-the-destination-layout');
+    const beforeFillExit = await s.obs(), resolved = world(beforeFillExit, s.lookup(beforeFillExit, child));
+    await layers(child, 'Migration section');
+    await inspect(child, 'Migration section', 220);
+    await s.check(state => expect(world(state, s.lookup(state, child))).toEqual(resolved));
+    await s.capture('fill-exits-to-section-as-fixed');
+    await layers(child, 'Migration horizontal');
+    await inspect(child, 'Migration horizontal', 220, { flow: true, box: g(10, 10, 220, 70) });
+    await s.role('checkbox', 'Ignore auto layout').click();
+    await s.set('X', '20'); await s.set('Y', '30');
+    await layers(child, 'Migration vertical');
+    await inspect(child, 'Migration vertical', 220, { ignore: true });
+    await s.capture('layers-keeps-ignore-between-layouts');
+    await s.set('X', '20'); await s.set('Y', '30');
+    await canvasTo(child, 320 + 13 + 110, 50 + 17 + 35);
+    await inspect(child, 'Migration horizontal', 220, { ignore: true, box: g(13, 17, 220, 70) });
+    await s.capture('canvas-keeps-ignore-between-layouts');
+    await s.canvas().focus(); await s.press('ControlOrMeta+c');
+    await s.select('Migration vertical');
+    await s.canvas().focus(); await s.press('ControlOrMeta+v');
+    const ignoredCopy = await s.bindSelected('Ignored migration copy');
+    expect(ignoredCopy.id).not.toBe(child.id);
+    await inspect(ignoredCopy, 'Migration vertical', 220, { ignore: true });
+    await s.capture('paste-keeps-ignore-between-layouts');
+    const beforeIgnoreExit = await s.obs(), ignoredBox = world(beforeIgnoreExit, s.lookup(beforeIgnoreExit, child));
+    await layers(child, 'Migration section');
+    await inspect(child, 'Migration section', 220);
+    await s.check(state => expect(world(state, s.lookup(state, child))).toEqual(ignoredBox));
+    await layers(child, 'Migration horizontal');
+    await inspect(child, 'Migration horizontal', 220, { flow: true, box: g(10, 10, 220, 70) });
+    await s.check(state => {
+      expect(s.lookup(state, ignoredCopy)).toMatchObject({ parentId: s.lookup(state, 'Migration vertical').id,
+        layout: { ignore: true } });
+      expect(state.objects.filter(row => row.parentId === s.lookup(state, 'Migration horizontal').id)
+        .map(row => row.id)).toEqual([child.id]);
+    });
+    await s.capture('return-from-section-enters-flow');
+
+    // Keep the incoming-flow UI oracle with this cross-entry programme. The
+    // original LAY-06 declarative stages retain their published predicate identity.
+    await s.select('Migration vertical');
+    await sizing(s, 'Vertical', 'Hug contents');
+    await s.check(state => expect(s.lookup(state, 'Migration vertical').geometry.height).toBe(60));
+    await expect(s.field('Height')).toHaveValue('60');
+    await s.select(child);
+    await s.canvas().focus(); await s.press('ControlOrMeta+c');
+    await s.select('Migration vertical');
+    const beforeFlowPaste = await s.obs();
+    await s.canvas().focus(); await s.press('ControlOrMeta+v');
+    const incoming = await s.bindSelected('Incoming fixed flow copy');
+    expect(incoming.id).not.toBe(child.id);
+    await inspect(incoming, 'Migration vertical', 220, { flow: true, box: g(10, 60, 220, 70) });
+    await s.check(state => {
+      expect(state.objects).toHaveLength(beforeFlowPaste.objects.length + 1);
+      expect(s.lookup(state, 'Migration vertical').geometry.height).toBe(140);
+      expect(s.lookup(state, ignoredCopy)).toMatchObject({ parentId: s.lookup(state, 'Migration vertical').id,
+        geometry: { width: 220, height: 70 }, layout: { ignore: true } });
+      expect(s.lookup(state, child)).toMatchObject({ parentId: s.lookup(state, 'Migration horizontal').id,
+        geometry: g(10, 10, 220, 70) });
+    });
+    await s.capture('fixed-paste-enters-flow-next-to-ignored-content');
+    await s.select('Migration vertical');
+    await expect(s.field('Height')).toHaveValue('140');
+    await s.capture('hug-counts-incoming-flow-and-excludes-ignored-content');
+  }),
   program('LAY-03', 'Redistribute Fill widths after Wrap changes', async s => {
     await frameWithChildren(s, { box: g(40, 55, 500, 275), childWidth: 100, childHeight: 100 });
     await pickFlow(s, 'Horizontal');
@@ -765,8 +966,7 @@ export const programs: Program[] = [
     expect(appliedGap(await s.obs())).toBe(12);
     await gap.press('Escape');
     await s.check(state => expect(appliedGap(state)).toBe(24));
-    await expect.poll(() => s.canvas().evaluate(region => region.contains(document.activeElement))).toBe(true);
-    await gap.focus();
+    await gap.click();
     await gap.press('ArrowUp');
     await assertField(s, 'Gap', '25');
     await s.check(state => expect(appliedGap(state)).toBe(25));
@@ -776,6 +976,62 @@ export const programs: Program[] = [
     await gap.press('Tab');
     await expect(gap).not.toBeFocused();
     await expect(s.role('textbox', /.+/).and(s.page.locator(':focus'))).toHaveCount(1);
+  }),
+  program('EDITOR-FIELD-NUMBER', 'Commit a numeric draft before changing selection', async s => {
+    await draw(s, 'Frame', 'Draft frame A', g(50, 70, 100, 80));
+    await s.set('Fill', '2255AA');
+    await draw(s, 'Rectangle', 'Draft rectangle B', g(350, 70, 41, 80));
+    await s.set('Fill', 'DD6622');
+    const original = await s.obs();
+    const a = s.lookup(original, 'Draft frame A'), b = s.lookup(original, 'Draft rectangle B');
+    expect(a.parentId).toBeNull(); expect(b.parentId).toBeNull();
+    const width = s.field('Width');
+    const inspect = async (aWidth: number, selected: ObserveObject) => {
+      await s.check(state => {
+        expect(state.objects.map(object => object.id).sort()).toEqual(original.objects.map(object => object.id).sort());
+        expect(s.lookup(state, a)).toMatchObject({ type: 'frame', parentId: null,
+          geometry: g(50, 70, aWidth, 80), fill: { color: '2255AA' } });
+        expect(s.lookup(state, b)).toMatchObject({ type: 'rectangle', parentId: null,
+          geometry: g(350, 70, 41, 80), fill: { color: 'DD6622' } });
+        expect(state.selectionIds).toEqual([selected.id]);
+      });
+      await expect(s.layer(selected)).toHaveAttribute('aria-selected', 'true');
+    };
+    await s.select(a);
+    await expect(width).toHaveValue('100');
+    const outside = await s.pixel(220, 110);
+    await width.fill('200');
+    await expect(width).toBeFocused();
+    await expect(width).toHaveValue('200');
+    await inspect(100, a);
+    await expect.poll(() => s.pixel(220, 110)).toEqual(outside);
+    await s.capture('numeric-draft-keeps-the-applied-width');
+    // The click itself must finish A's draft before B becomes the property target.
+    await s.layer(b).click();
+    await inspect(200, b);
+    await expect(width).toHaveValue('41');
+    await expect.poll(() => s.pixel(220, 110)).toEqual([34, 85, 170, 255]);
+    await expect.poll(() => s.pixel(370, 110)).toEqual([221, 102, 34, 255]);
+    await s.capture('numeric-draft-commits-to-the-old-target');
+    await s.layer(a).click();
+    await expect(width).toHaveValue('200');
+    await width.click();
+    await expect(width).toBeFocused();
+    await s.press('ControlOrMeta+a');
+    await width.pressSequentially('abc');
+    await inspect(200, a);
+    // Some numeric inputs filter letters; the oracle concerns the applied result.
+    await s.layer(b).click();
+    await inspect(200, b);
+    await expect(width).toHaveValue('41');
+    await expect.poll(() => s.pixel(220, 110)).toEqual([34, 85, 170, 255]);
+    await expect.poll(() => s.pixel(370, 110)).toEqual([221, 102, 34, 255]);
+    await s.layer(a).click();
+    await expect(width).toHaveValue('200');
+    await s.layer(b).click();
+    await expect(width).toHaveValue('41');
+    await inspect(200, b);
+    await s.capture('invalid-numeric-draft-keeps-both-applied-values');
   }),
   program('EDITOR-FIELD-NUMBER', 'Scrub a numeric property', async s => {
     await draw(s, 'Frame', 'Scrub frame', g(50, 80, 200, 150));
@@ -876,6 +1132,84 @@ export const programs: Program[] = [
         expect(run?.fontStyle ?? run?.font?.style ?? text.font?.style).toBe('Regular');
       }
     });
+  }),
+  program('DESIGN-TYPOGRAPHY-VALUES', 'Cancel a font preview when selecting another text layer', async s => {
+    await s.select('Paragraph');
+    await s.set('X', '60');
+    await s.set('Y', '80');
+    await createText(s, 'Other paragraph', 'A second text target', 60, 200);
+    const initial = await s.obs();
+    const a = s.lookup(initial, 'Paragraph'), b = s.lookup(initial, 'Other paragraph');
+    const inspect = async (family: string, selected: ObserveObject) => {
+      await s.check(state => {
+        expect(state.objects.map(object => object.id).sort()).toEqual(initial.objects.map(object => object.id).sort());
+        expect(state.selectionIds).toEqual([selected.id]);
+        for (const [target, expectedFamily] of [[a, family], [b, 'Inter']] as const) {
+          expect(s.lookup(state, target)).toMatchObject({ type: 'text', parentId: target.parentId,
+            text: target.text, font: { family: expectedFamily, style: 'Regular', size: 12 } });
+        }
+      });
+      await expect(s.layer(selected)).toHaveAttribute('aria-selected', 'true');
+      await expect(picker(s, 'Font family')).toContainText(selected.id === a.id ? family : 'Inter');
+      await expect(picker(s, 'Font style')).toContainText('Regular');
+      await assertField(s, 'Font size', '12');
+    };
+    await inspect('Inter', b);
+    // Read only screenshot pixels inside A's first line, excluding selection borders.
+    // A preview may live outside the committed document observed by arcBench.
+    const view = initial.document.view;
+    const zoom = view?.zoom ?? 1;
+    const region = { x: Math.round((a.geometry.x + 6) * zoom + (view?.panX ?? 0)),
+      y: Math.round((a.geometry.y + 5) * zoom + (view?.panY ?? 0)),
+      width: Math.round(160 * zoom), height: Math.round(8 * zoom) };
+    const glyphPixels = async () => {
+      const png = await s.canvas().screenshot({ scale: 'css' });
+      return s.page.evaluate(async ({ png, region }) => {
+        const image = await createImageBitmap(new Blob([Uint8Array.from(atob(png), char => char.charCodeAt(0))], { type: 'image/png' }));
+        try {
+          if (region.x < 0 || region.y < 0 || region.x + region.width > image.width || region.y + region.height > image.height)
+            throw new Error('Font preview sample lies outside the canvas viewport');
+          const context = new OffscreenCanvas(region.width, region.height).getContext('2d')!;
+          context.drawImage(image, -region.x, -region.y);
+          return Array.from(context.getImageData(0, 0, region.width, region.height).data);
+        } finally { image.close(); }
+      }, { png: png.toString('base64'), region });
+    };
+    const appliedPixels = await glyphPixels();
+    const search = s.field('Search fonts');
+    for (const entry of ['hover', 'search'] as const) {
+      await s.layer(a).click();
+      await inspect('Inter', a);
+      await expect.poll(glyphPixels).toEqual(appliedPixels);
+      await picker(s, 'Font family').click();
+      await expect(search).toBeVisible();
+      if (entry === 'search') await search.fill('Noto Sans');
+      else await visibleOptions(s, 'Noto Sans').hover();
+      await expect(search).toBeVisible();
+      await expect.poll(glyphPixels).not.toEqual(appliedPixels);
+      await s.capture(`font-${entry}-previews-the-opening-target`);
+      // This click is the dismissal trigger: no Escape or canvas focus repair.
+      await s.layer(b).click();
+      await expect(search).toBeHidden();
+      await inspect('Inter', b);
+      await expect.poll(glyphPixels).toEqual(appliedPixels);
+      await s.layer(a).click();
+      await inspect('Inter', a);
+      await expect.poll(glyphPixels).toEqual(appliedPixels);
+      await s.capture(`font-${entry}-cancels-on-selection-change`);
+    }
+    await picker(s, 'Font family').click();
+    await visibleOptions(s, 'Noto Sans').click();
+    await expect(search).toBeHidden();
+    await inspect('Noto Sans', a);
+    await expect.poll(glyphPixels).not.toEqual(appliedPixels);
+    await s.layer(b).click();
+    await inspect('Noto Sans', b);
+    await expect.poll(glyphPixels).not.toEqual(appliedPixels);
+    await s.layer(a).click();
+    await inspect('Noto Sans', a);
+    await expect.poll(glyphPixels).not.toEqual(appliedPixels);
+    await s.capture('confirmed-font-survives-selection-change');
   }),
   program('DESIGN-TYPOGRAPHY-ALIGN', 'Show alignment for fixed text', async s => {
     await s.select('Paragraph');

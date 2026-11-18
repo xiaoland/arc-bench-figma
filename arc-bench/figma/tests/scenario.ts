@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { expect, type Locator, type Page, type TestInfo } from '@playwright/test';
 import { createEntryUrl, readObservation, REPO_ROOT, renameSelectedLayer } from './driver.js';
-import { requireBaseUrl, type ObserveObject, type ObserveSnapshot } from './oracles.js';
+import { assertParentEligibility, assertSelectionTargets, requireBaseUrl, type ObserveObject, type ObserveSnapshot } from './oracles.js';
 
 type Name = string | RegExp;
 export type LayerReference = string | ObserveObject;
@@ -12,6 +12,7 @@ type DragOptions = {
   button?: 'left' | 'middle' | 'right';
   modifiers?: string[];
   target?: Locator;
+  via?: Array<{ x: number; y: number }>;
 };
 
 export interface Program {
@@ -140,6 +141,9 @@ export class Scenario {
       await mouse.move(bounds.x + x1, bounds.y + y1);
       await mouse.down({ button });
       try {
+        for (const point of options.via ?? []) {
+          await mouse.move(bounds.x + point.x, bounds.y + point.y, { steps: 12 });
+        }
         await mouse.move(bounds.x + x2, bounds.y + y2, { steps: 12 });
       } finally {
         await mouse.up({ button });
@@ -163,7 +167,12 @@ export class Scenario {
   }
 
   async check(assert: (snapshot: ObserveSnapshot) => unknown): Promise<void> {
-    await expect(async () => { await assert(await this.obs()); })
+    await expect(async () => {
+      const snapshot = await this.obs();
+      assertParentEligibility(snapshot);
+      assertSelectionTargets(snapshot);
+      await assert(snapshot);
+    })
       .toPass({ timeout: 8_000, intervals: [100, 250, 500, 1_000] });
   }
 
@@ -211,6 +220,11 @@ export class Scenario {
     const observation = await this.obs().catch(() => undefined);
     if (observation) {
       await this.testInfo.attach(label + '.json', { body: JSON.stringify(observation, null, 2), contentType: 'application/json' });
+      // Other captures can occur while a drag preview is still in progress.
+      if (label === 'final') {
+        assertParentEligibility(observation);
+        assertSelectionTargets(observation);
+      }
     }
   }
 

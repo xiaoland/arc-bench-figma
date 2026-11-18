@@ -1,4 +1,4 @@
-# Implementation guidance · 3.0.2
+# Implementation guidance
 
 This guide gives the Factory a concrete starting point for implementation. The requirement tree defines product behavior. [Public integration](integration.md) defines the launch and observation interface. The evaluator checks visible behavior, editing results, and exported files. It accepts any implementation that produces those results.
 
@@ -38,13 +38,17 @@ The effective scene has current geometry, order, ancestor transforms and clippin
 
 Use explicit transforms between direct-parent local coordinates, page coordinates, viewport CSS coordinates and device pixels. Pointer coordinates subtract the current viewport origin and use the inverse view transform. DPR maps viewport CSS pixels to device pixels. Store pan and zoom in view state.
 
-An object's local axes and its page-aligned bounds are different. A rotated object's Design X/Y use its specified page-aligned bounds, while Width/Height remain along its local axes. Group member fields use the containing Frame/page basis defined by Group. Frame and Section children use their own container basis. Resolve these displays from the document's transforms; do not treat every property field as a direct local translation.
+An object's local axes and its page-aligned bounds are different. A rotated object's Design X/Y use its specified page-aligned bounds, while Width/Height remain along its local axes. Group member fields use the coordinate basis outside the Group, as defined by the Group feature. Frame and Section children use their own container basis. Resolve these displays from the document's transforms; do not treat every property field as a direct local translation.
 
-Keep geometry bounds, visual bounds, hit regions and export bounds distinguishable. A shadow can extend visible pixels without enlarging the object's geometry. Ancestor clipping affects content according to the product rule. Reparenting preserves the promised page position by converting between parent bases.
+Keep geometry bounds, visual bounds, hit regions and export bounds distinguishable. A shadow can extend visible pixels without enlarging the object's geometry. Ancestor clipping affects content according to the product rule.
+
+The document parent and geometric containment are separate facts. Parent choice follows the shared layer parent relationships (CANVAS-HIERARCHY). The operation and destination rules determine the result within those constraints. Convert between parent bases where the product preserves page position. Apply the destination layout or paste-placement rule where it defines a new position.
+
+Validate the proposed result subtree, including cycles, before applying a structural operation. A copied subtree has its own nodes. Do not reject it solely because its source is an ancestor of the destination. Use the operation's product rules for target choice, layout-mode changes, and completion. A transient scene preview does not define the completed hierarchy.
 
 ## Rendering, text and layout
 
-One option is a CanvasKit surface with Canvas, Paint, Path and Paragraph for the design viewport, alongside HTML controls and native text input. CanvasKit draws the resolved scene. The application handles hit testing, input routing, tool state, and edit sessions against the current scene and viewport. With any renderer, keep selection, text layout and output aligned with the visible design. The browser environment may use the supplied Inter and Noto Sans SC fonts to reproduce the reference metrics and Chinese fallback.
+Start with a CanvasKit surface for the design viewport, alongside HTML controls and native text input. This is the recommended architecture for the current Factory. Canvas, Paint, Path and Paragraph provide drawing and text layout. CanvasKit draws the resolved scene. The application handles hit testing, input routing, tool state, and edit sessions against the current scene and viewport. With any renderer, keep selection, text layout and output aligned with the visible design. The browser environment may use the supplied Inter and Noto Sans SC fonts to reproduce the reference metrics and Chinese fallback.
 
 If using CanvasKit, release resources when their scene, paragraph or surface owner no longer needs them. See the [bundled API declarations](resources/canvaskit/api.d.ts).
 

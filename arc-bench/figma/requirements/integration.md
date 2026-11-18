@@ -14,7 +14,9 @@ A user edits and selects objects through the design viewport. Layers and the Des
 
 The application provides one entry URL at its assigned host and port. It accepts `arc_seed=<seed name>` and `arc_workset=<workset identifier>`. The default seed is `blank`.
 
-The first open of a workset creates its selected seed document. Different worksets have separate edits and saved documents. Reopen of the same workset restores its saved state. In the read-only observation, continuing layers use the same observed IDs across reopen. Replacement behavior, such as clipboard reconstruction or Detach, follows its product requirement.
+The first open of a workset creates its selected seed document. Different worksets have separate edits and saved documents. Reopen of the same workset restores its saved state.
+
+Within one workset, continuing layers use the same observed IDs through edits and reopen. Undo and Redo restore the observed IDs of restored layers. Replacement behavior, such as clipboard reconstruction or Detach, follows its product requirement.
 
 Initialization creates pages and the object tree, geometry, text, appearance, layout, Style links, component sources, overrides, and resources. It then clears selection and history and opens the specified page. Within one parent, `objects` array order is back to front; `siblingIndex` starts at zero. Names are public aliases. The application assigns internal IDs.
 
@@ -114,7 +116,9 @@ Object, Style, property, variant, and page names come from the current document.
 
 `document.worksetId` and `seed` match the launch input. `pages` keeps page order, with names corresponding to IDs. `selectionIds` matches each object's `selected` value. Objects describe editable document layers. `parentId` and source IDs refer to actual layer identities.
 
-Types include `frame`, `rectangle`, `ellipse`, `line`, `arrow`, `text`, `group`, `section`, `vector`, `component`, and `instance`. Group bounds follow members. Section uses an explicit region. Group/Ungroup and Section removal keep continuing members as specified.
+`selectionIds` lists the independent selected targets. A selected container represents the descendants involved through it; those descendants are not additional selection entries.
+
+Types include `frame`, `rectangle`, `ellipse`, `line`, `arrow`, `text`, `group`, `section`, `vector`, `component`, `component-set`, and `instance`. Group bounds follow members. Section uses an explicit region. Group/Ungroup and Section removal keep continuing members as specified.
 
 `geometry.x/y` is relative to the direct parent, or the page for a top-level layer. Dimensions are effective post-layout dimensions. Design can display a different coordinate basis, such as page coordinates for top-level Group members. Both representations resolve to the same canvas position.
 
